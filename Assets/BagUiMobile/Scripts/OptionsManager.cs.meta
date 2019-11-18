@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: f79cf7ecc64505c47adce920ccf2fe4f
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - batteryBtn: {instanceID: 0}
+  - musicBtn: {instanceID: 0}
+  - sfxBtn: {instanceID: 0}
+  - vibrateBtn: {instanceID: 0}
+  - batteryOFF: {fileID: 21300000, guid: f2557316bba2db7459bbac7db640d1ab, type: 3}
+  - batteryON: {fileID: 21300000, guid: cf2aa1105a6bf02498ed400252aa649e, type: 3}
+  - musicOFF: {fileID: 21300000, guid: 66fb72640d798f64786a4c321228d6ca, type: 3}
+  - musicON: {fileID: 21300000, guid: f92d92fcd029beb40a8ef51d2c084844, type: 3}
+  - sfxOFF: {fileID: 21300000, guid: e5958f2f24906884ca4af9e04d81be87, type: 3}
+  - sfxON: {fileID: 21300000, guid: a1f98ea928bed2a49bb49acb0b2762e2, type: 3}
+  - vibrateOFF: {fileID: 21300000, guid: cb7ec29aa38a3e94caf3b3ccc14ac705, type: 3}
+  - vibrateON: {fileID: 21300000, guid: 131aa866d3088434aa48d14b690d5a91, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
