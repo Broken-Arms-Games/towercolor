@@ -9,6 +9,8 @@ namespace Bag.Mobile.UiLite
 {
 	public class CanvasCoreManager : CanvasManager
 	{
+		public Animation settings_anim;
+
 		new public static CanvasCoreManager Singleton { get; set; }
 
 		InstantiatedCoroutine goalBarCO;
@@ -59,5 +61,6 @@ namespace Bag.Mobile.UiLite
 			//Game.Player.onScore += (f, s, n) =>
 			//Game.Player.onScore += (f, s, n) => { ScoreUpdateUI(s, n); };
 		}
+
 	}
 }
