@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class GameInput : MonoBehaviour
 {
+	[SerializeField] Transform cameraHolder;
+
 	void Update()
 	{
 		if(Input.GetMouseButtonUp(0))
