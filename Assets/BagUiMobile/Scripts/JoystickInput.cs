@@ -50,27 +50,40 @@ public class JoystickInput : MonoBehaviour, IPointerDownHandler, IDragHandler, I
 	{
 		if(Game.StateCurrent != Game.State.Play)
 			return;
-		dragging = true;
-		Vector2 screenSize = new Vector2(Screen.width, Screen.height);
-		rectBkg.anchorMin = rectBkg.anchorMax = eventData.position / screenSize;
-		posCenter = eventData.position;
-		DoDrag(eventData.position.ToVector3() - posCenter, true);
+		//StartDrag(eventData.position);
 	}
 
 	public void OnDrag(PointerEventData eventData)
 	{
 		if(Game.StateCurrent != Game.State.Play)
 			return;
-		dragging = true;
-		DoDrag(eventData.position.ToVector3() - posCenter);
+
+		if(!dragging)
+			StartDrag(eventData.position);
+		else
+		{
+			dragging = true;
+			DoDrag(eventData.position.ToVector3() - posCenter);
+		}
 	}
 
 	public void OnPointerUp(PointerEventData eventData)
 	{
 		if(Game.StateCurrent != Game.State.Play)
 			return;
+		if(!dragging)
+			return;
 		dragging = false;
 		DoDrag(Vector3.zero);
+	}
+
+	void StartDrag(Vector2 eventPos)
+	{
+		dragging = true;
+		Vector2 screenSize = new Vector2(Screen.width, Screen.height);
+		rectBkg.anchorMin = rectBkg.anchorMax = eventPos / screenSize;
+		posCenter = eventPos;
+		DoDrag(eventPos.ToVector3() - posCenter, true);
 	}
 
 	void DoDrag(Vector3 relativeEventPos, bool instant = false)
