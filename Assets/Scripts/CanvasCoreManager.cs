@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Bag.Scripts.Generic;
+using UnityEngine.UI;
 
 namespace Bag.Mobile.UiLite
 {
