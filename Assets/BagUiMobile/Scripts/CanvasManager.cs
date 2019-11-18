@@ -94,7 +94,7 @@ namespace Bag.Mobile.UiLite
 				LoadingdAnimationManager.CloseLoading();
 		}
 
-		public void OpenPanel(string name)
+		protected virtual void OpenPanel(string name)
 		{
 			SoundClick();
 			bool open = false;
