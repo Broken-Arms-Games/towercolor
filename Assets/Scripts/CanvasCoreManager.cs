@@ -12,6 +12,9 @@ namespace Bag.Mobile.UiLite
 		public Animation settings_anim;
 
 		new public static CanvasCoreManager Singleton { get; set; }
+		public static JoystickInput Joystick { get { return Singleton.joystick; } }
+
+		[SerializeField] JoystickInput joystick;
 
 		InstantiatedCoroutine goalBarCO;
 
