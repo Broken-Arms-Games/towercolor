@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.PostProcessing;
+//using UnityEngine.PostProcessing;
 
 public class OptionsManager : MonoBehaviour
 {
@@ -13,14 +13,14 @@ public class OptionsManager : MonoBehaviour
 	{
 		get
 		{
-			return new OptionsRefereces() { postProcessing = Singleton.postProcessing };
+			return new OptionsRefereces() {/* postProcessing = Singleton.postProcessing*/ };
 		}
 	}
 
 
 	class OptionsRefereces
 	{
-		public PostProcessingBehaviour[] postProcessing;
+		//public PostProcessingBehaviour[] postProcessing;
 	}
 
 	public enum OptionSet
@@ -53,7 +53,7 @@ public class OptionsManager : MonoBehaviour
 	[SerializeField] Sprite vibrateOFF;
 	[SerializeField] Sprite vibrateON;
 
-	[SerializeField] PostProcessingBehaviour[] postProcessing;
+	//[SerializeField] PostProcessingBehaviour[] postProcessing;
 
 	float fpsLow = 0;
 
@@ -148,8 +148,8 @@ public class OptionsManager : MonoBehaviour
 			case OptionType.Battery:
 				action = v =>
 				{
-					for(int i = 0; OptionsRefs.postProcessing != null && i < OptionsRefs.postProcessing.Length; i++)
-						OptionsRefs.postProcessing[i].enabled = v > 0;
+					//for(int i = 0; OptionsRefs.postProcessing != null && i < OptionsRefs.postProcessing.Length; i++)
+					//	OptionsRefs.postProcessing[i].enabled = v > 0;
 					QualitySettings.vSyncCount = 0;
 					Application.targetFrameRate = v > 0 ? 60 : 30;
 				};
