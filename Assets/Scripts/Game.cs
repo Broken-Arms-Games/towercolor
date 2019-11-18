@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-//using Bag.Mobile.UiLite;
+using Bag.Mobile.UiLite;
 using UnityEngine.SceneManagement;
 
 public class Game : MonoBehaviour
@@ -92,10 +92,7 @@ public class Game : MonoBehaviour
 	{
 		if(state == State.Play)
 		{
-			if(!LevelIsSandbox)
-				player.Time -= Time.deltaTime;
-			else
-				player.Time += Time.deltaTime;
+			//player.Time -= Time.deltaTime;
 			StateNext();
 		}
 	}
@@ -113,11 +110,7 @@ public class Game : MonoBehaviour
 		onStateActions = new List<ActionTimed>[(int)State.End + 1];
 		InitEvents();
 
-#if !UNITY_EDITOR
-		overrideLevel = false;
-#endif
-		if(overrideLevel || LevelData == null)
-			LevelData = levelData;
+		// leveldata here
 
 		//gameCo = SetState(State.Awake);
 		//StartCoroutine(gameCo);
@@ -191,8 +184,7 @@ public class Game : MonoBehaviour
 		});
 		AddStateAction(State.Start, delegate
 		{
-			WorldTileRef spawn = worldBuilder.GetGridTile(worldBuilder.Center).gameObject.GetComponent<WorldTileRef>();
-			gameInput.Init(spawn != null ? spawn.GetHoleSpawnPoint().position : Vector3.zero);
+			// init game input
 		});
 		AddStateAction(State.Start, "[GAME] Initialization done.");
 		// ingame data initialization
@@ -215,23 +207,22 @@ public class Game : MonoBehaviour
 		AddStateAction(State.Play, delegate { player.GameStateChanged(); });
 
 		SetStateAction(State.End, delegate { Debug.Log("[GAME] End event."); });
-		AddStateAction(State.End, delegate { AlienSpawner.Disable(); });
 		AddStateAction(State.End, delegate { player.GameStateChanged(); });
 		AddStateAction(State.End, delegate { Debug.Log("[GAME] GAME ENDED! Player: " + (win ? "WINS!" : "loses.")); });
 		AddStateAction(State.End, delegate
 		{
-			if(PlayerPrefs.GetInt(LevelData.name + "-score_top") < Player.ScoreEnd)
-				PlayerPrefs.SetInt(LevelData.name + "-score_top", Player.ScoreEnd);
+			//if(PlayerPrefs.GetInt(LevelData.name + "-score_top") < Player.ScoreEnd)
+			//	PlayerPrefs.SetInt(LevelData.name + "-score_top", Player.ScoreEnd);
 		});
 		AddStateAction(State.End, delegate
 		{
 			bool unlocked = false;
 			if(win)
 			{
-				unlocked = PlayerPrefs.GetInt(LevelData.name + "-complete", 0) == 0;
-				PlayerPrefs.SetInt(LevelData.name + "-complete", 1);
+				//unlocked = PlayerPrefs.GetInt(LevelData.name + "-complete", 0) == 0;
+				//PlayerPrefs.SetInt(LevelData.name + "-complete", 1);
 			}
-			CanvasCoreManager.Singleton.GameOver(win, Player.ScoreEnd, PlayerPrefs.GetInt(LevelData.name + "-score_top"), unlocked);
+			//CanvasCoreManager.Singleton.GameOver(win, Player.ScoreEnd, PlayerPrefs.GetInt(LevelData.name + "-score_top"), unlocked);
 		});
 		AddStateAction(State.End, delegate
 		{

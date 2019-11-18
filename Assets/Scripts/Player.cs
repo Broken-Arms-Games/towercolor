@@ -8,4 +8,9 @@ public class Player
 	{
 
 	}
+
+	public void GameStateChanged()
+	{
+
+	}
 }
