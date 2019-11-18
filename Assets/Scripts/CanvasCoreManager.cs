@@ -65,5 +65,13 @@ namespace Bag.Mobile.UiLite
 			//Game.Player.onScore += (f, s, n) => { ScoreUpdateUI(s, n); };
 		}
 
+		protected override void OpenPanel(string name)
+		{
+			if(PanelOpen)
+				base.OpenPanel("");
+			else
+				base.OpenPanel(name);
+		}
+
 	}
 }
