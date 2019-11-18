@@ -20,7 +20,7 @@ namespace Bag.Scripts.Generic
 				Singleton.debugIsUIOverride = isUIOverride = results.Count > 0;
 				return isUIOverride;
 #else
-			return isUIOverride;
+				return isUIOverride;
 #endif
 			}
 			private set
@@ -56,7 +56,7 @@ namespace Bag.Scripts.Generic
 		{
 			// It will turn true if hovering any UI Elements
 #if !UNITY_IOS && !UNITY_ANDROID
-		IsUIOverride = EventSystem.current.IsPointerOverGameObject() || !Application.isFocused;
+			IsUIOverride = EventSystem.current.IsPointerOverGameObject() || !Application.isFocused;
 #endif
 			// It will turn true if inside game window
 			IsPointerInScreen = InputHandler.MousePos.x < 1 && InputHandler.MousePos.x > 0 &&

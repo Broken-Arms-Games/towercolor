@@ -49,6 +49,7 @@ public class Game : MonoBehaviour
 	// inspector
 	[Header("References")]
 	public Camera cam;
+	public Tower tower;
 	//[SerializeField] GameInput gameInput;
 	[Header("DEBUG")]
 	[Tooltip("VISUALIZATION ONLY! DO NOT CHANGE!")]
@@ -128,6 +129,7 @@ public class Game : MonoBehaviour
 
 	void WorldInit()
 	{
+		tower.SpawnLevel();
 	}
 
 	void PlayerInstantiate()
