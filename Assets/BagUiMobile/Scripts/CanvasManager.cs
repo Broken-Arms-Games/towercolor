@@ -1,152 +1,158 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class CanvasManager : MonoBehaviour
+namespace Bag.Mobile.UiLite
 {
-	public static CanvasManager Singleton;
-	public static Camera Camera { get { return Singleton.cam; } }
-
-
-	[SerializeField] Text scoreText;
-	[SerializeField] Camera cam;
-
-	[Header("GAME OVER")]
-	[SerializeField] GameObject gameOverPnl;
-	[SerializeField] Text gameOverScoreTxt;
-	[SerializeField] Text gameOverScoreTopTxt;
-
-	[Header("PAUSE")]
-	[SerializeField] Button pauseBtn;
-	[SerializeField] GameObject pausaPopUp;
-
-	[Header("OPTIONS")]
-	[SerializeField] OptionsManager optionsManager;
-	[SerializeField] Button replayBtn;
-
-	[Header("Info panel")]
-	[SerializeField] GameObject infoPanel;
-
-	public event System.Action onInfoPanelUpdate = delegate { Debug.Log("[CANVAS CORE MANAGER] Event onInfoPanelUpdate."); };
-
-
-	#region UNITY
-
-	void Awake()
+	public class CanvasManager : MonoBehaviour
 	{
-		if(Singleton == null)
-			Singleton = this;
-
-		LoadingdAnimationManager.CloseLoading();
-	}
-
-	void Update()
-	{
-		optionsManager.BatteryAutoSet();
-	}
-
-	#endregion
-
-
-	#region CLASS
-
-	public void Init()
-	{
-		optionsManager.Init();
-	}
-
-	public static void SoundClick()
-	{
-		AudioManager.PlaySfx("ClickMenu");
-	}
-
-	#endregion
-
-
-	#region UI
-
-	public void GameStateUpdateUi(Game.State gameState)
-	{
-		switch(gameState)
+		public static CanvasManager Singleton { get; set; }
+		public static Camera Camera
 		{
-			case Game.State.End:
-				GameOverOpen();
-				break;
+			get
+			{
+				if(Singleton.cam != null)
+					return Singleton.cam;
+				else
+					Debug.LogError("[CANVAS] Reference to the camera is null, please set it.");
+				return null;
+			}
 		}
-	}
+		public static OptionsManager OptionsManager { get { return Singleton.optionsManager; } }
+		public static bool PanelOpen
+		{
+			get
+			{
+				for(int i = 0; i < Singleton.panels.Length; i++)
+					if(Singleton.panels[i].activeSelf)
+						return true;
+				return false;
+			}
+		}
+		public static CanvasScaler CanvasScaler
+		{
+			get
+			{
+				if(Singleton.canvasScaler != null)
+					return Singleton.canvasScaler;
+				else
+					Debug.LogError("[CANVAS] Reference to the CanvasScaler is null, please set it.");
+				return null;
+			}
+		}
+		public static RectTransform CanvasRect
+		{
+			get
+			{
+				if(Singleton.canvasRect != null)
+					return Singleton.canvasRect;
+				else
+					Debug.LogError("[CANVAS] Reference to the RectTransform is null, please set it.");
+				return null;
+			}
+		}
 
-	void GameOverOpen()
-	{
-		gameOverPnl.SetActive(true);
-		gameOverScoreTxt.text = "<b>SCORE: " + Game.Player.Score + "</b>";
-		gameOverScoreTopTxt.text = "RECORD: " + Game.Player.ScoreTop;
-	}
-
-	public void ScoreUpdateUI(int score)
-	{
-		scoreText.text = score.ToString();
-	}
-
-	#endregion
+		[Header("Canvas References")]
+		[SerializeField] Camera cam;
+		[SerializeField] RectTransform canvasRect;
+		[SerializeField] CanvasScaler canvasScaler;
+		[SerializeField] GameObject[] panels;
+		[SerializeField] protected OptionsManager optionsManager;
+		[SerializeField] bool autoLoadingClose = true;
 
 
-	#region PAUSE
+		public event Action<GameObject> onPanelOpen;
+		public event Action<GameObject[]> onPanelChanged;
 
-	public void Pause()
-	{
-		SoundClick();
-		pausaPopUp.SetActive(!pausaPopUp.activeSelf);
-		pauseBtn.gameObject.SetActive(!pausaPopUp.activeSelf);
-		if(pausaPopUp.activeSelf)
+
+		protected virtual void Awake()
+		{
+			Init();
+		}
+
+		protected virtual void Update()
+		{
+			optionsManager.BatteryAutoSet();
+		}
+
+
+		protected virtual void Init()
+		{
+			Singleton = this;
+			onPanelChanged = p => { };
+			onPanelOpen = p => { Debug.Log("[" + name.ToUpper() + "] opens panel '" + p.name + "'."); };
+			onPanelOpen = p =>
+			{
+				if((IsPanel(p, "pause") || IsPanel(p, "options")))
+					optionsManager.Init();
+			};
+			onPanelOpen = optionsManager.OnPanelsOpen;
+
 			optionsManager.Init();
+			if(autoLoadingClose)
+				LoadingdAnimationManager.CloseLoading();
+		}
+
+		public void OpenPanel(string name)
+		{
+			SoundClick();
+			bool open = false;
+			for(int i = 0; i < panels.Length; i++)
+			{
+				panels[i].SetActive(IsPanel(panels[i], name));
+				if(panels[i].activeSelf)
+				{
+					onPanelOpen(panels[i]);
+					open = true;
+				}
+			}
+			if(!open)
+				onPanelOpen(null);
+			onPanelChanged(panels);
+		}
+
+		protected bool IsPanel(GameObject panel, string name)
+		{
+			return panel != null &&
+				(panel.name.ToLower().Trim() == name.ToLower().Trim() ||
+				panel.name.ToLower().Trim() == "pnl_" + name.ToLower().Trim());
+		}
+
+
+		public static void SoundClick()
+		{
+			AudioManager.PlaySfx("ClickMenu");
+		}
+
+
+		#region VIBRATION
+
+		public static void Vibrate()
+		{
+			Vibrate(1, 0.3f);
+		}
+
+		public static void Vibrate(int times, float interval)
+		{
+			Singleton.StartCoroutine(_Vibrate(times, interval));
+		}
+
+		static IEnumerator _Vibrate(int times, float interval = 0.5f)
+		{
+			if(OptionsManager.Vibration)
+			{
+				WaitForSeconds wait = new WaitForSeconds(interval);
+				float t;
+
+				for(t = 0; t < interval * times; t += interval)
+				{
+					Handheld.Vibrate();
+					yield return wait;
+				}
+			}
+		}
+
+		#endregion
 	}
-
-	public void ReplayClick()
-	{
-		SoundClick();
-		Game.Hub.Restart();
-	}
-
-	public void ReplayGameOverClick()
-	{
-		SoundClick();
-		Game.Hub.Restart();
-	}
-
-	public void HomeClick()
-	{
-		SoundClick();
-		LoadingdAnimationManager.StartLoading(() => { SceneManager.LoadScene(0); });
-	}
-
-	public void HomeGameOverClick()
-	{
-		SoundClick();
-		LoadingdAnimationManager.StartLoading(() => { SceneManager.LoadScene(0); });
-	}
-
-	#endregion
-
-
-	#region INFO_PANEL
-
-	public void InfoPanelOpen()
-	{
-		SoundClick();
-		pausaPopUp.SetActive(false);
-		infoPanel.SetActive(true);
-		onInfoPanelUpdate();
-	}
-
-	public void InfoPanelClose()
-	{
-		SoundClick();
-		pausaPopUp.SetActive(true);
-		infoPanel.SetActive(false);
-	}
-
-	#endregion
 }
