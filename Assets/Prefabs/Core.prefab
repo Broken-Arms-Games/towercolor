@@ -134,6 +134,7 @@ GameObject:
   - component: {fileID: 7981405630863223556}
   - component: {fileID: 8427195518878993809}
   - component: {fileID: 7148811338977386099}
+  - component: {fileID: 1040523438326187647}
   m_Layer: 0
   m_Name: Core
   m_TagString: Untagged
@@ -171,6 +172,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cam: {fileID: 0}
   tower: {fileID: 7148811338977386099}
+  gameInput: {fileID: 1040523438326187647}
   state: 0
   score: 0
 --- !u!114 &7148811338977386099
@@ -191,6 +193,18 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 2b59e2a9978f90c4884e6d82d490bf47, type: 2}
   - {fileID: 2100000, guid: 2818145571f70d741b3b2f1d77cb8371, type: 2}
   - {fileID: 2100000, guid: 42a55b90f00337a42af31e9ae74a1dd0, type: 2}
+--- !u!114 &1040523438326187647
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3567223550599023550}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff64b19fd950dff48acaa8c8524ead31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &4513673712081308483
 PrefabInstance:
   m_ObjectHideFlags: 0

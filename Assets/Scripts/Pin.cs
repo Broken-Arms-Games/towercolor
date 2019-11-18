@@ -8,15 +8,32 @@ public class Pin : MonoBehaviour
 
 	public MeshRenderer model;
 	public Rigidbody rigidbody;
+	public PinCollider[] pinColliders;
 
 	[HideInInspector] public int num;
 	Tower tower;
+	bool shooted;
 
 	public void Init(Tower tower)
 	{
 		this.tower = tower;
 		num = Random.Range(0, tower.pinMaterials.Length);
+		shooted = false;
 
+		gameObject.layer = LayerMask.NameToLayer("Pins");
 		model.material = tower.pinMaterials[num];
+		for(int i = 0; i < pinColliders.Length; i++)
+			pinColliders[i].Init(this);
+	}
+
+	public void Shooted(int num = -1)
+	{
+		if(!shooted && (num < 0 || num == this.num))
+		{
+			shooted = true;
+			for(int i = 0; i < pinColliders.Length; i++)
+				pinColliders[i].ShootNeighbours();
+			gameObject.SetActive(false);
+		}
 	}
 }
