@@ -1,182 +1,284 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Audio;
+using Bag.Scripts.Generic;
+using System.Collections.Generic;
 
-
-public class AudioManager : MonoBehaviour
-
+namespace Bag.Mobile.UiLite
 {
-
-
-	#region VARIABLES
-
-	public static AudioManager instance;
-	public AudioFile[] musicFiles;
-	public AudioFile[] sfxFiles;
-	private float timeToReset;
-	private bool timerIsSet = false;
-	private string tmpName;
-	private float tmpVol;
-	private bool isLowered = false;
-	private bool fadeOut = false;
-	private bool fadeIn = false;
-	private string fadeInUsedString;
-	private string fadeOutUsedString;
-	#endregion
-
-	// Use this for initialization
-	void Awake()
+	public class AudioManager : MonoBehaviour
 	{
-		if(instance == null)
-		{
-			instance = this;
-		}
-		else if(instance != this)
-		{
-			Destroy(gameObject);
-		}
+		public static AudioManager instance;
+		static Queue<Action<AudioManager>> play = new Queue<Action<AudioManager>>();
 
-		DontDestroyOnLoad(gameObject);
+		[Header("Files")]
+		public AudioFile[] musicFiles;
+		public AudioFile[] sfxFiles;
+		[Header("Debug")]
+		[DisplayWithoutEdit] [SerializeField] float musicVolume;
+		[DisplayWithoutEdit] [SerializeField] float sfxVolume;
 
-		foreach(var s in musicFiles)
+
+		private float timeToReset;
+		private bool timerIsSet = false;
+		private string tmpName;
+		private float tmpVol;
+		private bool isLowered = false;
+		private bool fadeOut = false;
+		private bool fadeIn = false;
+		private string fadeInUsedString;
+		private string fadeOutUsedString;
+
+
+		void Awake()
 		{
-			s.source = gameObject.AddComponent<AudioSource>();
-			s.source.clip = s.audioClip;
-			s.source.volume = s.volume;
-			s.source.loop = s.isLooping;
-
-			if(s.playOnAwake)
+			if(instance == null)
 			{
+				instance = this;
+			}
+			else if(instance != this)
+			{
+				Destroy(gameObject);
+			}
+
+			DontDestroyOnLoad(gameObject);
+
+			foreach(var s in musicFiles)
+			{
+				s.source = gameObject.AddComponent<AudioSource>();
+				s.source.clip = s.audioClip;
+				s.source.volume = s.volume;
+				s.source.loop = s.isLooping;
+
+				if(s.playOnAwake)
+				{
+					s.source.Play();
+				}
+			}
+
+			foreach(var s in sfxFiles)
+			{
+				s.source = gameObject.AddComponent<AudioSource>();
+				s.source.clip = s.audioClip;
+				s.source.volume = s.volume;
+				s.source.loop = s.isLooping;
+			}
+
+			SetMusicVolume(OptionsManager.GetOption(OptionsManager.OptionType.Music) ? 1 : 0);
+			SetSfxVolume(OptionsManager.GetOption(OptionsManager.OptionType.Music) ? 1 : 0);
+
+			while(play.Count > 0)
+				play.Dequeue()(this);
+		}
+
+
+		#region METHODS
+
+		public static AudioFile PlayMusic(string name, bool pitchVariation = false)
+		{
+			if(instance)
+				return instance.Play(instance.musicFiles, name, pitchVariation);
+			else
+				play.Enqueue(i => { i.Play(instance.musicFiles, name, pitchVariation); });
+			return null;
+		}
+
+		public static AudioFile PlaySfx(string name, bool pitchVariation = false)
+		{
+			if(instance)
+				return instance.Play(instance.sfxFiles, name, pitchVariation);
+			else
+				play.Enqueue(i => { i.Play(instance.sfxFiles, name, pitchVariation); });
+			return null;
+		}
+
+		private AudioFile Play(AudioFile[] am, string name, bool pitchVariation = false)
+		{
+			AudioFile s = Array.Find(am, AudioFile => AudioFile.audioName == name);
+			if(s == null)
+			{
+				Debug.LogError("Sound name " + name + " not found!");
+				return null;
+			}
+			else
+			{
+				if(pitchVariation)
+					s.source.pitch = 1 + UnityEngine.Random.Range(-0.08f, 0.08f);
+				else
+					s.source.pitch = 1;
 				s.source.Play();
+			}
+			return s;
+		}
+
+		public static void SetMusicVolume(float v)
+		{
+			if(instance)
+			{
+				instance.SetVolume(instance.musicFiles, v);
+				instance.musicVolume = v;
 			}
 		}
 
-		foreach(var s in sfxFiles)
+		public static void SetSfxVolume(float v)
 		{
-			s.source = gameObject.AddComponent<AudioSource>();
-			s.source.clip = s.audioClip;
-			s.source.volume = s.volume;
-			s.source.loop = s.isLooping;
+			if(instance)
+			{
+				instance.SetVolume(instance.sfxFiles, v);
+				instance.sfxVolume = v;
+			}
 		}
-	}
 
-
-
-	#region METHODS
-	public static void PlayMusic(string name, bool pitchVariation = false)
-	{
-		if(instance)
-			instance.Play(instance.musicFiles, name, pitchVariation);
-	}
-
-	public static void PlaySfx(string name, bool pitchVariation = false)
-	{
-		if(instance)
-			instance.Play(instance.sfxFiles, name, pitchVariation);
-	}
-
-	private void Play(AudioFile[] am, string name, bool pitchVariation = false)
-	{
-		AudioFile s = Array.Find(am, AudioFile => AudioFile.audioName == name);
-		if(s == null)
+		public void SetVolume(AudioFile[] af, float v)
 		{
-			Debug.LogError("Sound name" + name + "not found!");
-			return;
+			foreach(var s in af)
+			{
+				s.source.volume = s.volume * v;
+			}
 		}
-		else
+
+		public static void StopMusic(String name)
 		{
-			if(pitchVariation)
-				s.source.pitch = 1 + UnityEngine.Random.Range(-0.08f, 0.08f);
+			if(!instance)
+				return;
+			AudioFile s = Array.Find(instance.musicFiles, AudioFile => AudioFile.audioName == name);
+			if(s == null)
+			{
+				Debug.LogError("Sound name" + name + "not found!");
+				return;
+			}
 			else
-				s.source.pitch = 1;
-			s.source.Play();
+			{
+				s.source.Stop();
+			}
 		}
-	}
 
-	public static void SetMusicVolume(float v)
-	{
-		if(instance)
-			instance.SetVolume(instance.musicFiles, v);
-	}
-
-	public static void SetSfxVolume(float v)
-	{
-		if(instance)
-			instance.SetVolume(instance.sfxFiles, v);
-	}
-
-	public void SetVolume(AudioFile[] af, float v)
-	{
-		foreach(var s in af)
+		public static void StopSfx(String name)
 		{
-			s.source.volume = v;
+			if(!instance)
+				return;
+			AudioFile s = Array.Find(instance.sfxFiles, AudioFile => AudioFile.audioName == name);
+			if(s == null)
+			{
+				Debug.LogError("Sound name" + name + "not found!");
+				return;
+			}
+			else
+			{
+				s.source.Stop();
+			}
 		}
-	}
 
-	public static void StopMusic(String name)
-	{
+		public static void StopAllMusic()
+		{
+			if(instance != null)
+				for(int i = 0; i < instance.musicFiles.Length; i++)
+				{
+					instance.musicFiles[i].source.Stop();
+				}
+		}
 
-		AudioFile s = Array.Find(instance.musicFiles, AudioFile => AudioFile.audioName == name);
-		if(s == null)
+
+		public static void PauseMusic(String name)
+		{
+			AudioFile s = Array.Find(instance.musicFiles, AudioFile => AudioFile.audioName == name);
+
+			if(s == null)
+			{
+				Debug.LogError("Sound name" + name + "not found!");
+				return;
+			}
+			else
+			{
+				s.source.Pause();
+			}
+		}
+
+
+		public static void UnPauseMusic(String name)
+		{
+			AudioFile s = Array.Find(instance.musicFiles, AudioFile => AudioFile.audioName == name);
+
+			if(s == null)
+			{
+				Debug.LogError("Sound name" + name + "not found!");
+				return;
+			}
+			else
+			{
+				s.source.UnPause();
+			}
+
+		}
+
+
+		public static void LowerVolume(String name, float _duration)
+
 		{
 
-			Debug.LogError("Sound name" + name + "not found!");
+			if(instance.isLowered == false)
 
-			return;
+			{
+
+				AudioFile s = Array.Find(instance.musicFiles, AudioFile => AudioFile.audioName == name);
+
+				if(s == null)
+
+				{
+
+					Debug.LogError("Sound name" + name + "not found!");
+
+					return;
+
+				}
+
+				else
+
+				{
+
+					instance.tmpName = name;
+
+					instance.tmpVol = s.volume;
+
+					instance.timeToReset = Time.time + _duration;
+
+					instance.timerIsSet = true;
+
+					s.source.volume = s.source.volume / 3;
+
+				}
+
+
+				instance.isLowered = true;
+
+			}
 
 		}
 
-		else
+
+		public static void FadeOut(String name, float duration)
 
 		{
 
-			s.source.Stop();
+			instance.StartCoroutine(instance.IFadeOut(name, duration));
 
 		}
 
-	}
 
+		public static void FadeIn(String name, float targetVolume, float duration)
 
-	public static void PauseMusic(String name)
-	{
-		AudioFile s = Array.Find(instance.musicFiles, AudioFile => AudioFile.audioName == name);
-
-		if(s == null)
 		{
-			Debug.LogError("Sound name" + name + "not found!");
-			return;
-		}
-		else
-		{
-			s.source.Pause();
-		}
-	}
 
+			instance.StartCoroutine(instance.IFadeIn(name, targetVolume, duration));
 
-	public static void UnPauseMusic(String name)
-	{
-		AudioFile s = Array.Find(instance.musicFiles, AudioFile => AudioFile.audioName == name);
-
-		if(s == null)
-		{
-			Debug.LogError("Sound name" + name + "not found!");
-			return;
-		}
-		else
-		{
-			s.source.UnPause();
 		}
 
-	}
 
 
-	public static void LowerVolume(String name, float _duration)
 
-	{
+		//not for use
 
-		if(instance.isLowered == false)
+		private IEnumerator IFadeOut(String name, float duration)
 
 		{
 
@@ -188,7 +290,7 @@ public class AudioManager : MonoBehaviour
 
 				Debug.LogError("Sound name" + name + "not found!");
 
-				return;
+				yield return null;
 
 			}
 
@@ -196,160 +298,64 @@ public class AudioManager : MonoBehaviour
 
 			{
 
-				instance.tmpName = name;
-
-				instance.tmpVol = s.volume;
-
-				instance.timeToReset = Time.time + _duration;
-
-				instance.timerIsSet = true;
-
-				s.source.volume = s.source.volume / 3;
-
-			}
-
-
-			instance.isLowered = true;
-
-		}
-
-	}
-
-
-	public static void FadeOut(String name, float duration)
-
-	{
-
-		instance.StartCoroutine(instance.IFadeOut(name, duration));
-
-	}
-
-
-	public static void FadeIn(String name, float targetVolume, float duration)
-
-	{
-
-		instance.StartCoroutine(instance.IFadeIn(name, targetVolume, duration));
-
-	}
-
-
-
-
-	//not for use
-
-	private IEnumerator IFadeOut(String name, float duration)
-
-	{
-
-		AudioFile s = Array.Find(instance.musicFiles, AudioFile => AudioFile.audioName == name);
-
-		if(s == null)
-
-		{
-
-			Debug.LogError("Sound name" + name + "not found!");
-
-			yield return null;
-
-		}
-
-		else
-
-		{
-
-			if(fadeOut == false)
-
-			{
-
-				fadeOut = true;
-
-				float startVol = s.source.volume;
-
-				fadeOutUsedString = name;
-
-				while(s.source.volume > 0)
+				if(fadeOut == false)
 
 				{
 
-					s.source.volume -= startVol * Time.deltaTime / duration;
+					fadeOut = true;
 
-					yield return null;
+					float startVol = s.source.volume;
+
+					fadeOutUsedString = name;
+
+					while(s.source.volume > 0)
+
+					{
+
+						s.source.volume -= startVol * Time.deltaTime / duration;
+
+						yield return null;
+
+					}
+
+
+					s.source.Stop();
+
+					yield return new WaitForSeconds(duration);
+
+					fadeOut = false;
 
 				}
 
 
-				s.source.Stop();
-
-				yield return new WaitForSeconds(duration);
-
-				fadeOut = false;
-
-			}
-
-
-			else
-
-			{
-
-				Debug.Log("Could not handle two fade outs at once : " + name + " , " + fadeOutUsedString + "! Stopped the music " + name);
-
-				StopMusic(name);
-
-			}
-
-		}
-
-	}
-
-
-	public IEnumerator IFadeIn(string name, float targetVolume, float duration)
-
-	{
-
-		AudioFile s = Array.Find(instance.musicFiles, AudioFile => AudioFile.audioName == name);
-
-		if(s == null)
-
-		{
-
-			Debug.LogError("Sound name" + name + "not found!");
-
-			yield return null;
-
-		}
-
-		else
-
-		{
-
-			if(fadeIn == false)
-
-			{
-
-				fadeIn = true;
-
-				instance.fadeInUsedString = name;
-
-				s.source.volume = 0f;
-
-				s.source.Play();
-
-				while(s.source.volume < targetVolume)
+				else
 
 				{
 
-					s.source.volume += Time.deltaTime / duration;
+					Debug.Log("Could not handle two fade outs at once : " + name + " , " + fadeOutUsedString + "! Stopped the music " + name);
 
-					yield return null;
+					StopMusic(name);
 
 				}
 
+			}
+
+		}
 
 
-				yield return new WaitForSeconds(duration);
+		public IEnumerator IFadeIn(string name, float targetVolume, float duration)
 
-				fadeIn = false;
+		{
+
+			AudioFile s = Array.Find(instance.musicFiles, AudioFile => AudioFile.audioName == name);
+
+			if(s == null)
+
+			{
+
+				Debug.LogError("Sound name" + name + "not found!");
+
+				yield return null;
 
 			}
 
@@ -357,49 +363,82 @@ public class AudioManager : MonoBehaviour
 
 			{
 
-				Debug.Log("Could not handle two fade ins at once: " + name + " , " + fadeInUsedString + "! Played the music " + name);
+				if(fadeIn == false)
 
-				StopMusic(fadeInUsedString);
+				{
 
-				PlayMusic(name);
+					fadeIn = true;
+
+					instance.fadeInUsedString = name;
+
+					s.source.volume = 0f;
+
+					s.source.Play();
+
+					while(s.source.volume < targetVolume)
+
+					{
+
+						s.source.volume += Time.deltaTime / duration;
+
+						yield return null;
+
+					}
+
+
+
+					yield return new WaitForSeconds(duration);
+
+					fadeIn = false;
+
+				}
+
+				else
+
+				{
+
+					Debug.Log("Could not handle two fade ins at once: " + name + " , " + fadeInUsedString + "! Played the music " + name);
+
+					StopMusic(fadeInUsedString);
+
+					PlayMusic(name);
+
+				}
 
 			}
 
 		}
 
-	}
 
-
-	void ResetVol()
-
-	{
-
-		AudioFile s = Array.Find(instance.musicFiles, AudioFile => AudioFile.audioName == tmpName);
-
-		s.source.volume = tmpVol;
-
-		isLowered = false;
-
-	}
-
-
-	private void Update()
-
-	{
-
-		if(Time.time >= timeToReset && timerIsSet)
+		void ResetVol()
 
 		{
 
-			ResetVol();
+			AudioFile s = Array.Find(instance.musicFiles, AudioFile => AudioFile.audioName == tmpName);
 
-			timerIsSet = false;
+			s.source.volume = tmpVol;
+
+			isLowered = false;
 
 		}
 
+
+		private void Update()
+
+		{
+
+			if(Time.time >= timeToReset && timerIsSet)
+
+			{
+
+				ResetVol();
+
+				timerIsSet = false;
+
+			}
+
+		}
+
+		#endregion
 	}
-
-
-	#endregion
-
 }
