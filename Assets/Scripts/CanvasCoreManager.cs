@@ -20,30 +20,30 @@ namespace Bag.Mobile.UiLite
 			base.Init();
 			goalBarCO = new InstantiatedCoroutine(this);
 
-			onInfoPanelUpdate = delegate { Debug.Log("[CANVAS CORE MANAGER] Event onInfoPanelUpdate."); };
+			//onInfoPanelUpdate = delegate { Debug.Log("[CANVAS CORE MANAGER] Event onInfoPanelUpdate."); };
 			restartGame = delegate { Debug.Log("[CANVAS CORE MANAGER] restart game."); };
 
-			onPanelChanged += PauseChanged;
-			onPanelOpen += InfoOpen;
+			//onPanelChanged += PauseChanged;
+			//onPanelOpen += InfoOpen;
 
-			AudioManager.StopAllMusic();
+			//AudioManager.StopAllMusic();
 
-			switch(Game.LevelData.scenery)
-			{
-				case LevelData.Scenery.Desert:
+			//switch(Game.LevelData.scenery)
+			//{
+			//	case LevelData.Scenery.Desert:
 
-					AudioManager.PlayMusic("desert");
-					break;
-				case LevelData.Scenery.City:
-					AudioManager.PlayMusic("city");
-					break;
-				case LevelData.Scenery.Industrial:
-					AudioManager.PlayMusic("industrial");
-					break;
-				default:
-					AudioManager.PlayMusic("industrial");
-					break;
-			}
+			//		AudioManager.PlayMusic("desert");
+			//		break;
+			//	case LevelData.Scenery.City:
+			//		AudioManager.PlayMusic("city");
+			//		break;
+			//	case LevelData.Scenery.Industrial:
+			//		AudioManager.PlayMusic("industrial");
+			//		break;
+			//	default:
+			//		AudioManager.PlayMusic("industrial");
+			//		break;
+			//}
 
 		}
 

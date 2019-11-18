@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.PostProcessing;
+//using UnityEngine.PostProcessing;
 
 namespace Bag.Mobile.UiLite
 {
@@ -14,7 +14,7 @@ namespace Bag.Mobile.UiLite
 		{
 			get
 			{
-				return new OptionsRefereces() { postProcessing = Singleton.postProcessing };
+				return new OptionsRefereces() {/* postProcessing = Singleton.postProcessing*/ };
 			}
 		}
 		public static float FPS { get { return Singleton ? Singleton.fps : -1; } }
@@ -22,7 +22,7 @@ namespace Bag.Mobile.UiLite
 
 		class OptionsRefereces
 		{
-			public PostProcessingBehaviour postProcessing;
+			//public PostProcessingBehaviour postProcessing;
 		}
 
 		public enum OptionSet
@@ -47,10 +47,10 @@ namespace Bag.Mobile.UiLite
 		[SerializeField] Sprite vibrateOFF;
 		[SerializeField] Sprite vibrateON;
 
-		[SerializeField] PostProcessingBehaviour postProcessing;
-		[SerializeField] PostProcessingProfile postProcPanel;
+		//[SerializeField] PostProcessingBehaviour postProcessing;
+		//[SerializeField] PostProcessingProfile postProcPanel;
 
-		PostProcessingProfile postProcProfile;
+		//PostProcessingProfile postProcProfile;
 		float fps;
 		float fpsDeltaTime = 0.0f;
 		float fpsLow = 0;
@@ -67,10 +67,10 @@ namespace Bag.Mobile.UiLite
 		{
 			Singleton = this;
 
-			if(postProcessing == null)
-				postProcessing = CanvasManager.Camera.GetComponent<PostProcessingBehaviour>();
-			if(postProcessing != null)
-				postProcProfile = postProcessing.profile;
+			//if(postProcessing == null)
+			//	postProcessing = CanvasManager.Camera.GetComponent<PostProcessingBehaviour>();
+			//if(postProcessing != null)
+			//	postProcProfile = postProcessing.profile;
 
 			if(PlayerPrefs.GetInt("prefs_version", 0) < prefsVersion)
 			{
@@ -88,19 +88,19 @@ namespace Bag.Mobile.UiLite
 
 		public void OnPanelsOpen(GameObject p)
 		{
-			if(postProcessing != null)
-			{
-				if(p != null)
-				{
-					postProcessing.profile = postProcPanel;
-					postProcessing.enabled = true;
-				}
-				else
-				{
-					postProcessing.profile = postProcProfile;
-					postProcessing.enabled = GetOption(OptionType.Battery);
-				}
-			}
+			//if(postProcessing != null)
+			//{
+			//	if(p != null)
+			//	{
+			//		postProcessing.profile = postProcPanel;
+			//		postProcessing.enabled = true;
+			//	}
+			//	else
+			//	{
+			//		postProcessing.profile = postProcProfile;
+			//		postProcessing.enabled = GetOption(OptionType.Battery);
+			//	}
+			//}
 		}
 
 		public void BatteryAutoSet()
@@ -169,8 +169,8 @@ namespace Bag.Mobile.UiLite
 				case OptionType.Battery:
 					action = v =>
 					{
-						if(OptionsRefs.postProcessing != null)
-							OptionsRefs.postProcessing.enabled = v > 0 || CanvasManager.PanelOpen;
+						//if(OptionsRefs.postProcessing != null)
+						//	OptionsRefs.postProcessing.enabled = v > 0 || CanvasManager.PanelOpen;
 						QualitySettings.vSyncCount = 0;
 						Application.targetFrameRate = v > 0 ? 60 : 60;
 					};
