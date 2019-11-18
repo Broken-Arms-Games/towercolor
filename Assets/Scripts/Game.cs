@@ -27,8 +27,9 @@ public class Game : MonoBehaviour
 		}
 	}
 
-	//public static Player Player { get { return Hub.player; } }
-	//public static GameInput GameInput { get { return Hub.gameInput; } }
+	public static Player Player { get { return Hub.player; } }
+	public static GameInput GameInput { get { return Hub.gameInput; } }
+	public static Camera Cam { get { return Hub.cam; } }
 
 	public enum State
 	{
@@ -48,9 +49,9 @@ public class Game : MonoBehaviour
 
 	// inspector
 	[Header("References")]
-	public Camera cam;
+	[SerializeField] Camera cam;
 	public Tower tower;
-	//[SerializeField] GameInput gameInput;
+	[SerializeField] GameInput gameInput;
 	[Header("DEBUG")]
 	[Tooltip("VISUALIZATION ONLY! DO NOT CHANGE!")]
 	[SerializeField] State state;
