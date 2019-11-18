@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Bag.Scripts.Generic;
 
 public class LoadingdAnimationManager : MonoBehaviour
 {
