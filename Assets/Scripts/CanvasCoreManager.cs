@@ -74,5 +74,10 @@ namespace Bag.Mobile.UiLite
 				base.OpenPanel(name);
 		}
 
+		public void SetBar(float f)
+		{
+			barraLivello.fillAmount = f;
+		}
+
 	}
 }

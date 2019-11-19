@@ -4117,6 +4117,7 @@ MonoBehaviour:
   autoLoadingClose: 1
   settings_anim: {fileID: 0}
   joystick: {fileID: 8930609723858865909}
+  barraLivello: {fileID: 327308669582431807}
 --- !u!1 &1799266740174778
 GameObject:
   m_ObjectHideFlags: 0
@@ -5071,7 +5072,7 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 21300000, guid: 0d099fd6886370147912c8cef8d8837d, type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -5238,7 +5239,7 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 21300000, guid: b643024c68150524c8a492ae2a2fc94c, type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -5369,8 +5370,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: -26}
+  m_AnchoredPosition: {x: 0, y: -0.25}
+  m_SizeDelta: {x: 0, y: -32.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8201896340429246531
 CanvasRenderer:
