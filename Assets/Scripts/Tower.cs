@@ -12,6 +12,7 @@ public class Tower : MonoBehaviour
 	List<Pin> pinPool;
 	int layerAmount = 15;
 	float layerRadius = 3.6f;
+	System.Random rand;
 
 	public void SpawnLevel(int layers = 10)
 	{
@@ -28,5 +29,12 @@ public class Tower : MonoBehaviour
 					(Vector3.up * (pinPrefab.Height * 2f * i + pinPrefab.Height));
 				p.Init(this);
 			});
+	}
+
+	public int GetRandomNum()
+	{
+		if(rand == null)
+			rand = new System.Random(layerAmount + UnityEngine.Random.Range(0, int.MaxValue - layerAmount));
+		return rand.Next(pinMaterials.Length);
 	}
 }

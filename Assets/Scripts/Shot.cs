@@ -25,7 +25,7 @@ public class Shot : MonoBehaviour
 
 	public void Init(Action a)
 	{
-		num = UnityEngine.Random.Range(0, Game.Hub.tower.pinMaterials.Length);
+		num = Game.Hub.tower.GetRandomNum();
 		renderer.material = Game.Hub.tower.pinMaterials[num];
 		rigidbody.isKinematic = true;
 
