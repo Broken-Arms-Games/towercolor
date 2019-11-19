@@ -621,7 +621,7 @@ GameObject:
   - component: {fileID: 222571979538512432}
   - component: {fileID: 114551117244331702}
   - component: {fileID: 114469742909385966}
-  - component: {fileID: 114627280998641022}
+  - component: {fileID: 66292363136938900}
   m_Layer: 5
   m_Name: btn_info
   m_TagString: Untagged
@@ -643,10 +643,10 @@ RectTransform:
   m_Father: {fileID: 224153828735002084}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 40, y: -320}
+  m_SizeDelta: {x: 80, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &222571979538512432
 CanvasRenderer:
@@ -676,9 +676,9 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: fbf34a5dcb3eb2144947186932a03351, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 78f750cdd92f6fd41a9e942489a2c4d5, type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -741,7 +741,7 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
---- !u!114 &114627280998641022
+--- !u!114 &66292363136938900
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -750,12 +750,35 @@ MonoBehaviour:
   m_GameObject: {fileID: 1120303968238046}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1573420865, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 11500000, guid: 76f4d4b9731de9f4dacc0672642d495b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
-  m_EffectDistance: {x: 2, y: -2}
-  m_UseGraphicAlpha: 1
+  startAfter: 0.2
+  time: 0.3
+  anim_curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1141229703438668
 GameObject:
   m_ObjectHideFlags: 0
@@ -768,7 +791,7 @@ GameObject:
   - component: {fileID: 222732580482064774}
   - component: {fileID: 114921807584321986}
   - component: {fileID: 114850577003149780}
-  - component: {fileID: 114796993721318122}
+  - component: {fileID: 8244003880760277461}
   m_Layer: 5
   m_Name: btn_music
   m_TagString: Untagged
@@ -790,10 +813,10 @@ RectTransform:
   m_Father: {fileID: 224153828735002084}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 40, y: -80}
+  m_SizeDelta: {x: 80, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &222732580482064774
 CanvasRenderer:
@@ -825,7 +848,7 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 21300000, guid: e5958f2f24906884ca4af9e04d81be87, type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -888,7 +911,7 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
---- !u!114 &114796993721318122
+--- !u!114 &8244003880760277461
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -897,12 +920,35 @@ MonoBehaviour:
   m_GameObject: {fileID: 1141229703438668}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1573420865, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 11500000, guid: 76f4d4b9731de9f4dacc0672642d495b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
-  m_EffectDistance: {x: 2, y: -2}
-  m_UseGraphicAlpha: 1
+  startAfter: 0
+  time: 0.3
+  anim_curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1144577750940894
 GameObject:
   m_ObjectHideFlags: 0
@@ -3150,6 +3196,7 @@ GameObject:
   - component: {fileID: 222403770343587536}
   - component: {fileID: 6794369815979540006}
   - component: {fileID: 100787042495744280}
+  - component: {fileID: 674943201126510638}
   m_Layer: 5
   m_Name: pnl_pause
   m_TagString: Untagged
@@ -3201,10 +3248,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   musicImg: {fileID: 114921807584321986}
   vibrateImg: {fileID: 114629986313498608}
-  musicOFF: {fileID: 21300000, guid: 66fb72640d798f64786a4c321228d6ca, type: 3}
-  musicON: {fileID: 21300000, guid: f92d92fcd029beb40a8ef51d2c084844, type: 3}
-  vibrateOFF: {fileID: 21300000, guid: cb7ec29aa38a3e94caf3b3ccc14ac705, type: 3}
-  vibrateON: {fileID: 21300000, guid: 131aa866d3088434aa48d14b690d5a91, type: 3}
+  musicOFF: {fileID: 21300000, guid: f7c491104bdf4eb40986f7c9c38de30a, type: 3}
+  musicON: {fileID: 21300000, guid: 41d3c391a898efa4ba58bc3554a21601, type: 3}
+  vibrateOFF: {fileID: 21300000, guid: 2a20d9a820be4c8489e1e01d689e1487, type: 3}
+  vibrateON: {fileID: 21300000, guid: b1aed28fb3e23874f9b93ef7c5601cab, type: 3}
 --- !u!114 &100787042495744280
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3229,6 +3276,35 @@ MonoBehaviour:
   m_Spacing: {x: 40, y: 40}
   m_Constraint: 1
   m_ConstraintCount: 1
+--- !u!114 &674943201126510638
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1606200334365100}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 2100000, guid: 744827d5b4137f143a9162f1f24690ea, type: 2}
+  m_Color: {r: 0.24528301, g: 0.24528301, b: 0.24528301, a: 0.5647059}
+  m_RaycastTarget: 0
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
 --- !u!1 &1619491866457132
 GameObject:
   m_ObjectHideFlags: 0
@@ -4115,7 +4191,6 @@ MonoBehaviour:
   optionsManager: {fileID: 6794369815979540006}
   autoLoadingClose: 1
   settings_anim: {fileID: 0}
-  cameraDrag: {fileID: 0}
   barraLivello: {fileID: 327308669582431807}
 --- !u!1 &1799266740174778
 GameObject:
@@ -4516,7 +4591,7 @@ GameObject:
   - component: {fileID: 222905805583572300}
   - component: {fileID: 114629986313498608}
   - component: {fileID: 114187699363212124}
-  - component: {fileID: 114690395465038232}
+  - component: {fileID: 7775291848630405594}
   m_Layer: 5
   m_Name: btn_vibrate
   m_TagString: Untagged
@@ -4538,10 +4613,10 @@ RectTransform:
   m_Father: {fileID: 224153828735002084}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 40, y: -200}
+  m_SizeDelta: {x: 80, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &222905805583572300
 CanvasRenderer:
@@ -4573,7 +4648,7 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 21300000, guid: 131aa866d3088434aa48d14b690d5a91, type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -4636,7 +4711,7 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
---- !u!114 &114690395465038232
+--- !u!114 &7775291848630405594
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4645,12 +4720,35 @@ MonoBehaviour:
   m_GameObject: {fileID: 1890904478763962}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1573420865, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 11500000, guid: 76f4d4b9731de9f4dacc0672642d495b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
-  m_EffectDistance: {x: 2, y: -2}
-  m_UseGraphicAlpha: 1
+  startAfter: 0.1
+  time: 0.3
+  anim_curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1957925609743602
 GameObject:
   m_ObjectHideFlags: 0
