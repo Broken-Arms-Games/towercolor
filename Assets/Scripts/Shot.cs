@@ -42,7 +42,7 @@ public class Shot : MonoBehaviour
 	public void Shoot(Vector3 target)
 	{
 		rigidbody.isKinematic = false;
-		rigidbody.velocity = Physicf.BallisticLaunch(transform.position, target, 1f);
+		rigidbody.AddForce(Physicf.BallisticLaunch(transform.position, target, Game.GameInput.ShotSpeed, Game.GameInput.ShotArch), ForceMode.VelocityChange);
 	}
 
 	void Update()

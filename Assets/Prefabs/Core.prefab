@@ -450,6 +450,8 @@ MonoBehaviour:
   shot: {fileID: 8943435579636782338}
   shotHolder: {fileID: 7752001383458473658}
   shootingHolder: {fileID: 7317793437089740411}
+  shotForce: 200
+  shotArch: 0.02
 --- !u!114 &2823271132038226548
 MonoBehaviour:
   m_ObjectHideFlags: 0

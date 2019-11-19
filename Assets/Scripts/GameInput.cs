@@ -7,12 +7,17 @@ using UnityEngine.EventSystems;
 
 public class GameInput : MonoBehaviour
 {
+	public float ShotSpeed { get { return shotSpeed; } }
+	public float ShotArch { get { return shotArch; } }
+
 	[SerializeField] CameraDrag cameraDrag;
 	[SerializeField] Transform cameraHolder;
 	[SerializeField] float cameraRotSpeed = 10;
 	[SerializeField] Shot shot;
 	[SerializeField] Transform shotHolder;
 	[SerializeField] Transform shootingHolder;
+	[SerializeField] float shotSpeed = 200;
+	[SerializeField, Range(0, 1)] float shotArch = .02f;
 
 	Vector3 shotPos { get { return shot.transform.position; } }
 	Shot shotReady;
