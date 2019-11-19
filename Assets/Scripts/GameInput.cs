@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using Bag.Scripts.Extensions;
 using Bag.Mobile.UiLite;
+using UnityEngine.EventSystems;
 
 public class GameInput : MonoBehaviour
 {
+	[SerializeField] CameraDrag cameraDrag;
 	[SerializeField] Transform cameraHolder;
-	[SerializeField] float cameraRotSpeed = 50;
+	[SerializeField] float cameraRotSpeed = 10;
 	[SerializeField] Shot shot;
 	[SerializeField] Transform shotHolder;
 	[SerializeField] Transform shootingHolder;
@@ -19,7 +21,7 @@ public class GameInput : MonoBehaviour
 	/// <summary>
 	/// Joystick 2-axis input.
 	/// </summary>
-	Vector2 joyInput;
+	Vector2 camInput;
 	/// <summary>
 	/// Pixel coord position of shoot input.
 	/// </summary>
@@ -36,16 +38,18 @@ public class GameInput : MonoBehaviour
 		if(Game.StateCurrent != Game.State.Play)
 			return;
 
-		joyInput = CanvasCoreManager.Joystick.Input;
+		camInput = cameraDrag.CamInput;
 		shootInput = ShootInput();
 
 		// input camera rotation
-		if(joyInput != Vector2.zero)
-			cameraHolder.localRotation = Quaternion.Euler(cameraHolder.localRotation.eulerAngles + Vector3.down * cameraRotSpeed * Time.deltaTime * joyInput.x);
+		if(cameraDrag.Dragging)
+			cameraHolder.localRotation = Quaternion.Euler(cameraHolder.localRotation.eulerAngles - Vector3.down * cameraRotSpeed * Time.deltaTime * camInput.x);
 		// input shooting
 		else if(shootInput != -Vector2.one)
 			Shoot(Input.mousePosition);
 	}
+
+	#region SHOOT
 
 	void Shoot(Vector2 screenPos)
 	{
@@ -93,4 +97,12 @@ public class GameInput : MonoBehaviour
 		else
 			return -Vector2.one;
 	}
+
+	#endregion
+
+	#region CAMERA_MOVE
+
+
+
+	#endregion
 }

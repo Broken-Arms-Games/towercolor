@@ -370,6 +370,7 @@ GameObject:
   - component: {fileID: 8427195518878993809}
   - component: {fileID: 7148811338977386099}
   - component: {fileID: 1040523438326187647}
+  - component: {fileID: 2823271132038226548}
   m_Layer: 0
   m_Name: Core
   m_TagString: Untagged
@@ -443,11 +444,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff64b19fd950dff48acaa8c8524ead31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cameraDrag: {fileID: 2823271132038226548}
   cameraHolder: {fileID: 1504748687104851594}
-  cameraRotSpeed: 50
+  cameraRotSpeed: 10
   shot: {fileID: 8943435579636782338}
   shotHolder: {fileID: 7752001383458473658}
   shootingHolder: {fileID: 7317793437089740411}
+--- !u!114 &2823271132038226548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3567223550599023550}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd3318495d8f7f143aaff9414d2b1072, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4950863922296323719
 GameObject:
   m_ObjectHideFlags: 0
