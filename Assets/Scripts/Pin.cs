@@ -17,7 +17,7 @@ public class Pin : MonoBehaviour
 	public void Init(Tower tower)
 	{
 		this.tower = tower;
-		num = Random.Range(0, tower.pinMaterials.Length);
+		num = tower.GetRandomNum();
 		shooted = false;
 
 		gameObject.layer = LayerMask.NameToLayer("Pins");
