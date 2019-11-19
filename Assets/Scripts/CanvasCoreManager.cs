@@ -15,6 +15,7 @@ namespace Bag.Mobile.UiLite
 		public static JoystickInput Joystick { get { return Singleton.joystick; } }
 
 		[SerializeField] JoystickInput joystick;
+		[SerializeField] Image barraLivello;
 
 		InstantiatedCoroutine goalBarCO;
 
@@ -71,6 +72,11 @@ namespace Bag.Mobile.UiLite
 				base.OpenPanel("");
 			else
 				base.OpenPanel(name);
+		}
+
+		public void SetBar(float f)
+		{
+			barraLivello.fillAmount = f;
 		}
 
 	}

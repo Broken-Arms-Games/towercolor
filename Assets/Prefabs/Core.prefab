@@ -42,13 +42,13 @@ Light:
   serializedVersion: 9
   m_Type: 1
   m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
-  m_Intensity: 1
+  m_Intensity: 0.6
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 2
+    m_Type: 0
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
@@ -430,6 +430,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 2b59e2a9978f90c4884e6d82d490bf47, type: 2}
   - {fileID: 2100000, guid: 2818145571f70d741b3b2f1d77cb8371, type: 2}
   - {fileID: 2100000, guid: 42a55b90f00337a42af31e9ae74a1dd0, type: 2}
+  - {fileID: 2100000, guid: 4898d571494d1d242a0c1aa662183089, type: 2}
 --- !u!114 &1040523438326187647
 MonoBehaviour:
   m_ObjectHideFlags: 0
