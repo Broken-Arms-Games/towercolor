@@ -15,6 +15,7 @@ namespace Bag.Mobile.UiLite
 		public static JoystickInput Joystick { get { return Singleton.joystick; } }
 
 		[SerializeField] JoystickInput joystick;
+		[SerializeField] Image barraLivello;
 
 		InstantiatedCoroutine goalBarCO;
 
