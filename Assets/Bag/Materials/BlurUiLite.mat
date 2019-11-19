@@ -27,5 +27,5 @@ Material:
     - _ColorMaxRange: 30
     - _Size: 4
     m_Colors:
-    - _AdditiveColor: {r: 0.3490566, g: 0.3490566, b: 0.3490566, a: 0}
+    - _AdditiveColor: {r: 0.3490566, g: 0.3490566, b: 0.3490566, a: 0.5019608}
     - _MultiplyColor: {r: 1, g: 0.8632076, b: 0.8632076, a: 1}
