@@ -427,11 +427,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnBase: {fileID: 5670230946295697699}
   pinPrefab: {fileID: 6524658521091740607}
+  pinMaterialLock: {fileID: 2100000, guid: 901d435f58ba4a043b2c887d9cbc2893, type: 2}
   pinMaterials:
   - {fileID: 2100000, guid: 2b59e2a9978f90c4884e6d82d490bf47, type: 2}
   - {fileID: 2100000, guid: 2818145571f70d741b3b2f1d77cb8371, type: 2}
   - {fileID: 2100000, guid: 42a55b90f00337a42af31e9ae74a1dd0, type: 2}
   - {fileID: 2100000, guid: 4898d571494d1d242a0c1aa662183089, type: 2}
+  layersUnlocked: 8
 --- !u!114 &1040523438326187647
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -450,7 +452,7 @@ MonoBehaviour:
   shot: {fileID: 8943435579636782338}
   shotHolder: {fileID: 7752001383458473658}
   shootingHolder: {fileID: 7317793437089740411}
-  shotForce: 200
+  shotSpeed: 200
   shotArch: 0.02
 --- !u!114 &2823271132038226548
 MonoBehaviour:

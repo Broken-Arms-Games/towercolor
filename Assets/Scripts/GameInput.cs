@@ -104,10 +104,4 @@ public class GameInput : MonoBehaviour
 	}
 
 	#endregion
-
-	#region CAMERA_MOVE
-
-
-
-	#endregion
 }
