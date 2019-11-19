@@ -26,7 +26,7 @@ public class Pin : MonoBehaviour
 			pinColliders[i].Init(this);
 	}
 
-	public void Shooted(int num = -1)
+	public bool Shooted(int num = -1)
 	{
 		if(!shooted && (num < 0 || num == this.num))
 		{
@@ -34,6 +34,9 @@ public class Pin : MonoBehaviour
 			for(int i = 0; i < pinColliders.Length; i++)
 				pinColliders[i].ShootNeighbours();
 			gameObject.SetActive(false);
+			return true;
 		}
+		else
+			return false;
 	}
 }

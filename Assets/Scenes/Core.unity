@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.33097255, g: 0.7445743, b: 0.8666123, a: 1}
+  m_IndirectSpecularColor: {r: 0.277664, g: 0.71991444, b: 0.8626206, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -154,7 +154,7 @@ MonoBehaviour:
   m_VerticalAxis: Vertical
   m_SubmitButton: Submit
   m_CancelButton: Cancel
-  m_InputActionsPerSecond: 10
+  m_InputActionsPerSecond: 5
   m_RepeatDelay: 0.5
   m_ForceModuleActive: 0
 --- !u!114 &105970937

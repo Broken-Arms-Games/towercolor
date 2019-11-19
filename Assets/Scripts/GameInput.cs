@@ -1,12 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Bag.Scripts.Extensions;
 using Bag.Mobile.UiLite;
 
 public class GameInput : MonoBehaviour
 {
 	[SerializeField] Transform cameraHolder;
 	[SerializeField] float cameraRotSpeed = 50;
+	[SerializeField] Shot shot;
+	[SerializeField] Transform shotHolder;
+	[SerializeField] Transform shootingHolder;
+
+	Vector3 shotPos { get { return shot.transform.position; } }
+	Shot shotReady;
+	List<Shot> shotsPool;
 
 	/// <summary>
 	/// Joystick 2-axis input.
@@ -16,6 +24,12 @@ public class GameInput : MonoBehaviour
 	/// Pixel coord position of shoot input.
 	/// </summary>
 	Vector2 shootInput;
+
+
+	public void Init()
+	{
+		ShotSpawn();
+	}
 
 	void Update()
 	{
@@ -37,7 +51,34 @@ public class GameInput : MonoBehaviour
 	{
 		RaycastHit hit;
 		if(Physics.Raycast(Game.Cam.ScreenPointToRay(screenPos), out hit, 1000f, LayerMask.GetMask("Pins")))
-			hit.collider.GetComponent<PinCollider>().Pin.Shooted();
+			ShotStart(hit.point);
+	}
+
+	void ShotSpawn()
+	{
+		shot.transform.parent.AddPoolList(shot, 1, ref shotsPool, (p, i) =>
+		{
+			//Debug.LogError("X");
+			p.transform.SetParent(shotHolder);
+			p.transform.position = shotPos;
+			p.Init(delegate { shotReady = p; });
+		});
+	}
+
+	void ShotStart(Vector3 target)
+	{
+		if(shotReady != null)
+		{
+			shotReady.transform.SetParent(shootingHolder);
+			shotReady.Shoot(target);
+			shotReady = null;
+		}
+	}
+
+	public void ShotEnd()
+	{
+		if(shotReady == null)
+			ShotSpawn();
 	}
 
 	Vector2 ShootInput()

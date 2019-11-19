@@ -177,6 +177,7 @@ public class Game : MonoBehaviour
 		AddStateAction(State.Start, "[GAME] Start world initialization.");
 		AddStateAction(State.Start, WorldInit);
 		AddStateAction(State.Start, PlayerInit);
+		AddStateAction(State.Start, GameInput.Init);
 		AddStateAction(State.Start, delegate
 		{
 			//endCondition = delegate { return new bool[] { Player.Horde + 1 > LevelData.hordes.Length || Player.Time <= 0, Player.Horde + 1 > LevelData.hordes.Length }; };
