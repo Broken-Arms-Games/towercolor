@@ -35,6 +35,7 @@ public class Game : MonoBehaviour
 	{
 		Awake,
 		Start,
+		LevelInit,
 		Play,
 		Pause,
 		End
@@ -132,6 +133,10 @@ public class Game : MonoBehaviour
 	void WorldInit()
 	{
 		tower.Init();
+	}
+
+	void TowerBuild()
+	{
 		tower.SpawnLevel(55);
 	}
 
@@ -208,6 +213,12 @@ public class Game : MonoBehaviour
 		//AddStateAction(State.Start, delegate { CanvasCoreManager.ShowMessage("SUCK!"); }, delegate { return CanvasCoreManager.Msg == 0; });
 		AddStateAction(State.Start, StateAdvanceAutomatic);
 		//Debug.Log("[GAME] Game has " + Hub.onStateActions[(int)State.Start].Count + " " + State.Start + " events.");
+
+		SetStateAction(State.LevelInit, "[GAME] Level init event.");
+		AddStateAction(State.LevelInit, TowerBuild);
+		AddStateAction(State.LevelInit, GameInput.InitLevelCamera, delegate { return GameInput.InitLevelCameraEnded; });
+		AddStateAction(State.LevelInit, StateAdvanceAutomatic);
+
 
 		SetStateAction(State.Play, "[GAME] play event.");
 		AddStateAction(State.Play, delegate { player.GameStateChanged(); });
