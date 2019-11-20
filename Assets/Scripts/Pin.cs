@@ -83,4 +83,16 @@ public class Pin : MonoBehaviour
 		yield return new WaitForSeconds(wait);
 		gameObject.SetActive(false);
 	}
+
+	public void PlayParticle()
+	{
+		particle.GetComponent<ParticleSystemRenderer>().material = tower.pinMaterials[num];
+		particle.gameObject.SetActive(true);
+	}
+
+	public void PlayParticleLocket()
+	{
+		particle.GetComponent<ParticleSystemRenderer>().material = tower.pinMaterialLock;
+		particle.gameObject.SetActive(true);
+	}
 }

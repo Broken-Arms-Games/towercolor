@@ -74,11 +74,11 @@ public class Tower : MonoBehaviour
 	{
 		onPinUnlock += p =>
 		{
-			p.particle.gameObject.SetActive(true); p.particle.Play();/*particelle*/
+			p.particle.gameObject.SetActive(true); p.PlayParticleLocket();/*particelle*/
 		};
 		onPinShoot += p =>
 		{
-			p.particle.gameObject.SetActive(true); p.particle.Play();/*particelle*/
+			p.particle.gameObject.SetActive(true); p.PlayParticle();/*particelle*/
 		};
 	}
 

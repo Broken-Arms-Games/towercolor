@@ -4,12 +4,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using Bag.Scripts.Generic;
 using UnityEngine.UI;
+using TMPro;
 
 namespace Bag.Mobile.UiLite
 {
 	public class CanvasCoreManager : CanvasManager
 	{
-		public Animation settings_anim;
+		public TextMeshProUGUI numberBallsText;
 
 		new public static CanvasCoreManager Singleton { get; set; }
 
