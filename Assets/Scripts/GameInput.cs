@@ -105,12 +105,6 @@ public class GameInput : MonoBehaviour
 		}
 	}
 
-	public void ShotEnd()
-	{
-		if(shotReady == null)
-			ShotSpawn();
-	}
-
 	Vector2 ShootInput()
 	{
 #if UNITY_EDITOR
