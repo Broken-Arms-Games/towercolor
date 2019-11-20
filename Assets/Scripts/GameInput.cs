@@ -9,10 +9,14 @@ public class GameInput : MonoBehaviour
 {
 	public float ShotSpeed { get { return shotSpeed; } }
 	public float ShotArch { get { return shotArch; } }
+	public bool InitLevelCameraEnded { get { return initLevelCameraCo == null; } }
+
+	Vector3 CamHolderTarget { get { return Vector3.up * camHeight; } }
 
 	[SerializeField] CameraDrag cameraDrag;
 	[SerializeField] Transform cameraHolder;
 	[SerializeField] float cameraRotSpeed = 10;
+	[SerializeField] float cameraHeightOffset = -5;
 	[SerializeField] Shot shot;
 	[SerializeField] Transform shotHolder;
 	[SerializeField] Transform shootingHolder;
@@ -39,8 +43,7 @@ public class GameInput : MonoBehaviour
 	{
 		ShotSpawn();
 
-		camHeight = Game.Hub.tower.LayerLowestUnlocked.posHeight - 1f;
-		Game.Hub.tower.onLayerUnlock += l => { camHeight = l.posHeight - 1f; };
+		Game.Hub.tower.onLayerUnlock += l => { camHeight = l.posHeight + cameraHeightOffset; };
 	}
 
 	void Update()
@@ -53,12 +56,12 @@ public class GameInput : MonoBehaviour
 
 		// input camera rotation
 		if(cameraDrag.Dragging)
-			cameraHolder.localRotation = Quaternion.Euler(cameraHolder.localRotation.eulerAngles - Vector3.down * cameraRotSpeed * Time.deltaTime * camInput.x);
+			CameraRotate(camInput.x);
 		// input shooting
 		else if(shootInput != -Vector2.one)
 			Shoot(Input.mousePosition);
 
-		cameraHolder.transform.localPosition = Vector3.SmoothDamp(cameraHolder.transform.localPosition, Vector3.up * camHeight, ref camHeightVel, 1);
+		CameraUpdateHeight();
 	}
 
 	#region SHOOT
@@ -108,6 +111,41 @@ public class GameInput : MonoBehaviour
 #endif
 		else
 			return -Vector2.one;
+	}
+
+	#endregion
+
+	#region CAMERA
+
+	IEnumerator initLevelCameraCo;
+
+	public void InitLevelCamera()
+	{
+		cameraHolder.transform.localPosition = Vector3.zero;
+		camHeight = Game.Hub.tower.LayerLowestUnlocked.posHeight + cameraHeightOffset;
+		initLevelCameraCo = InitLevelCameraCo();
+		StartCoroutine(initLevelCameraCo);
+	}
+
+	IEnumerator InitLevelCameraCo()
+	{
+		while((cameraHolder.transform.localPosition - CamHolderTarget).magnitude >= 0.01f)
+		{
+			CameraRotate(-Mathf.Min(5, (cameraHolder.transform.localPosition - CamHolderTarget).magnitude));
+			CameraUpdateHeight();
+			yield return null;
+		}
+		initLevelCameraCo = null;
+	}
+
+	void CameraUpdateHeight()
+	{
+		cameraHolder.transform.localPosition = Vector3.SmoothDamp(cameraHolder.transform.localPosition, CamHolderTarget, ref camHeightVel, 1);
+	}
+
+	void CameraRotate(float deg)
+	{
+		cameraHolder.localRotation = Quaternion.Euler(cameraHolder.localRotation.eulerAngles - Vector3.down * cameraRotSpeed * Time.deltaTime * deg);
 	}
 
 	#endregion
