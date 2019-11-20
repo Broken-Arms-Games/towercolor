@@ -455,7 +455,7 @@ MonoBehaviour:
   shot: {fileID: 8943435579636782338}
   shotHolder: {fileID: 7752001383458473658}
   shootingHolder: {fileID: 7317793437089740411}
-  shotSpeed: 500
+  shotSpeed: 200
   shotArch: 0.007
 --- !u!114 &2823271132038226548
 MonoBehaviour:
@@ -483,6 +483,7 @@ GameObject:
   - component: {fileID: 2470781350632243631}
   - component: {fileID: 5330621341418425011}
   - component: {fileID: 8943435579636782338}
+  - component: {fileID: 587662757047813695}
   m_Layer: 0
   m_Name: Shot
   m_TagString: Untagged
@@ -498,8 +499,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4950863922296323719}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 11, z: -25.87}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalPosition: {x: 0, y: 9.14, z: -22.09}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7752001383458473658}
   m_RootOrder: 0
@@ -560,7 +561,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.7
+  m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &5330621341418425011
 Rigidbody:
@@ -577,7 +578,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 3
 --- !u!114 &8943435579636782338
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -593,7 +594,21 @@ MonoBehaviour:
   renderer: {fileID: 2559034339288123071}
   rigidbody: {fileID: 5330621341418425011}
   trigger: {fileID: 2470781350632243631}
+  collider: {fileID: 587662757047813695}
   num: 0
+--- !u!135 &587662757047813695
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4950863922296323719}
+  m_Material: {fileID: 13400000, guid: a1efb8be17d02c145b5644ef2e01dd6b, type: 2}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.2
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7763017291643549255
 GameObject:
   m_ObjectHideFlags: 0
