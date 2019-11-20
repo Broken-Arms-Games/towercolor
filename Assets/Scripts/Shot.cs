@@ -69,16 +69,12 @@ public class Shot : MonoBehaviour
 				ShootArmed = false;
 				// SUPER-BOUNCE!
 				rigidbody.velocity = Physicf.BallisticLaunch(transform.position, Vector3.ProjectOnPlane(transform.position - other.transform.position, Vector3.up).normalized * 100, 20f);
-				// reset shot
-				Game.GameInput.ShotEnd();
 			}
 		}
 	}
 
 	void ShotEnd()
 	{
-		if(ShootArmed)
-			Game.GameInput.ShotEnd();
 		gameObject.SetActive(false);
 	}
 }
