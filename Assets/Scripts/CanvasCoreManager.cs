@@ -12,6 +12,7 @@ namespace Bag.Mobile.UiLite
 	{
 		public TextMeshProUGUI numberBallsText;
 		public PopIn[] popIns;
+		public TextMeshProUGUI[] textPowers;
 
 		new public static CanvasCoreManager Singleton { get; set; }
 
