@@ -55,6 +55,8 @@ public class Shot : MonoBehaviour
 
 	void Update()
 	{
+		if(rigidbody.velocity.magnitude < 50f)
+			rigidbody.velocity = rigidbody.velocity.normalized * 50f;
 		if(transform.position.y < 0)
 			ShotEnd();
 	}
