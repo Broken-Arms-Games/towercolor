@@ -11,6 +11,7 @@ namespace Bag.Mobile.UiLite
 	public class CanvasCoreManager : CanvasManager
 	{
 		public TextMeshProUGUI numberBallsText;
+		public PopIn[] popIns;
 
 		new public static CanvasCoreManager Singleton { get; set; }
 
@@ -68,14 +69,34 @@ namespace Bag.Mobile.UiLite
 		protected override void OpenPanel(string name)
 		{
 			if(PanelOpen)
-				base.OpenPanel("");
+				StartCoroutine(OpenPanelCo(""));// base.OpenPanel("");
 			else
-				base.OpenPanel(name);
+				StartCoroutine(OpenPanelCo(name));// base.OpenPanel(name);
 		}
 
 		public void SetBar(float f)
 		{
 			barraLivello.fillAmount = f;
+		}
+
+		IEnumerator OpenPanelCo(string name)
+		{
+
+			for(int i = 0; i < popIns.Length; i++)
+			{
+				if(name != "")
+				{
+					popIns[i].Open();
+				}
+				else
+				{
+					popIns[i].Close();
+				}
+				yield return popIns[i].c.Corutine;
+			}
+
+			base.OpenPanel(name);
+
 		}
 
 	}

@@ -9,23 +9,28 @@ public class PopIn : MonoBehaviour
 	public float time = 0.8f;
 	public AnimationCurve anim_curve;
 
-	InstantiatedCoroutine c;
+	public InstantiatedCoroutine c;
 	// Start is called before the first frame update
-	void Start()
+
+	public void Open()
 	{
-		c = new InstantiatedCoroutine(this);
 		this.transform.localScale = Vector3.zero;
+		Invoke("AnimationPlay", startAfter);
+
 	}
-	void OnEnable()
+
+	public void Close()
 	{
-		if(this.transform.localScale == Vector3.one)
-			this.transform.localScale = Vector3.zero;
+		this.transform.localScale = Vector3.one;
 		Invoke("AnimationPlay", startAfter);
 
 	}
 
 	void AnimationPlay()
 	{
+		if(c == null)
+			c = new InstantiatedCoroutine(this);
+
 		c.StartRealtime(time, (t) =>
 		{
 			this.transform.localScale = Vector3.Slerp(Vector3.zero, Vector3.one, anim_curve.Evaluate(t));
