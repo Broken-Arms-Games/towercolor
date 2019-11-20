@@ -111,6 +111,10 @@ MonoBehaviour:
   - {fileID: 6697577353587173982}
   - {fileID: 1645963696325868426}
   - {fileID: 3457397153241750116}
+  particle: {fileID: 5234383326879217594, guid: c6f3b8c10413c644e8cadea8e19e7311,
+    type: 3}
+  particleLock: {fileID: 5234383326879217594, guid: c6f3b8c10413c644e8cadea8e19e7311,
+    type: 3}
   num: 0
 --- !u!54 &3179027523449485777
 Rigidbody:

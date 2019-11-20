@@ -71,8 +71,8 @@ public class Tower : MonoBehaviour
 
 	public void Init()
 	{
-		onPinUnlock += p => { /*particelle*/ };
-		onPinShoot += p => { /*particelle*/ };
+		onPinUnlock += p => { p.particleLock.Play();/*particelle*/ };
+		onPinShoot += p => { p.particle.Play(); /*particelle*/ };
 	}
 
 	public void SpawnLevel(int layers = 10)
