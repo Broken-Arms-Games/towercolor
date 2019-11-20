@@ -4199,6 +4199,7 @@ MonoBehaviour:
   - {fileID: 1739932124935501128}
   - {fileID: 6059137625626489880}
   levelNumberText: {fileID: 66857877680748254}
+  tapToStart: {fileID: 3985423054090156459}
   goalBar: {fileID: 327308669582431807}
 --- !u!1 &1799266740174778
 GameObject:
