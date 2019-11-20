@@ -19,6 +19,7 @@ public class Shot : MonoBehaviour
 	[SerializeField] MeshRenderer renderer;
 	[SerializeField] Rigidbody rigidbody;
 	[SerializeField] SphereCollider trigger;
+	[SerializeField] SphereCollider collider;
 
 	[HideInInspector] public int num;
 	InstantiatedCoroutine initCo;
@@ -31,13 +32,19 @@ public class Shot : MonoBehaviour
 		rigidbody.isKinematic = true;
 
 		ShootArmed = true;
+		collider.enabled = false;
 
 		if(initCo == null)
 			initCo = new InstantiatedCoroutine(this);
 		initCo.Start(.3f, f =>
 		{
-			transform.localScale = Vector3.Lerp(Vector3.zero, Vector3.one * .5f, f);
-		}, a);
+			transform.localScale = Vector3.Lerp(Vector3.zero, Vector3.one * 1f, f);
+		},
+		delegate
+		{
+			collider.enabled = true;
+			a();
+		});
 	}
 
 	public void Shoot(Vector3 target)
@@ -68,9 +75,15 @@ public class Shot : MonoBehaviour
 				// disarm shot
 				ShootArmed = false;
 				// SUPER-BOUNCE!
-				rigidbody.velocity = Physicf.BallisticLaunch(transform.position, Vector3.ProjectOnPlane(transform.position - other.transform.position, Vector3.up).normalized * 100, 20f);
+				//SuperBounce(other);
+				//collider.enabled = false;
 			}
 		}
+	}
+
+	void SuperBounce(Collider other)
+	{
+		rigidbody.velocity = Physicf.BallisticLaunch(transform.position, Vector3.ProjectOnPlane(transform.position - transform.position, Vector3.up).normalized * 100, 20f);
 	}
 
 	void ShotEnd()
