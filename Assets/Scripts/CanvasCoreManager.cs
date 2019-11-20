@@ -13,6 +13,7 @@ namespace Bag.Mobile.UiLite
 		public TextMeshProUGUI numberBallsText;
 		public PopIn[] popIns;
 		public TextMeshProUGUI[] textPowers;
+		public Image[] imgPowers;
 		public TextMeshProUGUI levelNumberText;
 		public Image tapToStart;
 
