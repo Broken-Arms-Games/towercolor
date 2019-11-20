@@ -51,6 +51,7 @@ public class GameInput : MonoBehaviour
 
 	public void Init()
 	{
+		shot.gameObject.SetActive(false);
 		camTransf = Game.Cam.transform;
 		camOffset = camTransf.localPosition;
 		camHeight = 0;
@@ -59,8 +60,6 @@ public class GameInput : MonoBehaviour
 			if(Game.StateCurrent == Game.State.Play)
 				camHeight = l.posHeight + cameraHeightOffset;
 		};
-
-		ShotSpawn();
 	}
 
 	void Update()
@@ -109,7 +108,7 @@ public class GameInput : MonoBehaviour
 			ShotStart(hit.point);
 	}
 
-	void ShotSpawn()
+	public void ShotSpawn()
 	{
 		shot.transform.parent.AddPoolList(shot, 1, ref shotsPool, (p, i) =>
 		{
