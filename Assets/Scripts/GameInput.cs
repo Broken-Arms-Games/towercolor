@@ -91,6 +91,7 @@ public class GameInput : MonoBehaviour
 			shotReady.transform.SetParent(shootingHolder);
 			shotReady.Shoot(target);
 			shotReady = null;
+			ShotSpawn();
 		}
 	}
 
