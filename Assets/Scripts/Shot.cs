@@ -58,7 +58,7 @@ public class Shot : MonoBehaviour
 		{
 			if(other.GetComponent<PinCollider>().Pin.Shooted(num))
 			{
-				Game.GameInput.Shake(0.1f, 0.5f);
+				Game.GameInput.Shake(0.1f, 0.2f);
 				CanvasManager.Vibrate();
 				// reset shot and switch off object
 				ShotEnd();
