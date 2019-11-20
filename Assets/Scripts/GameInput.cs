@@ -130,7 +130,7 @@ public class GameInput : MonoBehaviour
 
 	IEnumerator InitLevelCameraCo()
 	{
-		while((cameraHolder.transform.localPosition - CamHolderTarget).magnitude >= 0.01f)
+		while((cameraHolder.transform.localPosition - CamHolderTarget).magnitude >= 0.5f)
 		{
 			CameraRotate(-Mathf.Min(5, (cameraHolder.transform.localPosition - CamHolderTarget).magnitude));
 			CameraUpdateHeight();

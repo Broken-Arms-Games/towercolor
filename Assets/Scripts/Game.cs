@@ -137,7 +137,7 @@ public class Game : MonoBehaviour
 
 	void TowerBuild()
 	{
-		tower.SpawnLevel(55);
+		tower.SpawnLevel(20);
 	}
 
 	void PlayerInstantiate()
