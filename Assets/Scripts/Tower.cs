@@ -25,18 +25,19 @@ public class Tower : MonoBehaviour
 			active = true;
 		}
 
-		public bool Active
+		public int Actives
 		{
 			get
 			{
+				int actives = 0;
 				if(active)
 				{
 					for(int i = 0; i < pins.Count; i++)
 						if(pins[i].gameObject.activeSelf && (pins[i].transform.localPosition.y + 1) > posHeight)
-							return true;
+							++actives;
 					active = false;
 				}
-				return false;
+				return actives;
 			}
 		}
 
@@ -50,6 +51,8 @@ public class Tower : MonoBehaviour
 
 	public int Layers { get { return layers; } }
 	public LayerData LayerLowestUnlocked { get { return layerList[layerTop - layersUnlocked]; } }
+	public int Score { get { return score; } }
+	public float ScoreFill { get { return score / (float)scoreMax; } }
 
 	[SerializeField] Transform spawnBase;
 	[SerializeField] Pin pinPrefab;
@@ -64,6 +67,8 @@ public class Tower : MonoBehaviour
 	float layerRadius = 3.6f;
 	System.Random rand;
 	int layerTop = -1;
+	int score;
+	int scoreMax;
 
 	public event Action<LayerData> onLayerUnlock = l => { Debug.Log("[TOWER] Layer unlock at index " + l.index + "."); };
 	public event Action<Pin> onPinUnlock = p => { };
@@ -88,6 +93,8 @@ public class Tower : MonoBehaviour
 		for(int i = 0; i < spawnBase.childCount; i++)
 			spawnBase.GetChild(i).gameObject.SetActive(false);
 
+		score = 0;
+		scoreMax = layerAmount * layers;
 		float angle = 360f / layerAmount;
 		layerList = new LayerData[layers];
 		for(int i = 0; i < layers; i++)
@@ -116,16 +123,19 @@ public class Tower : MonoBehaviour
 
 	void Update()
 	{
+		score = 0;
 		if(layerTop >= 0)
 		{
 			for(int i = layerTop; i >= 0; i--)
 			{
-				if(!layerList[i].Active)
+				int actives = layerList[i].Actives;
+				if(layerList[i].Actives <= 0)
 				{
 					layerTop = i - 1;
 					LayerUnlock();
 					break;
 				}
+				score += layerAmount - actives;
 			}
 		}
 	}
