@@ -206,16 +206,14 @@ public class Game : MonoBehaviour
 			hold = true;
 			LoadingdAnimationManager.CloseLoading(delegate { hold = false; });
 		}, delegate { return LoadingdAnimationManager.Singleton == null || !hold; });
-		// TODO scommentare le prossime 4 righe
-		//AddStateAction(State.Start, delegate { CanvasCoreManager.ShowMessage("3"); }, delegate { return CanvasCoreManager.Msg == 0; });
-		//AddStateAction(State.Start, delegate { CanvasCoreManager.ShowMessage("2"); }, delegate { return CanvasCoreManager.Msg == 0; });
-		//AddStateAction(State.Start, delegate { CanvasCoreManager.ShowMessage("1"); }, delegate { return CanvasCoreManager.Msg == 0; });
-		//AddStateAction(State.Start, delegate { CanvasCoreManager.ShowMessage("SUCK!"); }, delegate { return CanvasCoreManager.Msg == 0; });
 		AddStateAction(State.Start, StateAdvanceAutomatic);
 		//Debug.Log("[GAME] Game has " + Hub.onStateActions[(int)State.Start].Count + " " + State.Start + " events.");
 
 		SetStateAction(State.LevelInit, "[GAME] Level init event.");
+		AddStateAction(State.LevelInit, delegate { CanvasCoreManager.Singleton.SetTapToStart(true); });
 		AddStateAction(State.LevelInit, TowerBuild);
+		AddStateAction(State.LevelInit, "[GAME] Waiting tap to start.", delegate { return GameInput.TapToStart; });
+		AddStateAction(State.LevelInit, delegate { CanvasCoreManager.Singleton.SetTapToStart(false); });
 		AddStateAction(State.LevelInit, GameInput.InitLevelCamera, delegate { return GameInput.InitLevelCameraEnded; });
 		AddStateAction(State.LevelInit, StateAdvanceAutomatic);
 

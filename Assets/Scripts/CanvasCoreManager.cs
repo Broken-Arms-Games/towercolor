@@ -14,6 +14,7 @@ namespace Bag.Mobile.UiLite
 		public PopIn[] popIns;
 		public TextMeshProUGUI[] textPowers;
 		public TextMeshProUGUI levelNumberText;
+		public Image tapToStart;
 
 		new public static CanvasCoreManager Singleton { get; set; }
 
@@ -137,6 +138,11 @@ namespace Bag.Mobile.UiLite
 			});
 			if(!co.IsPlaying)
 				barQueue.Dequeue().Invoke();
+		}
+
+		public void SetTapToStart(bool value)
+		{
+			tapToStart.gameObject.SetActive(value);
 		}
 	}
 }

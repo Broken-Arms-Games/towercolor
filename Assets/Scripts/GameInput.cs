@@ -10,6 +10,7 @@ public class GameInput : MonoBehaviour
 {
 	public float ShotSpeed { get { return shotSpeed; } }
 	public float ShotArch { get { return shotArch; } }
+	public bool TapToStart { get { return tapToStart; } }
 	public bool InitLevelCameraEnded { get { return initLevelCameraCo == null; } }
 
 	Vector3 CamHolderTarget { get { return Vector3.up * camHeight; } }
@@ -36,6 +37,7 @@ public class GameInput : MonoBehaviour
 	Vector3 camShakeOffset;
 	Vector3 camShakeOffsetVel;
 	Vector3 camOffset;
+	bool tapToStart;
 
 	/// <summary>
 	/// Joystick 2-axis input.
@@ -51,13 +53,37 @@ public class GameInput : MonoBehaviour
 	{
 		camTransf = Game.Cam.transform;
 		camOffset = camTransf.localPosition;
-		Game.Hub.tower.onLayerUnlock += l => { camHeight = l.posHeight + cameraHeightOffset; };
+		camHeight = 0;
+		Game.Hub.tower.onLayerUnlock += l =>
+		{
+			if(Game.StateCurrent == Game.State.Play)
+				camHeight = l.posHeight + cameraHeightOffset;
+		};
 
 		ShotSpawn();
 	}
 
 	void Update()
 	{
+		if(Game.StateCurrent == Game.State.LevelInit)
+		{
+			if(!tapToStart)
+				CameraRotate(2);
+#if UNITY_EDITOR
+			if(Input.GetMouseButtonDown(0))
+			{
+				tapToStart = true;
+				return;
+			}
+#else
+			if(Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Began)
+			{
+				tapToStart = true;
+				return;
+			}
+#endif
+		}
+
 		if(Game.StateCurrent != Game.State.Play)
 			return;
 
