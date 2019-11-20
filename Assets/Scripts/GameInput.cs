@@ -22,6 +22,8 @@ public class GameInput : MonoBehaviour
 	Vector3 shotPos { get { return shot.transform.position; } }
 	Shot shotReady;
 	List<Shot> shotsPool;
+	float camHeight;
+	Vector3 camHeightVel;
 
 	/// <summary>
 	/// Joystick 2-axis input.
@@ -36,6 +38,9 @@ public class GameInput : MonoBehaviour
 	public void Init()
 	{
 		ShotSpawn();
+
+		camHeight = Game.Hub.tower.LayerLowestUnlocked.posHeight - 1f;
+		Game.Hub.tower.onLayerUnlock += l => { camHeight = l.posHeight - 1f; };
 	}
 
 	void Update()
@@ -52,6 +57,8 @@ public class GameInput : MonoBehaviour
 		// input shooting
 		else if(shootInput != -Vector2.one)
 			Shoot(Input.mousePosition);
+
+		cameraHolder.transform.localPosition = Vector3.SmoothDamp(cameraHolder.transform.localPosition, Vector3.up * camHeight, ref camHeightVel, 1);
 	}
 
 	#region SHOOT

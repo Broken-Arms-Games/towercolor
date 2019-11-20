@@ -49,6 +49,7 @@ public class Tower : MonoBehaviour
 	}
 
 	public int Layers { get { return layers; } }
+	public LayerData LayerLowestUnlocked { get { return layerList[layerTop - layersUnlocked]; } }
 
 	[SerializeField] Transform spawnBase;
 	[SerializeField] Pin pinPrefab;
