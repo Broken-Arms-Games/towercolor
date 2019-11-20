@@ -25,6 +25,8 @@ namespace Bag.Scripts.Generic
 		}
 
 		public bool IsPlaying { get { return coroutine != null; } }
+		public IEnumerator Corutine { get { return coroutine; } }
+
 
 		MonoBehaviour script;
 		IEnumerator coroutine;
