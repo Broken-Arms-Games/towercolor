@@ -32,7 +32,6 @@ public class Pin : MonoBehaviour
 	public Rigidbody rigidbody;
 	public PinCollider[] pinColliders;
 	public ParticleSystem particle;
-	public ParticleSystem particleLock;
 
 	[HideInInspector] public int num;
 	Tower tower;
