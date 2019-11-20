@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Bag.Scripts.Generic;
+using Bag.Mobile.UiLite;
 
 public class Shot : MonoBehaviour
 {
@@ -56,8 +57,12 @@ public class Shot : MonoBehaviour
 		if(ShootArmed && other.gameObject.layer == LayerMask.NameToLayer("Pins"))
 		{
 			if(other.GetComponent<PinCollider>().Pin.Shooted(num))
+			{
+				Game.GameInput.Shake(0.1f, 0.5f);
+				CanvasManager.Vibrate();
 				// reset shot and switch off object
 				ShotEnd();
+			}
 			else
 			{
 				// disarm shot
