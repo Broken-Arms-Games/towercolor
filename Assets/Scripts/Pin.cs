@@ -31,7 +31,6 @@ public class Pin : MonoBehaviour
 	public MeshRenderer model;
 	public Rigidbody rigidbody;
 	public PinCollider[] pinColliders;
-	public ParticleSystem particle;
 
 	[HideInInspector] public int num;
 	Tower tower;
@@ -52,10 +51,7 @@ public class Pin : MonoBehaviour
 		rigidbody.isKinematic = true;
 		Locked = layer.index < tower.Layers - tower.layersUnlocked;
 		for(int i = 0; i < pinColliders.Length; i++)
-		{
-			pinColliders[i].enabled = true;
 			pinColliders[i].Init(this);
-		}
 	}
 
 	public bool Shooted(int num = -1)
@@ -64,35 +60,14 @@ public class Pin : MonoBehaviour
 		{
 			shooted = true;
 			for(int i = 0; i < pinColliders.Length; i++)
-			{
-				pinColliders[i].enabled = false;
 				pinColliders[i].ShootNeighbours();
-			}
 			model.enabled = false;
 			rigidbody.isKinematic = true;
-			StartCoroutine(Disable(2));
+			gameObject.SetActive(false);
 			tower.OnPinShoot(this);
 			return true;
 		}
 		else
 			return false;
-	}
-
-	IEnumerator Disable(float wait)
-	{
-		yield return new WaitForSeconds(wait);
-		gameObject.SetActive(false);
-	}
-
-	public void PlayParticle()
-	{
-		particle.GetComponent<ParticleSystemRenderer>().material = tower.pinMaterials[num];
-		particle.gameObject.SetActive(true);
-	}
-
-	public void PlayParticleLocket()
-	{
-		particle.GetComponent<ParticleSystemRenderer>().material = tower.pinMaterialLock;
-		particle.gameObject.SetActive(true);
 	}
 }

@@ -5,19 +5,23 @@ using UnityEngine;
 [RequireComponent(typeof(BoxCollider))]
 public class PinCollider : PinComponent
 {
+	public BoxCollider Collider { get { return collider; } }
+
 	[SerializeField] BoxCollider collider;
 
 	RaycastHit[] triggerHit;
 
 	public override void Init(Pin pin)
 	{
+		gameObject.SetActive(true);
 		base.Init(pin);
 		gameObject.layer = pin.gameObject.layer;
+		collider.enabled = true;
 	}
 
 	public void ShootNeighbours()
 	{
-		triggerHit = Physics.BoxCastAll(collider.bounds.center, collider.size / 2f + Vector3.one * .045f, Vector3.up, transform.rotation, 0f, LayerMask.GetMask("Pins"));
+		triggerHit = Physics.BoxCastAll(collider.bounds.center, collider.size / 2f + Vector3.one * .05f, Vector3.up, transform.rotation, 0f, LayerMask.GetMask("Pins"));
 		if(triggerHit.Length > 0)
 		{
 			PinCollider pc = null;

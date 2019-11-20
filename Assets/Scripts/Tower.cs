@@ -35,7 +35,8 @@ public class Tower : MonoBehaviour
 					for(int i = 0; i < pins.Count; i++)
 						if(pins[i].gameObject.activeSelf && (pins[i].transform.localPosition.y + 1) > posHeight)
 							++actives;
-					active = false;
+					if(actives == 0)
+						active = false;
 				}
 				return actives;
 			}
@@ -51,16 +52,18 @@ public class Tower : MonoBehaviour
 
 	public int Layers { get { return layers; } }
 	public LayerData LayerLowestUnlocked { get { return layerList[layerTop - layersUnlocked]; } }
-	public int Score { get { return score; } }
-	public float ScoreFill { get { return score / (float)scoreMax; } }
+	public int ScoreMax { get { return scoreMax - layerAmount * 2; } }
 
 	[SerializeField] Transform spawnBase;
 	[SerializeField] Pin pinPrefab;
+	[SerializeField] ParticleSystem pinParticle;
+
 	public Material pinMaterialLock;
 	public Material[] pinMaterials;
 	public int layersUnlocked = 8;
 
 	List<Pin> pinPool;
+	List<ParticleSystem> pinParticlePool;
 	LayerData[] layerList;
 	int layers;
 	int layerAmount = 15;
@@ -74,17 +77,12 @@ public class Tower : MonoBehaviour
 	public event Action<Pin> onPinUnlock = p => { };
 	public event Action<Pin> onPinShoot = p => { };
 
+	WaitForSeconds waitParticle = new WaitForSeconds(2);
 
 	public void Init()
 	{
-		onPinUnlock += p =>
-		{
-			p.particle.gameObject.SetActive(true); p.PlayParticleLocket();/*particelle*/
-		};
-		onPinShoot += p =>
-		{
-			p.particle.gameObject.SetActive(true); p.PlayParticle();/*particelle*/
-		};
+		onPinUnlock += p => { PinParticleEnable(p, pinMaterialLock); };
+		onPinShoot += p => { PinParticleEnable(p, pinMaterials[p.num]); };
 	}
 
 	public void SpawnLevel(int layers = 10)
@@ -123,21 +121,20 @@ public class Tower : MonoBehaviour
 
 	void Update()
 	{
-		score = 0;
-		if(layerTop >= 0)
+		int score = 0;
+		int actives = 0;
+		for(int i = layerList.Length - 1; i >= 0; i--)
 		{
-			for(int i = layerTop; i >= 0; i--)
+			actives = layerList[i].Actives;
+			if(i <= layerTop && actives <= 0)
 			{
-				int actives = layerList[i].Actives;
-				if(layerList[i].Actives <= 0)
-				{
-					layerTop = i - 1;
-					LayerUnlock();
-					break;
-				}
-				score += layerAmount - actives;
+				layerTop = i - 1;
+				LayerUnlock();
+
 			}
+			score += layerAmount - actives;
 		}
+		Game.Player.Score = score;
 	}
 
 	void LayerUnlock()
@@ -152,6 +149,7 @@ public class Tower : MonoBehaviour
 		}
 	}
 
+
 	#region PIN_EVENTS
 
 	public void OnPinShoot(Pin pin)
@@ -162,6 +160,27 @@ public class Tower : MonoBehaviour
 	public void OnPinUnlock(Pin pin)
 	{
 		onPinUnlock(pin);
+	}
+
+	#endregion
+
+	#region EFFECTS
+
+	void PinParticleEnable(Pin pin, Material mat)
+	{
+		pin.transform.parent.AddPoolList(pinParticle, 1, ref pinParticlePool, (p, i) =>
+		{
+			p.GetComponent<ParticleSystemRenderer>().material = mat;
+			p.transform.position = pin.transform.position;
+			p.gameObject.SetActive(true);
+			StartCoroutine(PinParticleDisable(p));
+		});
+	}
+
+	IEnumerator PinParticleDisable(ParticleSystem particle)
+	{
+		yield return waitParticle;
+		particle.gameObject.SetActive(false);
 	}
 
 	#endregion

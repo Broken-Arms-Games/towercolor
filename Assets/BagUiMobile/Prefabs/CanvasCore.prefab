@@ -4198,7 +4198,7 @@ MonoBehaviour:
   - {fileID: 8976099354864250094}
   - {fileID: 1739932124935501128}
   - {fileID: 6059137625626489880}
-  barraLivello: {fileID: 327308669582431807}
+  goalBar: {fileID: 327308669582431807}
 --- !u!1 &1799266740174778
 GameObject:
   m_ObjectHideFlags: 0
