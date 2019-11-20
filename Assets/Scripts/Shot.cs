@@ -7,32 +7,34 @@ using Bag.Mobile.UiLite;
 
 public class Shot : MonoBehaviour
 {
-	public bool ShootArmed
+	public bool Armed
 	{
-		get { return trigger.enabled; }
+		get { return armed; }
 		set
 		{
-			trigger.enabled = value;
+			armed = value;
 		}
 	}
 
 	[SerializeField] MeshRenderer renderer;
 	[SerializeField] Rigidbody rigidbody;
-	[SerializeField] SphereCollider trigger;
 	[SerializeField] SphereCollider collider;
 
 	[HideInInspector] public int num;
 	InstantiatedCoroutine initCo;
+	bool armed;
 
 
 	public void Init(Action a)
 	{
 		num = Game.Hub.tower.GetRandomNum();
 		renderer.material = Game.Hub.tower.pinMaterials[num];
+		rigidbody.velocity = Vector3.zero;
 		rigidbody.isKinematic = true;
+		transform.rotation = Quaternion.identity;
 
-		ShootArmed = true;
-		collider.enabled = false;
+		Armed = true;
+		//collider.enabled = false;
 
 		if(initCo == null)
 			initCo = new InstantiatedCoroutine(this);
@@ -42,7 +44,7 @@ public class Shot : MonoBehaviour
 		},
 		delegate
 		{
-			collider.enabled = true;
+			//collider.enabled = true;
 			a();
 		});
 	}
@@ -50,35 +52,43 @@ public class Shot : MonoBehaviour
 	public void Shoot(Vector3 target)
 	{
 		rigidbody.isKinematic = false;
-		rigidbody.AddForce(Physicf.BallisticLaunch(transform.position, target, Game.GameInput.ShotSpeed, Game.GameInput.ShotArch), ForceMode.VelocityChange);
+		rigidbody.velocity = Physicf.BallisticLaunch(transform.position, target, Game.GameInput.ShotSpeed, Game.GameInput.ShotArch);
 	}
 
 	void Update()
 	{
-		if(rigidbody.velocity.magnitude < 50f)
-			rigidbody.velocity = rigidbody.velocity.normalized * 50f;
+		if(!Armed && rigidbody.velocity.magnitude < Game.GameInput.ShotSpeed / 3f)
+			rigidbody.velocity = rigidbody.velocity.normalized * (Game.GameInput.ShotSpeed / 3f);
 		if(transform.position.y < 0)
 			ShotEnd();
 	}
 
-	private void OnTriggerEnter(Collider other)
+	public void OnCollisionEnter(Collision collision)
 	{
-		if(ShootArmed && other.gameObject.layer == LayerMask.NameToLayer("Pins"))
+		if(Armed)
 		{
-			if(other.GetComponent<PinCollider>().Pin.Shooted(num))
+			foreach(ContactPoint contact in collision.contacts)
 			{
-				Game.GameInput.Shake(0.1f, 0.2f);
-				CanvasManager.Vibrate();
-				// reset shot and switch off object
-				ShotEnd();
-			}
-			else
-			{
-				// disarm shot
-				ShootArmed = false;
-				// SUPER-BOUNCE!
-				//SuperBounce(other);
-				//collider.enabled = false;
+				Debug.LogError("X " + contact.otherCollider.gameObject.name);
+				if(contact.otherCollider.gameObject.layer == LayerMask.NameToLayer("Pins"))
+				{
+					Debug.LogError("X " + contact.otherCollider.GetComponent<PinCollider>().Pin.num);
+					if(contact.otherCollider.GetComponent<PinCollider>().Pin.Shooted(num))
+					{
+						Game.GameInput.Shake(0.1f, 0.2f);
+						CanvasManager.Vibrate();
+						// reset shot and switch off object
+						ShotEnd();
+					}
+					else
+					{
+						// disarm shot
+						Armed = false;
+						// SUPER-BOUNCE!
+						//SuperBounce(other);
+						//collider.enabled = false;
+					}
+				}
 			}
 		}
 	}
