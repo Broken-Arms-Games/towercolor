@@ -75,6 +75,7 @@ public class Game : MonoBehaviour
 	bool worldBuilded = false;
 
 
+
 	IEnumerator gameCo;
 
 
@@ -130,7 +131,8 @@ public class Game : MonoBehaviour
 
 	void WorldInit()
 	{
-		tower.SpawnLevel();
+		tower.Init();
+		tower.SpawnLevel(55);
 	}
 
 	void PlayerInstantiate()
