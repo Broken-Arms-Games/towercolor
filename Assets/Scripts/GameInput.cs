@@ -143,12 +143,10 @@ public class GameInput : MonoBehaviour
 #if UNITY_EDITOR
 		if(Input.GetMouseButtonUp(0))
 		{
-			Debug.LogError("X");
+			Debug.LogError("shoot input got");
 			return Input.mousePosition;
 		}
 #else
-		if(Input.touchCount > 0)
-			Debug.LogError("touch count is " + Input.touchCount);
 		if(Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Ended)
 		{
 			Debug.LogError("shoot input got");
