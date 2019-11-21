@@ -29,7 +29,9 @@ namespace Bag.Mobile.UiLite
 
 		float goalBarTarget;
 		InstantiatedCoroutine goalBarCO;
+		InstantiatedCoroutine powerBarCO;
 		Queue<Action> goalBarQueue = new Queue<Action>();
+		Queue<Action> powerQueue = new Queue<Action>();
 
 		public event Action restartGame;
 
@@ -38,31 +40,14 @@ namespace Bag.Mobile.UiLite
 			Singleton = this;
 			base.Init();
 			goalBarCO = new InstantiatedCoroutine(this);
+			powerBarCO = new InstantiatedCoroutine(this);
 
-			//onInfoPanelUpdate = delegate { Debug.Log("[CANVAS CORE MANAGER] Event onInfoPanelUpdate."); };
 			restartGame = delegate { Debug.Log("[CANVAS CORE MANAGER] restart game."); };
 
 			//onPanelChanged += PauseChanged;
 			//onPanelOpen += InfoOpen;
 
 			//AudioManager.StopAllMusic();
-
-			//switch(Game.LevelData.scenery)
-			//{
-			//	case LevelData.Scenery.Desert:
-
-			//		AudioManager.PlayMusic("desert");
-			//		break;
-			//	case LevelData.Scenery.City:
-			//		AudioManager.PlayMusic("city");
-			//		break;
-			//	case LevelData.Scenery.Industrial:
-			//		AudioManager.PlayMusic("industrial");
-			//		break;
-			//	default:
-			//		AudioManager.PlayMusic("industrial");
-			//		break;
-			//}
 
 		}
 
@@ -179,6 +164,12 @@ namespace Bag.Mobile.UiLite
 				goalBarTarget = Game.Player.ScoreFill;
 				AdvanceBar(goalBarCO, goalBarQueue, goalBarTarget, goalBar, delegate { });
 			}
+		}
+
+		void PowerUpdate(float f, int i)
+		{
+			//Update power ups bar
+			AdvanceBar(powerBarCO, powerQueue, f, imgPowers[i], delegate { });
 		}
 
 		static void AdvanceBar(InstantiatedCoroutine co, Queue<Action> barQueue, float a, Image filler, Action setText)
