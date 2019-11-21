@@ -189,7 +189,7 @@ public class Game : MonoBehaviour
 		AddStateAction(State.Start, "[GAME] Start world initialization.");
 		AddStateAction(State.Start, delegate
 		{
-			levelIndex = PlayerPrefs.GetInt("levelIndex-" + levelIndex, 0);
+			levelIndex = PlayerPrefs.GetInt("levelIndex", 0);
 		});
 		AddStateAction(State.Start, WorldInit);
 		AddStateAction(State.Start, PlayerInit);
@@ -237,7 +237,7 @@ public class Game : MonoBehaviour
 		AddStateAction(State.End, delegate
 		{
 			if(win)
-				PlayerPrefs.SetInt("levelIndex-" + levelIndex, win ? ++levelIndex : levelIndex);
+				PlayerPrefs.SetInt("levelIndex", win ? ++levelIndex : levelIndex);
 		});
 		AddStateAction(State.End, delegate
 		{
