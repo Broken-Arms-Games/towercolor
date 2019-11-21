@@ -74,26 +74,28 @@ public class Shot : MonoBehaviour
 	void DoTriggerCollision()
 	{
 		triggerHit = Physics.SphereCastAll(transform.position, collider.radius * 10f, rigidbody.velocity, 1f, LayerMask.GetMask("Pins"));
+		//for(int i = 0; i < triggerHit.Length; i++)
+		//	if(i == 0 || triggerHit[i].distance < triggerHitNear.distance)
+		//		triggerHitNear = triggerHit[i];
+		//if(triggerHit.Length > 0)
 		for(int i = 0; i < triggerHit.Length; i++)
-			if(i == 0 || triggerHit[i].distance < triggerHitNear.distance)
-				triggerHitNear = triggerHit[i];
-		if(triggerHit.Length > 0)
 		{
-			if(triggerHitNear.collider.GetComponent<PinCollider>().Pin.Shooted(num))
+			if(triggerHit[i].collider.GetComponent<PinCollider>().Pin.Shooted(num))
 			{
 				Game.GameInput.Shake(0.1f, 0.2f);
 				CanvasManager.Vibrate();
 				// reset shot and switch off object
 				ShotEnd();
+				break;
 			}
-			else
-			{
-				// disarm shot
-				Armed = false;
-				// SUPER-BOUNCE!
-				//SuperBounce(other);
-				//collider.enabled = false;
-			}
+		}
+		if(triggerHit.Length > 0 && Armed)
+		{
+			// disarm shot
+			Armed = false;
+			// SUPER-BOUNCE!
+			//SuperBounce(other);
+			//collider.enabled = false;
 		}
 	}
 
