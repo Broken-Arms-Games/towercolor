@@ -87,6 +87,7 @@ public class Shot : MonoBehaviour
 				CanvasManager.Vibrate();
 				// reset shot and switch off object
 				ShotEnd();
+				AudioManager.PlaySfx("hit");
 				break;
 			}
 		}
@@ -94,6 +95,7 @@ public class Shot : MonoBehaviour
 		{
 			// disarm shot
 			Armed = false;
+			AudioManager.PlaySfx("miss");
 			// SUPER-BOUNCE!
 			//SuperBounce(other);
 			//collider.enabled = false;

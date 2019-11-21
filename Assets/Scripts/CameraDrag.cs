@@ -41,7 +41,7 @@ public class CameraDrag : MonoBehaviour
 			EndDrag();
 #endif
 
-		input = Vector2.SmoothDamp(input, inputTarget, ref inputVel, 0.05f);
+		input = Vector2.SmoothDamp(input, inputTarget, ref inputVel, 0.2f);
 	}
 
 

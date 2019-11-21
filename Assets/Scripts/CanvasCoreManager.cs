@@ -94,6 +94,8 @@ namespace Bag.Mobile.UiLite
 
 		public void GameOver(bool win)
 		{
+			string sound = win ? "win" : "gameover";
+			AudioManager.PlaySfx(sound);
 			gameOver.gameObject.SetActive(!win);
 			levelComplete.gameObject.SetActive(win);
 			btnReplay.gameObject.SetActive(!win);
@@ -127,9 +129,6 @@ namespace Bag.Mobile.UiLite
 
 		protected override void OpenPanel(string name)
 		{
-			//if(PanelOpen)
-			//	StartCoroutine(OpenPanelCo(""));
-			//else
 			if(name == "options")
 				StartCoroutine(OpenPanelCo(name));
 			else
