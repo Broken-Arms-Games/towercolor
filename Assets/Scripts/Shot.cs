@@ -73,7 +73,7 @@ public class Shot : MonoBehaviour
 
 	void DoTriggerCollision()
 	{
-		triggerHit = Physics.SphereCastAll(transform.position, collider.radius * 10f, rigidbody.velocity, 1f, LayerMask.GetMask("Pins"));
+		triggerHit = Physics.SphereCastAll(transform.position, collider.radius * 5f, rigidbody.velocity, collider.radius * 5f + 3f, LayerMask.GetMask("Pins"));
 		//for(int i = 0; i < triggerHit.Length; i++)
 		//	if(i == 0 || triggerHit[i].distance < triggerHitNear.distance)
 		//		triggerHitNear = triggerHit[i];
