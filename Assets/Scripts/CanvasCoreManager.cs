@@ -16,6 +16,8 @@ namespace Bag.Mobile.UiLite
 		public Image[] imgPowers;
 		public TextMeshProUGUI levelNumberText;
 		public Image tapToStart;
+		public Image gameOver;
+		public Image levelComplete;
 
 		new public static CanvasCoreManager Singleton { get; set; }
 
