@@ -29,6 +29,7 @@ public class GameInput : MonoBehaviour
 	Transform camTransf;
 	Vector3 shotPos { get { return shot.transform.position; } }
 	Shot shotReady;
+	Vector3 shotReadyRotateAxis;
 	List<Shot> shotsPool;
 	List<Shot>[] shotSpecialsPool;
 	float camHeight;
@@ -106,19 +107,18 @@ public class GameInput : MonoBehaviour
 		}
 
 		CameraUpdatePos();
+
+		if(shotReady != null)
+			shotReady.transform.Rotate(shotReadyRotateAxis, 2f * Time.deltaTime);
 	}
 
 	#region SHOOT
 
 	void Shoot(Vector2 screenPos)
 	{
-		Debug.LogError("RAYCAST SHOOT");
 		RaycastHit hit;
 		if(Physics.Raycast(Game.Cam.ScreenPointToRay(screenPos), out hit, 1000f, LayerMask.GetMask("Pins")))
-		{
-			Debug.LogError("RAYCAST SHOOT HITS " + hit.collider.name);
 			ShotStart(hit.point);
-		}
 	}
 
 	public void ShotSpawn()
@@ -144,7 +144,11 @@ public class GameInput : MonoBehaviour
 	{
 		shot.transform.SetParent(shotHolder);
 		shot.transform.position = shotPos;
-		shot.Init(delegate { shotReady = shot; });
+		shot.Init(delegate
+		{
+			shotReadyRotateAxis = new Vector3(Random.Range(-1, 1), Random.Range(-1, 1), Random.Range(-1, 1));
+			shotReady = shot;
+		});
 	}
 
 	void ShotStart(Vector3 target)
@@ -162,16 +166,10 @@ public class GameInput : MonoBehaviour
 	{
 #if UNITY_EDITOR
 		if(Input.GetMouseButtonUp(0))
-		{
-			Debug.LogError("shoot input got");
 			return Input.mousePosition;
-		}
 #else
 		if(Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Ended)
-		{
-			Debug.LogError("shoot input got");
 			return Input.GetTouch(0).position;
-		}
 #endif
 		else
 			return -Vector2.one;
