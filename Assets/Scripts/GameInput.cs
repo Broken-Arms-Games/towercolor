@@ -83,17 +83,17 @@ public class GameInput : MonoBehaviour
 #endif
 		}
 
-		if(Game.StateCurrent != Game.State.Play)
-			return;
-
 		camInput = cameraDrag.CamInput;
 		shootInput = ShootInput();
 
 		// input camera rotation
 		if(cameraDrag.Dragging)
 			CameraRotate(camInput.x);
+
+		if(Game.StateCurrent != Game.State.Play)
+			return;
 		// input shooting
-		else if(shootInput != -Vector2.one)
+		if(!cameraDrag.Dragging && shootInput != -Vector2.one)
 			Shoot(Input.mousePosition);
 
 		CameraUpdatePos();
@@ -121,7 +121,7 @@ public class GameInput : MonoBehaviour
 
 	void ShotStart(Vector3 target)
 	{
-		if(shotReady != null)
+		if(shotReady != null && Game.Player.Shoot())
 		{
 			shotReady.transform.SetParent(shootingHolder);
 			shotReady.Shoot(target);

@@ -51,7 +51,7 @@ public class Tower : MonoBehaviour
 	}
 
 	public int Layers { get { return layers; } }
-	public LayerData LayerLowestUnlocked { get { return layerList[layerTop - layersUnlocked]; } }
+	public LayerData LayerLowestUnlocked { get { return layerList[Mathf.Max(0, layerTop - layersUnlocked)]; } }
 	public int ScoreMax { get { return scoreMax - layerAmount * 2; } }
 
 	[SerializeField] Transform spawnBase;
@@ -121,6 +121,9 @@ public class Tower : MonoBehaviour
 
 	void Update()
 	{
+		if(Game.StateCurrent != Game.State.Play)
+			return;
+
 		int score = 0;
 		int actives = 0;
 		for(int i = layerList.Length - 1; i >= 0; i--)

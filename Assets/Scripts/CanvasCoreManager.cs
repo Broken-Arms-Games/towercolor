@@ -67,6 +67,9 @@ namespace Bag.Mobile.UiLite
 			Debug.Log("[CANVAS CORE MANAGER] Init game graphics.");
 
 			goalBar.fillAmount = goalBarTarget = 0;
+			Game.Player.onScoreChange += GoalBarUpdate;
+			Game.Player.onShotChange += ShotCountUpdate;
+			levelNumberText.text = (Game.LevelIndex + 1).ToString("00");
 
 			// init game canvas graphics here
 			//Game.Player.onTimeChange += t => { timeTxt.text = t > 60 ? TimerStrings.GetTimerMinutes(t, msLength: 1) : TimerStrings.GetTimerSeconds(t, msLength: 1); };
@@ -110,9 +113,13 @@ namespace Bag.Mobile.UiLite
 
 		#endregion
 
-		protected override void Update()
+		void ShotCountUpdate(int o, int n)
 		{
-			base.Update();
+			numberBallsText.text = n.ToString("00");
+		}
+
+		void GoalBarUpdate(int o, int n)
+		{
 			if(goalBarTarget != Game.Player.ScoreFill)
 			{
 				goalBarTarget = Game.Player.ScoreFill;
