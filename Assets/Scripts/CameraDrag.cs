@@ -6,12 +6,14 @@ using UnityEngine.EventSystems;
 public class CameraDrag : MonoBehaviour
 {
 	public Vector2 CamInput { get { return input; } }
-	public bool Dragging { get { return dragging; } }
+	public bool Dragging { get { return dragging || input != Vector2.zero; } }
 
 	bool dragging;
 	bool dragStart;
 	Vector2 dragPos;
 	Vector2 input;
+	Vector2 inputTarget;
+	Vector2 inputVel;
 
 	void Update()
 	{
@@ -38,18 +40,20 @@ public class CameraDrag : MonoBehaviour
 		else if(dragging)
 			EndDrag();
 #endif
+
+		input = Vector2.SmoothDamp(input, inputTarget, ref inputVel, 0.05f);
 	}
 
 
 	void StartDrag(Vector2 pointerPos)
 	{
-		input = Vector2.zero;
+		inputTarget = Vector2.zero;
 		dragPos = pointerPos;
 	}
 
 	void DoDrag(Vector2 pointerPos)
 	{
-		input = pointerPos - dragPos;
+		inputTarget = pointerPos - dragPos;
 		dragPos = pointerPos;
 		if(input != Vector2.zero)
 			dragging = true;
@@ -58,7 +62,7 @@ public class CameraDrag : MonoBehaviour
 	void EndDrag()
 	{
 		StartCoroutine(EndDragCo());
-		input = Vector2.zero;
+		inputTarget = Vector2.zero;
 		dragPos = Vector2.zero;
 	}
 
