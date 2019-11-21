@@ -133,6 +133,7 @@ namespace Bag.Mobile.UiLite
 				StartCoroutine(OpenPanelCo(name));
 			else
 				base.OpenPanel(name);
+
 		}
 
 		IEnumerator OpenPanelCo(string name)
