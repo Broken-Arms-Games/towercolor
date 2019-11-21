@@ -6,11 +6,15 @@ using Bag.Mobile.UiLite;
 
 public class ShotBomb : Shot
 {
+	[SerializeField] ParticleSystem expolosion;
+
 	public override void Init(Action a)
 	{
 		Material m = renderer.material;
 		base.Init(a);
 		renderer.material = m;
+
+		// TODO explosion effect initialization
 	}
 
 	protected override void DoTriggerCollision()
@@ -24,6 +28,8 @@ public class ShotBomb : Shot
 			AudioManager.PlaySfx("hit");
 			// reset shot and switch off object
 			ShotEnd();
+
+			// TODO play explosion effect
 		}
 	}
 }
