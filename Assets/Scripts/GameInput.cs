@@ -5,6 +5,7 @@ using Bag.Scripts.Extensions;
 using Bag.Scripts.Generic;
 using Bag.Mobile.UiLite;
 using UnityEngine.EventSystems;
+using System;
 
 public class GameInput : MonoBehaviour
 {
@@ -25,6 +26,10 @@ public class GameInput : MonoBehaviour
 	[SerializeField] Transform shootingHolder;
 	[SerializeField] float shotSpeed = 200;
 	[SerializeField, Range(0, 1)] float shotArch = .02f;
+
+	public event Action<Shot> onShotSpawn = delegate { };
+	public event Action<Shot> onShotSpawnEnd = delegate { };
+	public event Action<Shot> onShoot = delegate { };
 
 	Transform camTransf;
 	Vector3 shotPos { get { return shot.transform.position; } }
@@ -145,9 +150,11 @@ public class GameInput : MonoBehaviour
 		shot.transform.position = shotPos;
 		shot.Init(delegate
 		{
-			shotReadyRotateAxis = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized;
+			onShotSpawnEnd(shot);
+			shotReadyRotateAxis = new Vector3(UnityEngine.Random.Range(-1f, 1f), UnityEngine.Random.Range(-1f, 1f), UnityEngine.Random.Range(-1f, 1f)).normalized;
 			shotReady = shot;
 		});
+		onShotSpawn(shot);
 	}
 
 	void ShotStart(Vector3 target)
@@ -156,6 +163,7 @@ public class GameInput : MonoBehaviour
 		{
 			shotReady.transform.SetParent(shootingHolder);
 			shotReady.Shoot(target);
+			onShoot(shotReady);
 			shotReady = null;
 			ShotSpawn();
 		}
@@ -215,7 +223,7 @@ public class GameInput : MonoBehaviour
 		if(force < shakeForce * (1 - shakeTime))
 			return;
 		shakeForce = force;
-		Vector3 offsetTarget = new Vector3(0, Random.Range(-force, force), Random.Range(-force, force));
+		Vector3 offsetTarget = new Vector3(0, UnityEngine.Random.Range(-force, force), UnityEngine.Random.Range(-force, force));
 		if(shakeCo == null)
 			shakeCo = new InstantiatedCoroutine(this);
 		shakeCo.Start(duration, t =>
@@ -223,7 +231,7 @@ public class GameInput : MonoBehaviour
 			shakeTime = t;
 			camShakeOffset = Vector3.SmoothDamp(camShakeOffset, offsetTarget, ref camShakeOffsetVel, 0.01f);
 			if(Vector3.Distance(camShakeOffset, offsetTarget) < 0.05f)
-				offsetTarget = new Vector3(Random.Range(-force, force) * (1 - t / 2f), 0, 0);
+				offsetTarget = new Vector3(UnityEngine.Random.Range(-force, force) * (1 - t / 2f), 0, 0);
 		}, delegate
 		{
 			shakeForce = -1;
