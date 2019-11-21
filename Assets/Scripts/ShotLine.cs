@@ -28,9 +28,9 @@ public class ShotLine : Shot
 					// reset shot and switch off object
 					ShotEnd();
 					AudioManager.PlaySfx("hit");
-					break;
 				}
 			}
+			break;
 		}
 	}
 }

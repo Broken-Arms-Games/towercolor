@@ -16,9 +16,11 @@ public class ShotBomb : Shot
 	protected override void DoTriggerCollision()
 	{
 		triggerHit = Physics.SphereCastAll(transform.position, collider.radius * 5f, rigidbody.velocity, collider.radius * 5f + 3f, LayerMask.GetMask("Pins"));
-		for(int i = 0; i < triggerHit.Length; i++)
+		if(triggerHit.Length > 0)
 		{
-			triggerHit[i].collider.GetComponent<PinCollider>().Pin.rigidbody.AddExplosionForce(1000, transform.position, 5f);
+			triggerHit = Physics.SphereCastAll(transform.position, 2f, rigidbody.velocity, 2f, LayerMask.GetMask("Pins"));
+			for(int i = 0; i < triggerHit.Length; i++)
+				triggerHit[i].collider.GetComponent<PinCollider>().Pin.rigidbody.AddExplosionForce(100f, transform.position, 4f, 1.5f, ForceMode.VelocityChange);
 			AudioManager.PlaySfx("hit");
 			// reset shot and switch off object
 			ShotEnd();
