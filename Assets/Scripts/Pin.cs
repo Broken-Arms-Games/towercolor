@@ -22,7 +22,8 @@ public class Pin : MonoBehaviour
 				{
 					model.material = tower.pinMaterials[num];
 					rigidbody.isKinematic = false;
-					tower.OnPinUnlock(this);
+					if(!inited)
+						tower.OnPinUnlock(this);
 				}
 				for(int i = 0; i < pinColliders.Length; i++)
 					pinColliders[i].SetLayer(locked);
@@ -35,6 +36,7 @@ public class Pin : MonoBehaviour
 	public Rigidbody rigidbody;
 	public PinCollider[] pinColliders;
 
+	bool inited;
 	[HideInInspector] public int num;
 	Tower tower;
 	Tower.LayerData layer;
@@ -44,6 +46,7 @@ public class Pin : MonoBehaviour
 
 	public void Init(Tower tower, Tower.LayerData layer)
 	{
+		inited = false;
 		this.tower = tower;
 		this.layer = layer;
 		num = tower.GetRandomNum();
@@ -57,6 +60,7 @@ public class Pin : MonoBehaviour
 		for(int i = 0; i < pinColliders.Length; i++)
 			pinColliders[i].Init(this);
 		Locked = Layer.index < tower.Layers - tower.layersUnlocked;
+		inited = true;
 	}
 
 	public bool Shooted(int num = -1, bool chain = true)
