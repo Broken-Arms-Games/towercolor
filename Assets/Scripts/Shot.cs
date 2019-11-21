@@ -23,6 +23,8 @@ public class Shot : MonoBehaviour
 	[HideInInspector] public int num;
 	InstantiatedCoroutine initCo;
 	bool armed;
+	RaycastHit[] triggerHit;
+	RaycastHit triggerHitNear;
 
 
 	public void Init(Action a)
@@ -55,6 +57,12 @@ public class Shot : MonoBehaviour
 		rigidbody.velocity = Physicf.BallisticLaunch(transform.position, target, Game.GameInput.ShotSpeed, Game.GameInput.ShotArch);
 	}
 
+	void FixedUpdate()
+	{
+		if(Armed)
+			DoTriggerCollision();
+	}
+
 	void Update()
 	{
 		if(!Armed && rigidbody.velocity.magnitude < Game.GameInput.ShotSpeed / 3f)
@@ -63,32 +71,28 @@ public class Shot : MonoBehaviour
 			ShotEnd();
 	}
 
-	public void OnCollisionEnter(Collision collision)
+	void DoTriggerCollision()
 	{
-		if(Armed)
+		triggerHit = Physics.SphereCastAll(transform.position, collider.radius * 10f, rigidbody.velocity, 1f, LayerMask.GetMask("Pins"));
+		for(int i = 0; i < triggerHit.Length; i++)
+			if(i == 0 || triggerHit[i].distance < triggerHitNear.distance)
+				triggerHitNear = triggerHit[i];
+		if(triggerHit.Length > 0)
 		{
-			foreach(ContactPoint contact in collision.contacts)
+			if(triggerHitNear.collider.GetComponent<PinCollider>().Pin.Shooted(num))
 			{
-				Debug.LogError("X " + contact.otherCollider.gameObject.name);
-				if(contact.otherCollider.gameObject.layer == LayerMask.NameToLayer("Pins"))
-				{
-					Debug.LogError("X " + contact.otherCollider.GetComponent<PinCollider>().Pin.num);
-					if(contact.otherCollider.GetComponent<PinCollider>().Pin.Shooted(num))
-					{
-						Game.GameInput.Shake(0.1f, 0.2f);
-						CanvasManager.Vibrate();
-						// reset shot and switch off object
-						ShotEnd();
-					}
-					else
-					{
-						// disarm shot
-						Armed = false;
-						// SUPER-BOUNCE!
-						//SuperBounce(other);
-						//collider.enabled = false;
-					}
-				}
+				Game.GameInput.Shake(0.1f, 0.2f);
+				CanvasManager.Vibrate();
+				// reset shot and switch off object
+				ShotEnd();
+			}
+			else
+			{
+				// disarm shot
+				Armed = false;
+				// SUPER-BOUNCE!
+				//SuperBounce(other);
+				//collider.enabled = false;
 			}
 		}
 	}

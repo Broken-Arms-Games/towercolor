@@ -560,7 +560,7 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.2
+  m_Radius: 0.1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &5330621341418425011
 Rigidbody:
@@ -592,8 +592,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   renderer: {fileID: 2559034339288123071}
   rigidbody: {fileID: 5330621341418425011}
-  collider: {fileID: 0}
-  trigger: {fileID: 0}
+  collider: {fileID: 2470781350632243631}
   num: 0
 --- !u!1 &7763017291643549255
 GameObject:
