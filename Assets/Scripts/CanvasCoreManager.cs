@@ -5,6 +5,7 @@ using UnityEngine;
 using Bag.Scripts.Generic;
 using UnityEngine.UI;
 using TMPro;
+using Bag.Scripts.Extensions;
 
 namespace Bag.Mobile.UiLite
 {
@@ -18,6 +19,9 @@ namespace Bag.Mobile.UiLite
 		public Image tapToStart;
 		public Image gameOver;
 		public Image levelComplete;
+		public Button btnReplay;
+		public Button btnNextLevel;
+		public Image whiteFadeInOut;
 
 		new public static CanvasCoreManager Singleton { get; set; }
 
@@ -70,6 +74,13 @@ namespace Bag.Mobile.UiLite
 			Game.Player.onScoreChange += GoalBarUpdate;
 			Game.Player.onShotChange += ShotCountUpdate;
 
+			if(whiteInOutCo == null)
+				whiteInOutCo = new InstantiatedCoroutine(this);
+			whiteInOutCo.Start(1, t =>
+			{
+				whiteFadeInOut.color = Color.white.ToAlpha(1 - t);
+			}, null);
+
 			// init game canvas graphics here
 			//Game.Player.onTimeChange += t => { timeTxt.text = t > 60 ? TimerStrings.GetTimerMinutes(t, msLength: 1) : TimerStrings.GetTimerSeconds(t, msLength: 1); };
 			//Game.Player.onScore += (f, s, n) =>
@@ -85,17 +96,44 @@ namespace Bag.Mobile.UiLite
 		{
 			gameOver.gameObject.SetActive(!win);
 			levelComplete.gameObject.SetActive(win);
+			btnReplay.gameObject.SetActive(!win);
+			btnNextLevel.gameObject.SetActive(win);
+			btnReplay.onClick.RemoveAllListeners();
+			btnReplay.onClick.AddListener(ReloadScene);
+			btnNextLevel.onClick.RemoveAllListeners();
+			btnNextLevel.onClick.AddListener(ReloadScene);
 			OpenPanel("gameover");
+		}
+
+		InstantiatedCoroutine whiteInOutCo;
+
+		void ReloadScene()
+		{
+			btnReplay.gameObject.SetActive(false);
+			btnNextLevel.gameObject.SetActive(false);
+
+			if(whiteInOutCo == null)
+				whiteInOutCo = new InstantiatedCoroutine(this);
+			whiteInOutCo.Start(1, t =>
+			{
+				whiteFadeInOut.color = Color.white.ToAlpha(t);
+			}, delegate
+			{
+				UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+			});
 		}
 
 		#region PANELS
 
 		protected override void OpenPanel(string name)
 		{
-			if(PanelOpen)
-				StartCoroutine(OpenPanelCo(""));
-			else
+			//if(PanelOpen)
+			//	StartCoroutine(OpenPanelCo(""));
+			//else
+			if(name == "options")
 				StartCoroutine(OpenPanelCo(name));
+			else
+				base.OpenPanel(name);
 		}
 
 		IEnumerator OpenPanelCo(string name)
