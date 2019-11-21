@@ -27,6 +27,7 @@ public class Pin : MonoBehaviour
 			}
 		}
 	}
+	public Tower.LayerData Layer { get { return layer; } }
 
 	public MeshRenderer model;
 	public Rigidbody rigidbody;
@@ -34,6 +35,7 @@ public class Pin : MonoBehaviour
 
 	[HideInInspector] public int num;
 	Tower tower;
+	Tower.LayerData layer;
 	bool shooted;
 	bool locked = true;
 
@@ -41,6 +43,7 @@ public class Pin : MonoBehaviour
 	public void Init(Tower tower, Tower.LayerData layer)
 	{
 		this.tower = tower;
+		this.layer = layer;
 		num = tower.GetRandomNum();
 		shooted = false;
 
@@ -49,17 +52,17 @@ public class Pin : MonoBehaviour
 		model.enabled = true;
 		model.material = tower.pinMaterialLock;
 		rigidbody.isKinematic = true;
-		Locked = layer.index < tower.Layers - tower.layersUnlocked;
+		Locked = Layer.index < tower.Layers - tower.layersUnlocked;
 		for(int i = 0; i < pinColliders.Length; i++)
 			pinColliders[i].Init(this);
 	}
 
-	public bool Shooted(int num = -1)
+	public bool Shooted(int num = -1, bool chain = true)
 	{
 		if(!locked && !shooted && (num < 0 || num == this.num))
 		{
 			shooted = true;
-			for(int i = 0; i < pinColliders.Length; i++)
+			for(int i = 0; chain && i < pinColliders.Length; i++)
 				pinColliders[i].ShootNeighbours();
 			model.enabled = false;
 			rigidbody.isKinematic = true;

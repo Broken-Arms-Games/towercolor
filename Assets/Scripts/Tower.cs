@@ -52,7 +52,7 @@ public class Tower : MonoBehaviour
 
 	public int Layers { get { return layers; } }
 	public LayerData LayerLowestUnlocked { get { return layerList[Mathf.Max(0, layerTop - layersUnlocked)]; } }
-	public int ScoreMax { get { return scoreMax - layerAmount * 2; } }
+	public int ScoreMax { get { return scoreMax - layerAmount * 1; } }
 
 	[SerializeField] Transform spawnBase;
 	[SerializeField] Pin pinPrefab;

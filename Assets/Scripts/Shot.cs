@@ -92,7 +92,7 @@ public class Shot : MonoBehaviour
 		}
 	}
 
-	void ShotEnd()
+	protected void ShotEnd()
 	{
 		gameObject.SetActive(false);
 	}
