@@ -129,8 +129,13 @@ namespace Bag.Mobile.UiLite
 
 		protected override void OpenPanel(string name)
 		{
-			if(name == "options")
-				StartCoroutine(OpenPanelCo(name));
+			if(name == "pnl_pause")
+			{
+				if(PanelOpen)
+					StartCoroutine(OpenPanelCo(""));
+				else
+					StartCoroutine(OpenPanelCo(name));
+			}
 			else
 				base.OpenPanel(name);
 
