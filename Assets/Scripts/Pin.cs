@@ -17,12 +17,12 @@ public class Pin : MonoBehaviour
 				{
 					model.material = tower.pinMaterialLock;
 					rigidbody.isKinematic = true;
-					tower.OnPinUnlock(this);
 				}
 				else
 				{
 					model.material = tower.pinMaterials[num];
 					rigidbody.isKinematic = false;
+					tower.OnPinUnlock(this);
 				}
 			}
 		}
