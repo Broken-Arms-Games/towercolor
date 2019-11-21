@@ -95,6 +95,10 @@ public class GameInput : MonoBehaviour
 		// input shooting
 		if(!cameraDrag.Dragging && shootInput != -Vector2.one)
 			Shoot(Input.mousePosition);
+		else if(shootInput != -Vector2.one)
+		{
+			Debug.LogError("DRAGGING " + cameraDrag.Dragging);
+		}
 
 		CameraUpdatePos();
 	}
@@ -138,7 +142,10 @@ public class GameInput : MonoBehaviour
 	{
 #if UNITY_EDITOR
 		if(Input.GetMouseButtonUp(0))
+		{
+			Debug.LogError("X");
 			return Input.mousePosition;
+		}
 #else
 		if(Input.touchCount > 0)
 			Debug.LogError("touch count is " + Input.touchCount);

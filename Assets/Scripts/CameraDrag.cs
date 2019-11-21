@@ -56,7 +56,7 @@ public class CameraDrag : MonoBehaviour
 	{
 		inputTarget = pointerPos - dragPos;
 		dragPos = pointerPos;
-		if(input != Vector2.zero)
+		if(inputTarget != Vector2.zero)
 			dragging = true;
 	}
 
