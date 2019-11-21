@@ -60,7 +60,7 @@ public class Player
 
 	public void SpecialAdd(int num)
 	{
-		specials[num] += 1f / 5;
+		specials[num] += 1f / 10;
 		onSpecialChange(num, specials[num]);
 	}
 

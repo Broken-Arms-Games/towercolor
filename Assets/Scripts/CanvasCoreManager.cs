@@ -29,9 +29,9 @@ namespace Bag.Mobile.UiLite
 
 		float goalBarTarget;
 		InstantiatedCoroutine goalBarCO;
-		InstantiatedCoroutine powerBarCO;
+		InstantiatedCoroutine[] powerBarCO;
 		Queue<Action> goalBarQueue = new Queue<Action>();
-		Queue<Action> powerQueue = new Queue<Action>();
+		Queue<Action>[] powerQueue;
 
 		public event Action restartGame;
 
@@ -40,9 +40,12 @@ namespace Bag.Mobile.UiLite
 			Singleton = this;
 			base.Init();
 			goalBarCO = new InstantiatedCoroutine(this);
-			powerBarCO = new InstantiatedCoroutine(this);
-
-			restartGame = delegate { Debug.Log("[CANVAS CORE MANAGER] restart game."); };
+			powerBarCO = new InstantiatedCoroutine[imgPowers.Length];
+			for(int i = 0; i < powerBarCO.Length; i++)
+				powerBarCO[i] = new InstantiatedCoroutine(this);
+			powerQueue = new Queue<Action>[imgPowers.Length];
+			for(int i = 0; i < powerQueue.Length; i++)
+				powerQueue[i] = new Queue<Action>();
 
 			//onPanelChanged += PauseChanged;
 			//onPanelOpen += InfoOpen;
@@ -58,6 +61,7 @@ namespace Bag.Mobile.UiLite
 			goalBar.fillAmount = goalBarTarget = 0;
 			Game.Player.onScoreChange += GoalBarUpdate;
 			Game.Player.onShotChange += ShotCountUpdate;
+			Game.Player.onSpecialChange += PowerUpdate;
 
 			if(whiteInOutCo == null)
 				whiteInOutCo = new InstantiatedCoroutine(this);
@@ -166,10 +170,10 @@ namespace Bag.Mobile.UiLite
 			}
 		}
 
-		void PowerUpdate(float f, int i)
+		void PowerUpdate(int i, float f)
 		{
 			//Update power ups bar
-			AdvanceBar(powerBarCO, powerQueue, f, imgPowers[i], delegate { });
+			AdvanceBar(powerBarCO[i], powerQueue[i], f, imgPowers[i], delegate { });
 		}
 
 		static void AdvanceBar(InstantiatedCoroutine co, Queue<Action> barQueue, float a, Image filler, Action setText)
