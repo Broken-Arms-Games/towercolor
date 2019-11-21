@@ -17,17 +17,21 @@ public class Player
 	}
 	public float ScoreFill { get { return Score / (float)Game.Hub.tower.ScoreMax; } }
 	public int Shots { get { return shots; } }
+	public int SpecialsCount { get { return specials.Length; } }
 
 	int score;
 	int shots;
 	Tower tower;
+	float[] specials;
 
 	public event Action<int, int> onScoreChange = (s, c) => { };
 	public event Action<int, int> onShotChange = (s, c) => { };
+	public event Action<int, float> onSpecialChange = (i, s) => { };
 
 	public void Init(Tower tower)
 	{
 		this.tower = tower;
+		specials = new float[tower.pinMaterials.Length];
 	}
 
 	public void StartLevel(int levelIndex)
@@ -48,6 +52,29 @@ public class Player
 		if(shots > 0)
 		{
 			onShotChange(shots--, shots);
+			return true;
+		}
+		else
+			return false;
+	}
+
+	public void SpecialAdd(int num)
+	{
+		specials[num] += 1f / 5;
+		onSpecialChange(num, specials[num]);
+	}
+
+	public float SpecialGet(int num)
+	{
+		return specials[num];
+	}
+
+	public bool SpecialUse(int num)
+	{
+		if(specials[num] >= 1)
+		{
+			specials[num] -= 1f;
+			onSpecialChange(num, specials[num]);
 			return true;
 		}
 		else

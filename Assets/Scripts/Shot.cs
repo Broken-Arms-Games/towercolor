@@ -16,19 +16,18 @@ public class Shot : MonoBehaviour
 		}
 	}
 
-	[SerializeField] MeshRenderer renderer;
-	[SerializeField] Rigidbody rigidbody;
-	[SerializeField] SphereCollider collider;
+	[SerializeField] protected MeshRenderer renderer;
+	[SerializeField] protected Rigidbody rigidbody;
+	[SerializeField] protected SphereCollider collider;
 	[SerializeField] AnimationCurve spawnAnim;
 
 	[HideInInspector] public int num;
 	InstantiatedCoroutine initCo;
 	bool armed;
-	RaycastHit[] triggerHit;
-	RaycastHit triggerHitNear;
+	protected RaycastHit[] triggerHit;
 
 
-	public void Init(Action a)
+	public virtual void Init(Action a)
 	{
 		num = Game.Hub.tower.GetRandomNum();
 		renderer.material = Game.Hub.tower.pinMaterials[num];
@@ -37,7 +36,6 @@ public class Shot : MonoBehaviour
 		transform.rotation = Quaternion.identity;
 
 		Armed = true;
-		//collider.enabled = false;
 
 		if(initCo == null)
 			initCo = new InstantiatedCoroutine(this);
@@ -47,7 +45,6 @@ public class Shot : MonoBehaviour
 		},
 		delegate
 		{
-			//collider.enabled = true;
 			a();
 		});
 	}
@@ -72,13 +69,9 @@ public class Shot : MonoBehaviour
 			ShotEnd();
 	}
 
-	void DoTriggerCollision()
+	protected virtual void DoTriggerCollision()
 	{
 		triggerHit = Physics.SphereCastAll(transform.position, collider.radius * 5f, rigidbody.velocity, collider.radius * 5f + 3f, LayerMask.GetMask("Pins"));
-		//for(int i = 0; i < triggerHit.Length; i++)
-		//	if(i == 0 || triggerHit[i].distance < triggerHitNear.distance)
-		//		triggerHitNear = triggerHit[i];
-		//if(triggerHit.Length > 0)
 		for(int i = 0; i < triggerHit.Length; i++)
 		{
 			if(triggerHit[i].collider.GetComponent<PinCollider>().Pin.Shooted(num))
@@ -96,15 +89,7 @@ public class Shot : MonoBehaviour
 			// disarm shot
 			Armed = false;
 			AudioManager.PlaySfx("miss");
-			// SUPER-BOUNCE!
-			//SuperBounce(other);
-			//collider.enabled = false;
 		}
-	}
-
-	void SuperBounce(Collider other)
-	{
-		rigidbody.velocity = Physicf.BallisticLaunch(transform.position, Vector3.ProjectOnPlane(transform.position - transform.position, Vector3.up).normalized * 100, 20f);
 	}
 
 	void ShotEnd()

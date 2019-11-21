@@ -20,6 +20,7 @@ public class GameInput : MonoBehaviour
 	[SerializeField] float cameraRotSpeed = 10;
 	[SerializeField] float cameraHeightOffset = -5;
 	[SerializeField] Shot shot;
+	[SerializeField] Shot[] shotSpecials;
 	[SerializeField] Transform shotHolder;
 	[SerializeField] Transform shootingHolder;
 	[SerializeField] float shotSpeed = 200;
@@ -29,6 +30,7 @@ public class GameInput : MonoBehaviour
 	Vector3 shotPos { get { return shot.transform.position; } }
 	Shot shotReady;
 	List<Shot> shotsPool;
+	List<Shot>[] shotSpecialsPool;
 	float camHeight;
 	Vector3 camHeightVel;
 	float shakeForce = -1;
@@ -52,6 +54,9 @@ public class GameInput : MonoBehaviour
 	public void Init()
 	{
 		shot.gameObject.SetActive(false);
+		for(int i = 0; i < shotSpecials.Length; i++)
+			shotSpecials[i].gameObject.SetActive(false);
+		shotSpecialsPool = new List<Shot>[shotSpecials.Length];
 		camTransf = Game.Cam.transform;
 		camOffset = camTransf.localPosition;
 		camHeight = 0;
@@ -118,13 +123,27 @@ public class GameInput : MonoBehaviour
 
 	public void ShotSpawn()
 	{
-		shot.transform.parent.AddPoolList(shot, 1, ref shotsPool, (p, i) =>
+		int ss = -1;
+		for(int i = 0; i < shotSpecials.Length; i++)
 		{
-			//Debug.LogError("X");
-			p.transform.SetParent(shotHolder);
-			p.transform.position = shotPos;
-			p.Init(delegate { shotReady = p; });
-		});
+			if(Game.Player.SpecialUse(i))
+			{
+				ss = i;
+				break;
+			}
+		}
+
+		if(ss < 0)
+			shot.transform.parent.AddPoolList(shot, 1, ref shotsPool, InitPooledShot);
+		else
+			shotSpecials[ss].transform.parent.AddPoolList(shotSpecials[ss], 1, ref shotSpecialsPool[ss], InitPooledShot);
+	}
+
+	void InitPooledShot(Shot shot, int index)
+	{
+		shot.transform.SetParent(shotHolder);
+		shot.transform.position = shotPos;
+		shot.Init(delegate { shotReady = shot; });
 	}
 
 	void ShotStart(Vector3 target)

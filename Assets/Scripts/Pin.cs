@@ -65,6 +65,7 @@ public class Pin : MonoBehaviour
 			rigidbody.isKinematic = true;
 			gameObject.SetActive(false);
 			tower.OnPinShoot(this);
+			Game.Player.SpecialAdd(this.num);
 			return true;
 		}
 		else
