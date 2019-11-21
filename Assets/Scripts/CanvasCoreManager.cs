@@ -80,28 +80,33 @@ namespace Bag.Mobile.UiLite
 		protected override void OpenPanel(string name)
 		{
 			if(PanelOpen)
-				StartCoroutine(OpenPanelCo(""));// base.OpenPanel("");
+				StartCoroutine(OpenPanelCo(""));
 			else
-				StartCoroutine(OpenPanelCo(name));// base.OpenPanel(name);
+				StartCoroutine(OpenPanelCo(name));
 		}
 
 		IEnumerator OpenPanelCo(string name)
 		{
-
-			for(int i = 0; i < popIns.Length; i++)
+			//panel -> Close
+			if(name == "")
 			{
-				if(name != "")
-				{
-					popIns[i].Open();
-				}
-				else
+				for(int i = popIns.Length - 1; i > 0; i--)
 				{
 					popIns[i].Close();
+					yield return popIns[i].c.Corutine;
 				}
-				yield return popIns[i].c.Corutine;
-			}
 
-			base.OpenPanel(name);
+				base.OpenPanel(name);
+			}
+			else  //panel -> Open
+			{
+				base.OpenPanel(name);
+				for(int i = 0; i < popIns.Length; i++)
+				{
+					popIns[i].Open();
+					yield return popIns[i].c.Corutine;
+				}
+			}
 		}
 
 		#endregion
