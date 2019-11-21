@@ -87,7 +87,7 @@ public class GameInput : MonoBehaviour
 		shootInput = ShootInput();
 
 		// input camera rotation
-		if(cameraDrag.Dragging)
+		if(cameraDrag.Dragging || cameraDrag.InputNotZero)
 			CameraRotate(camInput.x);
 
 		if(Game.StateCurrent != Game.State.Play)
@@ -140,7 +140,6 @@ public class GameInput : MonoBehaviour
 		if(Input.GetMouseButtonUp(0))
 			return Input.mousePosition;
 #else
-#endif
 		if(Input.touchCount > 0)
 			Debug.LogError("touch count is " + Input.touchCount);
 		if(Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Ended)
@@ -148,6 +147,7 @@ public class GameInput : MonoBehaviour
 			Debug.LogError("shoot input got");
 			return Input.GetTouch(0).position;
 		}
+#endif
 		else
 			return -Vector2.one;
 	}
