@@ -22,7 +22,8 @@ public class Pin : MonoBehaviour
 				{
 					model.material = tower.pinMaterials[num];
 					rigidbody.isKinematic = false;
-					tower.OnPinUnlock(this);
+					if(Game.StateCurrent == Game.State.Play)
+						tower.OnPinUnlock(this);
 				}
 				for(int i = 0; i < pinColliders.Length; i++)
 					pinColliders[i].SetLayer(locked);
@@ -63,17 +64,26 @@ public class Pin : MonoBehaviour
 	{
 		if(!locked && !shooted && (num < 0 || num == this.num))
 		{
+			if(chain)
+				StartCoroutine(ShootChainCo());
+			else
+				gameObject.SetActive(false);
 			shooted = true;
-			for(int i = 0; chain && i < pinColliders.Length; i++)
-				pinColliders[i].ShootNeighbours();
 			model.enabled = false;
 			rigidbody.isKinematic = true;
-			gameObject.SetActive(false);
 			tower.OnPinShoot(this);
 			Game.Player.SpecialAdd(this.num);
 			return true;
 		}
 		else
 			return false;
+	}
+
+	IEnumerator ShootChainCo()
+	{
+		yield return tower.wait;
+		gameObject.SetActive(false);
+		for(int i = 0; i < pinColliders.Length; i++)
+			pinColliders[i].ShootNeighbours();
 	}
 }
