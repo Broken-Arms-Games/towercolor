@@ -164,6 +164,7 @@ public class Game : MonoBehaviour
 	{
 		tower.SpawnLevel(8 + levelIndex);
 		player.StartLevel(8);
+		CanvasCoreManager.Singleton.InitLevel(levelIndex);
 	}
 
 	void InitEvents()

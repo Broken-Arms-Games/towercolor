@@ -69,12 +69,16 @@ namespace Bag.Mobile.UiLite
 			goalBar.fillAmount = goalBarTarget = 0;
 			Game.Player.onScoreChange += GoalBarUpdate;
 			Game.Player.onShotChange += ShotCountUpdate;
-			levelNumberText.text = (Game.LevelIndex + 1).ToString("00");
 
 			// init game canvas graphics here
 			//Game.Player.onTimeChange += t => { timeTxt.text = t > 60 ? TimerStrings.GetTimerMinutes(t, msLength: 1) : TimerStrings.GetTimerSeconds(t, msLength: 1); };
 			//Game.Player.onScore += (f, s, n) =>
 			//Game.Player.onScore += (f, s, n) => { ScoreUpdateUI(s, n); };
+		}
+
+		public void InitLevel(int levelIndex)
+		{
+			levelNumberText.text = (levelIndex + 1).ToString("00");
 		}
 
 		#region PANELS
