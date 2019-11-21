@@ -16,21 +16,20 @@ public class ShotLine : Shot
 	protected override void DoTriggerCollision()
 	{
 		triggerHit = Physics.SphereCastAll(transform.position, collider.radius * 5f, rigidbody.velocity, collider.radius * 5f + 3f, LayerMask.GetMask("Pins"));
-		for(int i = 0; i < triggerHit.Length; i++)
+		if(triggerHit.Length > 0)
 		{
-			List<Pin> p = triggerHit[i].collider.GetComponent<PinCollider>().Pin.Layer.pins;
-			for(int j = 0; j < p.Count; j++)
+			triggerHit = Physics.BoxCastAll(triggerHit[0].collider.transform.position, Vector3.up * .5f + Vector3.right * 100f + Vector3.forward * 100f, rigidbody.velocity, Quaternion.identity, 0.1f, LayerMask.GetMask("Pins"));
+			for(int i = 0; i < triggerHit.Length; i++)
 			{
-				if(p[j].Shooted(p[j].num, false))
-				{
-					Game.GameInput.Shake(0.1f, 0.2f);
-					CanvasManager.Vibrate();
-					// reset shot and switch off object
-					ShotEnd();
-					AudioManager.PlaySfx("hit");
-				}
+				Pin p = triggerHit[i].collider.GetComponent<PinCollider>().Pin;
+				p.Shooted(p.num, false);
 			}
-			break;
+
+			Game.GameInput.Shake(0.1f, 0.2f);
+			CanvasManager.Vibrate();
+			// reset shot and switch off object
+			ShotEnd();
+			AudioManager.PlaySfx("hit");
 		}
 	}
 }

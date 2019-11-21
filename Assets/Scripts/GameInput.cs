@@ -135,7 +135,7 @@ public class GameInput : MonoBehaviour
 
 		if(ss < 0)
 			shot.transform.parent.AddPoolList(shot, 1, ref shotsPool, InitPooledShot);
-		//shotSpecials[2].transform.parent.AddPoolList(shotSpecials[2], 1, ref shotSpecialsPool[2], InitPooledShot);
+		//shotSpecials[3].transform.parent.AddPoolList(shotSpecials[3], 1, ref shotSpecialsPool[3], InitPooledShot);
 		else
 			shotSpecials[ss].transform.parent.AddPoolList(shotSpecials[ss], 1, ref shotSpecialsPool[ss], InitPooledShot);
 	}
