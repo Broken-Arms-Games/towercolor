@@ -81,6 +81,13 @@ namespace Bag.Mobile.UiLite
 			levelNumberText.text = (levelIndex + 1).ToString("00");
 		}
 
+		public void GameOver(bool win)
+		{
+			gameOver.gameObject.SetActive(!win);
+			levelComplete.gameObject.SetActive(win);
+			OpenPanel("gameover");
+		}
+
 		#region PANELS
 
 		protected override void OpenPanel(string name)
