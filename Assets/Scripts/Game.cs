@@ -14,7 +14,7 @@ public class Game : MonoBehaviour
 	{
 		get
 		{
-			if(Hub.endCondition == null)
+			if(Hub.endCondition == null || StateCurrent != State.Play)
 				return false;
 			if(!Hub.end)
 			{
@@ -30,6 +30,7 @@ public class Game : MonoBehaviour
 	public static Player Player { get { return Hub.player; } }
 	public static GameInput GameInput { get { return Hub.gameInput; } }
 	public static Camera Cam { get { return Hub.cam; } }
+	public static int LevelIndex { get { return Hub.levelIndex; } }
 
 	public enum State
 	{
@@ -74,6 +75,7 @@ public class Game : MonoBehaviour
 	bool win = false;
 	bool hold;
 	bool worldBuilded = false;
+	int levelIndex;
 
 
 
@@ -130,15 +132,6 @@ public class Game : MonoBehaviour
 		UnityEngine.SceneManagement.SceneManager.LoadScene(1);
 	}
 
-	void WorldInit()
-	{
-		tower.Init();
-	}
-
-	void TowerBuild()
-	{
-		tower.SpawnLevel(20);
-	}
 
 	void PlayerInstantiate()
 	{
@@ -156,10 +149,21 @@ public class Game : MonoBehaviour
 		//}
 	}
 
+	void WorldInit()
+	{
+		tower.Init();
+	}
+
 	void PlayerInit()
 	{
 		Debug.Log("[GAME] Init player.");
-		player.Init();
+		player.Init(tower);
+	}
+
+	void InitLevel()
+	{
+		tower.SpawnLevel(8 + levelIndex);
+		player.StartLevel(8);
 	}
 
 	void InitEvents()
@@ -182,12 +186,16 @@ public class Game : MonoBehaviour
 		// here
 		// player initialization
 		AddStateAction(State.Start, "[GAME] Start world initialization.");
+		AddStateAction(State.Start, delegate
+		{
+			levelIndex = PlayerPrefs.GetInt("levelIndex-" + levelIndex, 0);
+		});
 		AddStateAction(State.Start, WorldInit);
 		AddStateAction(State.Start, PlayerInit);
 		AddStateAction(State.Start, GameInput.Init);
 		AddStateAction(State.Start, delegate
 		{
-			//endCondition = delegate { return new bool[] { Player.Horde + 1 > LevelData.hordes.Length || Player.Time <= 0, Player.Horde + 1 > LevelData.hordes.Length }; };
+			endCondition = delegate { return new bool[] { Player.Shots == 0 || Player.ScoreFill >= 1, Player.ScoreFill >= 1 }; };
 		});
 		AddStateAction(State.Start, "[GAME] Waiting world initialization...", delegate
 		{
@@ -211,7 +219,7 @@ public class Game : MonoBehaviour
 
 		SetStateAction(State.LevelInit, "[GAME] Level init event.");
 		AddStateAction(State.LevelInit, delegate { CanvasCoreManager.Singleton.SetTapToStart(true); });
-		AddStateAction(State.LevelInit, TowerBuild);
+		AddStateAction(State.LevelInit, InitLevel);
 		AddStateAction(State.LevelInit, "[GAME] Waiting tap to start.", delegate { return GameInput.TapToStart; });
 		AddStateAction(State.LevelInit, delegate { CanvasCoreManager.Singleton.SetTapToStart(false); });
 		AddStateAction(State.LevelInit, GameInput.InitLevelCamera, delegate { return GameInput.InitLevelCameraEnded; });
@@ -227,22 +235,15 @@ public class Game : MonoBehaviour
 		AddStateAction(State.End, delegate { Debug.Log("[GAME] GAME ENDED! Player: " + (win ? "WINS!" : "loses.")); });
 		AddStateAction(State.End, delegate
 		{
-			//if(PlayerPrefs.GetInt(LevelData.name + "-score_top") < Player.ScoreEnd)
-			//	PlayerPrefs.SetInt(LevelData.name + "-score_top", Player.ScoreEnd);
+			if(win)
+				PlayerPrefs.SetInt("levelIndex-" + levelIndex, win ? ++levelIndex : levelIndex);
 		});
 		AddStateAction(State.End, delegate
 		{
-			bool unlocked = false;
-			if(win)
-			{
-				//unlocked = PlayerPrefs.GetInt(LevelData.name + "-complete", 0) == 0;
-				//PlayerPrefs.SetInt(LevelData.name + "-complete", 1);
-			}
 			//CanvasCoreManager.Singleton.GameOver(win, Player.ScoreEnd, PlayerPrefs.GetInt(LevelData.name + "-score_top"), unlocked);
 		});
 		AddStateAction(State.End, delegate
 		{
-
 			// QUI METTI QUELLO CHE DEVI FARE QUANDO C'é IL GAMEOVER
 			AudioManager.PlaySfx("GameOver");
 			//TODO PLAYOND

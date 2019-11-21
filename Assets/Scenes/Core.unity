@@ -425,12 +425,6 @@ Camera:
     type: 3}
   m_PrefabInstance: {fileID: 1449291360736256080}
   m_PrefabAsset: {fileID: 0}
---- !u!135 &1344518960 stripped
-SphereCollider:
-  m_CorrespondingSourceObject: {fileID: 2470781350632243631, guid: aec91befaf8d4f4448898dbebf6476f3,
-    type: 3}
-  m_PrefabInstance: {fileID: 1449291360736256080}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1792399061
 GameObject:
   m_ObjectHideFlags: 0
@@ -636,16 +630,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8943435579636782338, guid: aec91befaf8d4f4448898dbebf6476f3,
-        type: 3}
-      propertyPath: collider
-      value: 
-      objectReference: {fileID: 1344518960}
-    - target: {fileID: 2470781350632243631, guid: aec91befaf8d4f4448898dbebf6476f3,
-        type: 3}
-      propertyPath: m_Radius
-      value: 0.1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: aec91befaf8d4f4448898dbebf6476f3, type: 3}

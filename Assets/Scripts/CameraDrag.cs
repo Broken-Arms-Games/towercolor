@@ -17,7 +17,7 @@ public class CameraDrag : MonoBehaviour
 
 	void Update()
 	{
-		if(Game.StateCurrent != Game.State.Play)
+		if(Game.StateCurrent < Game.State.Play)
 			return;
 
 #if UNITY_EDITOR

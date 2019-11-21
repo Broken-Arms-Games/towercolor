@@ -19,6 +19,7 @@ public class Shot : MonoBehaviour
 	[SerializeField] MeshRenderer renderer;
 	[SerializeField] Rigidbody rigidbody;
 	[SerializeField] SphereCollider collider;
+	[SerializeField] AnimationCurve spawnAnim;
 
 	[HideInInspector] public int num;
 	InstantiatedCoroutine initCo;
@@ -42,7 +43,7 @@ public class Shot : MonoBehaviour
 			initCo = new InstantiatedCoroutine(this);
 		initCo.Start(.3f, f =>
 		{
-			transform.localScale = Vector3.Lerp(Vector3.zero, Vector3.one * 1f, f);
+			transform.localScale = Vector3.LerpUnclamped(Vector3.zero, Vector3.one * 1f, spawnAnim.Evaluate(f));
 		},
 		delegate
 		{
