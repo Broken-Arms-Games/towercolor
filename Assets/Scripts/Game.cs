@@ -241,7 +241,7 @@ public class Game : MonoBehaviour
 		});
 		AddStateAction(State.End, delegate
 		{
-			//CanvasCoreManager.Singleton.GameOver(win, Player.ScoreEnd, PlayerPrefs.GetInt(LevelData.name + "-score_top"), unlocked);
+			CanvasCoreManager.Singleton.GameOver(win);
 		});
 		AddStateAction(State.End, delegate
 		{
