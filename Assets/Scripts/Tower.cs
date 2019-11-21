@@ -51,7 +51,7 @@ public class Tower : MonoBehaviour
 	}
 
 	public int Layers { get { return layers; } }
-	public LayerData LayerLowestUnlocked { get { return layerList[Mathf.Max(0, layerTop - layersUnlocked)]; } }
+	public LayerData LayerLowestUnlocked { get { return layerList[Mathf.Max(0, layerTop + 1 - layersUnlocked)]; } }
 	public int ScoreMax { get { return scoreMax - layerAmount * 1; } }
 
 	[SerializeField] Transform spawnBase;
@@ -63,9 +63,13 @@ public class Tower : MonoBehaviour
 	public Material[] particleMaterials;
 	public int layersUnlocked = 8;
 
+	[HideInInspector] public WaitForSeconds wait = new WaitForSeconds(.08f);
+
 	List<Pin> pinPool;
 	List<ParticleSystem> pinParticlePool;
 	LayerData[] layerList;
+	Queue<LayerData> unlockQueue;
+	IEnumerator unlockQueueCo;
 	int layers;
 	int layerAmount = 15;
 	float layerRadius = 3.6f;
@@ -82,6 +86,8 @@ public class Tower : MonoBehaviour
 
 	public void Init()
 	{
+		unlockQueue = new Queue<LayerData>();
+
 		onPinUnlock += p => { PinParticleEnable(p, particleMaterials[4]); };
 		onPinShoot += p => { PinParticleEnable(p, particleMaterials[p.num]); };
 	}
@@ -110,7 +116,7 @@ public class Tower : MonoBehaviour
 			});
 		}
 		layerTop = layers - 1;
-		LayerUnlock();
+		//LayerUnlock();
 	}
 
 	public int GetRandomNum()
@@ -134,23 +140,40 @@ public class Tower : MonoBehaviour
 			{
 				layerTop = i - 1;
 				LayerUnlock();
-
 			}
 			score += layerAmount - actives;
 		}
 		Game.Player.Score = score;
+
+		if(unlockQueue.Count > 0 && unlockQueueCo == null)
+		{
+			unlockQueueCo = UnlockQueue();
+			StartCoroutine(unlockQueueCo);
+		}
 	}
 
 	void LayerUnlock()
 	{
 		for(int i = layerTop; i >= Mathf.Max(0, layerTop + 1 - layersUnlocked); i--)
 		{
-			if(layerList[i].locked)
+			if(layerList[i].locked && !unlockQueue.Contains(layerList[i]))
 			{
-				layerList[i].Unlock();
-				onLayerUnlock(layerList[i]);
+				unlockQueue.Enqueue(layerList[i]);
 			}
 		}
+	}
+
+	IEnumerator UnlockQueue()
+	{
+		LayerData layer = null;
+		while(unlockQueue.Count > 0)
+		{
+			yield return wait;
+			layer = unlockQueue.Dequeue();
+			layer.Unlock();
+			onLayerUnlock(layer);
+		}
+		unlockQueueCo = null;
 	}
 
 

@@ -22,7 +22,7 @@ public class Pin : MonoBehaviour
 				{
 					model.material = tower.pinMaterials[num];
 					rigidbody.isKinematic = false;
-					if(!inited)
+					if(Game.StateCurrent == Game.State.Play)
 						tower.OnPinUnlock(this);
 				}
 				for(int i = 0; i < pinColliders.Length; i++)
@@ -36,7 +36,6 @@ public class Pin : MonoBehaviour
 	public Rigidbody rigidbody;
 	public PinCollider[] pinColliders;
 
-	bool inited;
 	[HideInInspector] public int num;
 	Tower tower;
 	Tower.LayerData layer;
@@ -46,7 +45,6 @@ public class Pin : MonoBehaviour
 
 	public void Init(Tower tower, Tower.LayerData layer)
 	{
-		inited = false;
 		this.tower = tower;
 		this.layer = layer;
 		num = tower.GetRandomNum();
@@ -60,24 +58,32 @@ public class Pin : MonoBehaviour
 		for(int i = 0; i < pinColliders.Length; i++)
 			pinColliders[i].Init(this);
 		Locked = Layer.index < tower.Layers - tower.layersUnlocked;
-		inited = true;
 	}
 
 	public bool Shooted(int num = -1, bool chain = true)
 	{
 		if(!locked && !shooted && (num < 0 || num == this.num))
 		{
+			if(chain)
+				StartCoroutine(ShootChainCo());
+			else
+				gameObject.SetActive(false);
 			shooted = true;
-			for(int i = 0; chain && i < pinColliders.Length; i++)
-				pinColliders[i].ShootNeighbours();
 			model.enabled = false;
 			rigidbody.isKinematic = true;
-			gameObject.SetActive(false);
 			tower.OnPinShoot(this);
 			Game.Player.SpecialAdd(this.num);
 			return true;
 		}
 		else
 			return false;
+	}
+
+	IEnumerator ShootChainCo()
+	{
+		yield return tower.wait;
+		gameObject.SetActive(false);
+		for(int i = 0; i < pinColliders.Length; i++)
+			pinColliders[i].ShootNeighbours();
 	}
 }

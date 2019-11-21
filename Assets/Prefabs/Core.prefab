@@ -618,7 +618,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cameraDrag: {fileID: 2823271132038226548}
   cameraHolder: {fileID: 1504748687104851594}
-  cameraRotSpeed: 10
+  cameraRotSpeed: 15
   cameraHeightOffset: -3.5
   shot: {fileID: 8943435579636782338}
   shotSpecials:
