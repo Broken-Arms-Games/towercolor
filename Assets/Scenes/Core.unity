@@ -454,7 +454,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 841901b5dbec817479fa0608e928f260, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  musicFiles: []
+  musicFiles:
+  - audioName: mainmenu
+    audioClip: {fileID: 8300000, guid: 31e429f35a8c2b242b25cd38d98585a7, type: 3}
+    volume: 1
+    source: {fileID: 0}
+    isLooping: 1
+    playOnAwake: 1
   sfxFiles:
   - audioName: ClickMenu
     audioClip: {fileID: 8300000, guid: 2e74b205ce589194d91a51a06d1066a6, type: 3}
