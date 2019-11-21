@@ -597,6 +597,12 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 2818145571f70d741b3b2f1d77cb8371, type: 2}
   - {fileID: 2100000, guid: 42a55b90f00337a42af31e9ae74a1dd0, type: 2}
   - {fileID: 2100000, guid: 4898d571494d1d242a0c1aa662183089, type: 2}
+  particleMaterials:
+  - {fileID: 2100000, guid: 3504eabbc21503f4d9b6b1a08fcc42ad, type: 2}
+  - {fileID: 2100000, guid: 101e3c29a9d1f31438326d4949eddbbf, type: 2}
+  - {fileID: 2100000, guid: a7b3dd8ce246a0943b2eed4eb3cb97be, type: 2}
+  - {fileID: 2100000, guid: 1b9eb0feccf763f46b65e36eb924636f, type: 2}
+  - {fileID: 2100000, guid: aff01307f7b7be94a8199128e1c9410a, type: 2}
   layersUnlocked: 8
 --- !u!114 &1040523438326187647
 MonoBehaviour:

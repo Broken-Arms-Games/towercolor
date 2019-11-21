@@ -60,6 +60,7 @@ public class Tower : MonoBehaviour
 
 	public Material pinMaterialLock;
 	public Material[] pinMaterials;
+	public Material[] particleMaterials;
 	public int layersUnlocked = 8;
 
 	List<Pin> pinPool;
@@ -81,8 +82,8 @@ public class Tower : MonoBehaviour
 
 	public void Init()
 	{
-		onPinUnlock += p => { PinParticleEnable(p, pinMaterialLock); };
-		onPinShoot += p => { PinParticleEnable(p, pinMaterials[p.num]); };
+		onPinUnlock += p => { PinParticleEnable(p, particleMaterials[4]); };
+		onPinShoot += p => { PinParticleEnable(p, particleMaterials[p.num]); };
 	}
 
 	public void SpawnLevel(int layers = 10)
