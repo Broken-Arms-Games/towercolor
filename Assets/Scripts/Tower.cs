@@ -51,7 +51,7 @@ public class Tower : MonoBehaviour
 	}
 
 	public int Layers { get { return layers; } }
-	public LayerData LayerLowestUnlocked { get { return layerList[Mathf.Max(0, layerTop + 1 - layersUnlocked)]; } }
+	public LayerData LayerLowestUnlocked { get { return layerList[Mathf.Max(0, layerTop - layersUnlocked)]; } }
 	public int ScoreMax { get { return scoreMax - layerAmount * 1; } }
 
 	[SerializeField] Transform spawnBase;
@@ -116,7 +116,6 @@ public class Tower : MonoBehaviour
 			});
 		}
 		layerTop = layers - 1;
-		//LayerUnlock();
 	}
 
 	public int GetRandomNum()

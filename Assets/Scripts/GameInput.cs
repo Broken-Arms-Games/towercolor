@@ -60,11 +60,10 @@ public class GameInput : MonoBehaviour
 		shotSpecialsPool = new List<Shot>[shotSpecials.Length];
 		camTransf = Game.Cam.transform;
 		camOffset = camTransf.localPosition;
-		camHeight = 0;
 		Game.Hub.tower.onLayerUnlock += l =>
 		{
 			if(Game.StateCurrent == Game.State.Play)
-				camHeight = l.posHeight + cameraHeightOffset;
+				camHeight = Game.Hub.tower.LayerLowestUnlocked.posHeight + cameraHeightOffset;
 		};
 	}
 
