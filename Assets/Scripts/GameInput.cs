@@ -87,7 +87,7 @@ public class GameInput : MonoBehaviour
 		shootInput = ShootInput();
 
 		// input camera rotation
-		if(cameraDrag.Dragging)
+		if(cameraDrag.Dragging || cameraDrag.InputNotZero)
 			CameraRotate(camInput.x);
 
 		if(Game.StateCurrent != Game.State.Play)
@@ -103,9 +103,13 @@ public class GameInput : MonoBehaviour
 
 	void Shoot(Vector2 screenPos)
 	{
+		Debug.LogError("RAYCAST SHOOT");
 		RaycastHit hit;
 		if(Physics.Raycast(Game.Cam.ScreenPointToRay(screenPos), out hit, 1000f, LayerMask.GetMask("Pins")))
+		{
+			Debug.LogError("RAYCAST SHOOT HITS " + hit.collider.name);
 			ShotStart(hit.point);
+		}
 	}
 
 	public void ShotSpawn()
@@ -136,8 +140,13 @@ public class GameInput : MonoBehaviour
 		if(Input.GetMouseButtonUp(0))
 			return Input.mousePosition;
 #else
+		if(Input.touchCount > 0)
+			Debug.LogError("touch count is " + Input.touchCount);
 		if(Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Ended)
+		{
+			Debug.LogError("shoot input got");
 			return Input.GetTouch(0).position;
+		}
 #endif
 		else
 			return -Vector2.one;

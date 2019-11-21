@@ -6,7 +6,8 @@ using UnityEngine.EventSystems;
 public class CameraDrag : MonoBehaviour
 {
 	public Vector2 CamInput { get { return input; } }
-	public bool Dragging { get { return dragging || input != Vector2.zero; } }
+	public bool Dragging { get { return dragging; } }
+	public bool InputNotZero { get { return input != Vector2.zero; } }
 
 	bool dragging;
 	bool dragStart;
