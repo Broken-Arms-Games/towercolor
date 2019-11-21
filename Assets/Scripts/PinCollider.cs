@@ -21,7 +21,7 @@ public class PinCollider : PinComponent
 
 	public void ShootNeighbours()
 	{
-		triggerHit = Physics.BoxCastAll(collider.bounds.center, collider.size / 2f + Vector3.one * .05f, Vector3.up, transform.rotation, 0f, LayerMask.GetMask("Pins"));
+		triggerHit = Physics.BoxCastAll(collider.bounds.center, collider.size / 2f + Vector3.one * .08f, Vector3.up, transform.rotation, 0f, LayerMask.GetMask("Pins"));
 		if(triggerHit.Length > 0)
 		{
 			PinCollider pc = null;
