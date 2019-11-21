@@ -191,7 +191,7 @@ namespace Bag.Mobile.UiLite
 				else
 				{
 					float start = filler.fillAmount;
-					co.Start(.2f, t =>
+					co.Start(.1f, t =>
 					{
 						filler.fillAmount = Mathf.Lerp(start, a, t);
 						setText();
