@@ -14,6 +14,7 @@ namespace Bag.Mobile.UiLite
 		public TextMeshProUGUI numberBallsText;
 		public PopIn[] popIns;
 		public TextMeshProUGUI[] textPowers;
+		public GameObject[] nextBalls;
 		public Image[] imgPowers;
 		public TextMeshProUGUI levelNumberText;
 		public Image tapToStart;
@@ -173,6 +174,7 @@ namespace Bag.Mobile.UiLite
 		void PowerUpdate(int i, float f)
 		{
 			//Update power ups bar
+			nextBalls[i].SetActive(f >= 1);
 			AdvanceBar(powerBarCO[i], powerQueue[i], f, imgPowers[i], delegate { });
 		}
 
