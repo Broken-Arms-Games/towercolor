@@ -15,8 +15,13 @@ public class PinCollider : PinComponent
 	{
 		gameObject.SetActive(true);
 		base.Init(pin);
-		gameObject.layer = pin.gameObject.layer;
+
 		collider.enabled = true;
+	}
+
+	public void SetLayer(bool locked)
+	{
+		gameObject.layer = locked ? LayerMask.NameToLayer("Default") : Pin.gameObject.layer;
 	}
 
 	public void ShootNeighbours()

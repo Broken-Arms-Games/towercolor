@@ -101,15 +101,15 @@ public class GameInput : MonoBehaviour
 		// input shooting
 		if(!cameraDrag.Dragging && shootInput != -Vector2.one)
 			Shoot(Input.mousePosition);
-		else if(shootInput != -Vector2.one)
-		{
-			Debug.LogError("DRAGGING " + cameraDrag.Dragging);
-		}
+		//else if(shootInput != -Vector2.one)
+		//{
+		//	Debug.LogError("DRAGGING " + cameraDrag.Dragging);
+		//}
 
 		CameraUpdatePos();
 
 		if(shotReady != null)
-			shotReady.transform.Rotate(shotReadyRotateAxis, 2f * Time.deltaTime);
+			shotReady.transform.RotateAround(shotReadyRotateAxis, 4f * Time.deltaTime);
 	}
 
 	#region SHOOT
@@ -146,7 +146,7 @@ public class GameInput : MonoBehaviour
 		shot.transform.position = shotPos;
 		shot.Init(delegate
 		{
-			shotReadyRotateAxis = new Vector3(Random.Range(-1, 1), Random.Range(-1, 1), Random.Range(-1, 1));
+			shotReadyRotateAxis = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized;
 			shotReady = shot;
 		});
 	}

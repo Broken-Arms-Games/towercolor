@@ -24,6 +24,8 @@ public class Pin : MonoBehaviour
 					rigidbody.isKinematic = false;
 					tower.OnPinUnlock(this);
 				}
+				for(int i = 0; i < pinColliders.Length; i++)
+					pinColliders[i].SetLayer(locked);
 			}
 		}
 	}
@@ -52,9 +54,9 @@ public class Pin : MonoBehaviour
 		model.enabled = true;
 		model.material = tower.pinMaterialLock;
 		rigidbody.isKinematic = true;
-		Locked = Layer.index < tower.Layers - tower.layersUnlocked;
 		for(int i = 0; i < pinColliders.Length; i++)
 			pinColliders[i].Init(this);
+		Locked = Layer.index < tower.Layers - tower.layersUnlocked;
 	}
 
 	public bool Shooted(int num = -1, bool chain = true)
