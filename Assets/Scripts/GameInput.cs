@@ -77,7 +77,7 @@ public class GameInput : MonoBehaviour
 		if(Game.StateCurrent == Game.State.LevelInit)
 		{
 			if(!tapToStart)
-				CameraRotate(2);
+				CameraRotate(3);
 #if UNITY_EDITOR
 			if(Input.GetMouseButtonDown(0))
 			{
@@ -91,6 +91,10 @@ public class GameInput : MonoBehaviour
 				return;
 			}
 #endif
+		}
+		else if(Game.StateCurrent == Game.State.End)
+		{
+			CameraRotate(3);
 		}
 
 		camInput = cameraDrag.CamInput;
@@ -200,7 +204,7 @@ public class GameInput : MonoBehaviour
 	{
 		while((cameraHolder.transform.localPosition - CamHolderTarget).magnitude >= 0.5f)
 		{
-			CameraRotate(-Mathf.Min(5, (cameraHolder.transform.localPosition - CamHolderTarget).magnitude));
+			CameraRotate(Mathf.Min(5, (cameraHolder.transform.localPosition - CamHolderTarget).magnitude * 3f));
 			CameraUpdatePos();
 			yield return null;
 		}

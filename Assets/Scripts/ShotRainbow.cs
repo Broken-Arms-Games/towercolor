@@ -14,7 +14,8 @@ public class ShotRainbow : ShotSpecial
 			Pin p = triggerHit[0].collider.GetComponent<PinCollider>().Pin;
 			for(int i = p.Tower.LayerLowestUnlocked.index; i < p.Tower.Layers; i++)
 				for(int j = 0; j < p.Tower.LayerGet(i).pins.Count; j++)
-					p.Tower.LayerGet(i).pins[j].Shooted(p.num, false);
+					if(p.Tower.LayerGet(i).pins[j].transform.position.y > 0)
+						p.Tower.LayerGet(i).pins[j].Shooted(p.num, false);
 
 			Game.GameInput.Shake(0.1f, 0.2f);
 			CanvasManager.Vibrate();
