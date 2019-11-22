@@ -217,6 +217,7 @@ namespace Bag.Mobile.UiLite
 
 		void ShotDispaleSpawn(Shot s)
 		{
+			//if(s is ShotSpecial)
 			if(s is ShotBomb || s is ShotSteel)
 				numberBallsText.color = Color.white.ToAlpha(0.6f);
 			else

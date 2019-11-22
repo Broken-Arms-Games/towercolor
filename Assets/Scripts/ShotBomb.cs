@@ -4,17 +4,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using Bag.Mobile.UiLite;
 
-public class ShotBomb : Shot
+public class ShotBomb : ShotSpecial
 {
-	[SerializeField] GameObject expolosion;
+	[SerializeField] GameObject explosion;
 
 	public override void Init(Action a)
 	{
-		Material m = renderer.material;
+		renderer.enabled = true;
+		collider.enabled = true;
+		rigidbody.isKinematic = false;
+		explosion.SetActive(false);
 		base.Init(a);
-		renderer.material = m;
-
-		// TODO explosion effect initialization
 	}
 
 	protected override void DoTriggerCollision()
@@ -27,10 +27,17 @@ public class ShotBomb : Shot
 				triggerHit[i].collider.GetComponent<PinCollider>().Pin.rigidbody.AddExplosionForce(100f, transform.position, 4f, 1.5f, ForceMode.VelocityChange);
 			AudioManager.PlaySfx("hit");
 			// reset shot and switch off object
-			ShotEnd();
-
-			// TODO play explosion effect
-			expolosion.SetActive(true);
+			StartCoroutine(ShotEndCo());
 		}
+	}
+
+	IEnumerator ShotEndCo()
+	{
+		renderer.enabled = false;
+		collider.enabled = false;
+		rigidbody.isKinematic = true;
+		explosion.SetActive(true);
+		yield return new WaitForSeconds(2f);
+		ShotEnd();
 	}
 }

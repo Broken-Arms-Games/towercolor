@@ -30,6 +30,7 @@ public class Pin : MonoBehaviour
 			}
 		}
 	}
+	public Tower Tower { get { return tower; } }
 	public Tower.LayerData Layer { get { return layer; } }
 
 	public MeshRenderer model;

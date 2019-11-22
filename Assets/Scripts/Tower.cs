@@ -163,6 +163,11 @@ public class Tower : MonoBehaviour
 		}
 	}
 
+	public LayerData LayerGet(int index)
+	{
+		return layerList[index];
+	}
+
 	IEnumerator UnlockQueue()
 	{
 		LayerData layer = null;
