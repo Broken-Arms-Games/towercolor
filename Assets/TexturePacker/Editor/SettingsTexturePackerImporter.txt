@@ -1,6 +1,9 @@
 version: 2
 importPivots: 1
 tpsheetFileNames:
+- Assets/UI/TowerColorUI.tpsheet
 textureFileNames:
+- Assets/UI/TowerColorUI.png
 normalmapFileNames:
+- 
 enableDebugOutput: 0
