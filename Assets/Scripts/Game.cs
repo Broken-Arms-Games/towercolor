@@ -54,11 +54,11 @@ public class Game : MonoBehaviour
 	[SerializeField] Camera cam;
 	public Tower tower;
 	[SerializeField] GameInput gameInput;
+	[SerializeField] GameObject winParticle;
 	[Header("DEBUG")]
 	[Tooltip("VISUALIZATION ONLY! DO NOT CHANGE!")]
 	[SerializeField] State state;
 	[SerializeField] Player player;
-	[SerializeField] GameObject winParticle;
 
 
 	[Header("SCORE")]

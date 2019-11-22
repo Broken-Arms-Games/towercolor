@@ -17,6 +17,8 @@ namespace Bag.Mobile.UiLite
 		public TextMeshProUGUI[] textPowers;
 		public GameObject[] nextBalls;
 		public Image[] imgPowers;
+		public Image[] iconPowers;
+		public AnimationCurve iconPowerAnim;
 		public TextMeshProUGUI levelNumberText;
 		public Image tapToStart;
 		public Image gameOver;
@@ -30,8 +32,9 @@ namespace Bag.Mobile.UiLite
 		[SerializeField] Image goalBar;
 
 		float goalBarTarget;
-		InstantiatedCoroutine goalBarCO;
-		InstantiatedCoroutine[] powerBarCO;
+		InstantiatedCoroutine goalBarCo;
+		InstantiatedCoroutine[] powerBarCo;
+		InstantiatedCoroutine[] powerIconCo;
 		InstantiatedCoroutine initCo;
 		Queue<Action> goalBarQueue = new Queue<Action>();
 		Queue<Action>[] powerQueue;
@@ -42,10 +45,13 @@ namespace Bag.Mobile.UiLite
 		{
 			Singleton = this;
 			base.Init();
-			goalBarCO = new InstantiatedCoroutine(this);
-			powerBarCO = new InstantiatedCoroutine[imgPowers.Length];
-			for(int i = 0; i < powerBarCO.Length; i++)
-				powerBarCO[i] = new InstantiatedCoroutine(this);
+			goalBarCo = new InstantiatedCoroutine(this);
+			powerBarCo = new InstantiatedCoroutine[imgPowers.Length];
+			for(int i = 0; i < powerBarCo.Length; i++)
+				powerBarCo[i] = new InstantiatedCoroutine(this);
+			powerIconCo = new InstantiatedCoroutine[imgPowers.Length];
+			for(int i = 0; i < powerIconCo.Length; i++)
+				powerIconCo[i] = new InstantiatedCoroutine(this);
 			powerQueue = new Queue<Action>[imgPowers.Length];
 			for(int i = 0; i < powerQueue.Length; i++)
 				powerQueue[i] = new Queue<Action>();
@@ -171,7 +177,7 @@ namespace Bag.Mobile.UiLite
 			if(goalBarTarget != Game.Player.ScoreFill)
 			{
 				goalBarTarget = Game.Player.ScoreFill;
-				AdvanceBar(goalBarCO, goalBarQueue, goalBarTarget, goalBar, delegate { });
+				AdvanceBar(goalBarCo, goalBarQueue, goalBarTarget, goalBar, delegate { });
 			}
 		}
 
@@ -179,7 +185,10 @@ namespace Bag.Mobile.UiLite
 		{
 			//Update power ups bar
 			nextBalls[i].SetActive(f >= 1);
-			AdvanceBar(powerBarCO[i], powerQueue[i], f, imgPowers[i], delegate { });
+			AdvanceBar(powerBarCo[i], powerQueue[i], f, imgPowers[i], delegate
+			{
+			});
+			PowerIconFillAnim(i);
 		}
 
 		static void AdvanceBar(InstantiatedCoroutine co, Queue<Action> barQueue, float a, Image filler, Action setText)
@@ -208,6 +217,18 @@ namespace Bag.Mobile.UiLite
 			});
 			if(!co.IsPlaying)
 				barQueue.Dequeue().Invoke();
+		}
+
+		void PowerIconFillAnim(int i)
+		{
+			if(!powerIconCo[i].IsPlaying)
+			{
+				powerIconCo[i].Start(.2f, t =>
+				{
+					iconPowers[i].transform.localScale = Vector3.LerpUnclamped(Vector3.zero, Vector3.one, iconPowerAnim.Evaluate(t));
+				}, null);
+				// TODO play here power fill sound
+			}
 		}
 
 		public void SetTapToStart(bool value)
