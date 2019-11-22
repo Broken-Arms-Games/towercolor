@@ -95,5 +95,6 @@ public class Shot : MonoBehaviour
 	protected void ShotEnd()
 	{
 		gameObject.SetActive(false);
+		Game.GameInput.ShotEnd();
 	}
 }

@@ -12,7 +12,8 @@ public class GameInput : MonoBehaviour
 	public float ShotSpeed { get { return shotSpeed; } }
 	public float ShotArch { get { return shotArch; } }
 	public bool TapToStart { get { return tapToStart; } }
-	public bool InitLevelCameraEnded { get { return initLevelCameraCo == null; } }
+	public bool InitLevelCameraEnded { get { return (cameraHolder.transform.localPosition - CamHolderTarget).magnitude < 1f; } }
+	public int ShotCurrent { get; private set; }
 
 	Vector3 CamHolderTarget { get { return Vector3.up * camHeight; } }
 
@@ -91,6 +92,7 @@ public class GameInput : MonoBehaviour
 				return;
 			}
 #endif
+			CameraUpdatePos();
 		}
 		else if(Game.StateCurrent == Game.State.End)
 		{
@@ -165,12 +167,24 @@ public class GameInput : MonoBehaviour
 	{
 		if(shotReady != null && Game.Player.Shoot())
 		{
+			++ShotCurrent;
 			shotReady.transform.SetParent(shootingHolder);
 			shotReady.Shoot(target);
 			onShoot(shotReady);
 			shotReady = null;
-			ShotSpawn();
+			if(Game.Player.Shots > 0)
+				ShotSpawn();
 		}
+	}
+
+	public void ShotEnd()
+	{
+		Invoke("ShotEndDelay", 1);
+	}
+
+	void ShotEndDelay()
+	{
+		--ShotCurrent;
 	}
 
 	Vector2 ShootInput()
@@ -195,17 +209,16 @@ public class GameInput : MonoBehaviour
 	public void InitLevelCamera()
 	{
 		cameraHolder.transform.localPosition = Vector3.zero;
-		camHeight = Game.Hub.tower.LayerLowestUnlocked.posHeight + cameraHeightOffset;
 		initLevelCameraCo = InitLevelCameraCo();
 		StartCoroutine(initLevelCameraCo);
 	}
 
 	IEnumerator InitLevelCameraCo()
 	{
+		camHeight = Game.Hub.tower.LayerLowestUnlocked.posHeight + cameraHeightOffset;
 		while((cameraHolder.transform.localPosition - CamHolderTarget).magnitude >= 0.5f)
 		{
 			CameraRotate(Mathf.Min(5, (cameraHolder.transform.localPosition - CamHolderTarget).magnitude * 3f));
-			CameraUpdatePos();
 			yield return null;
 		}
 		initLevelCameraCo = null;

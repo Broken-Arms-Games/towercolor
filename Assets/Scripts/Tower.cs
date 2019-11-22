@@ -128,14 +128,15 @@ public class Tower : MonoBehaviour
 
 	IEnumerator LevelStartCo()
 	{
-		WaitForSeconds wait = new WaitForSeconds(1.5f / Layers);
+		WaitForSeconds wait = new WaitForSeconds(0.5f / 10f);
 		for(int i = 0; i < layerList.Length; i++)
 		{
 			for(int j = 0; j < layerList[i].pins.Count; j++)
 			{
 				layerList[i].pins[j].SetLockedState(layerList[i].pins[j].Locked);
 			}
-			yield return wait;
+			if(i >= (layerList.Length - 10 - layersUnlocked))
+				yield return wait;
 		}
 		LevelStarted = true;
 	}
