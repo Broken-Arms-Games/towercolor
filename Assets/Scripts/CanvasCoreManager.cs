@@ -226,6 +226,7 @@ namespace Bag.Mobile.UiLite
 					iconPowers[i].transform.localScale = Vector3.LerpUnclamped(Vector3.zero, Vector3.one, iconPowerAnim.Evaluate(t));
 				}, null);
 				// TODO play here power fill sound
+				AudioManager.PlaySfx("powerup");
 			}
 		}
 
@@ -259,6 +260,7 @@ namespace Bag.Mobile.UiLite
 		public void ResetOkClick()
 		{
 			PlayerPrefs.DeleteKey("levelIndex");
+			ReloadScene();
 		}
 
 		#endregion
