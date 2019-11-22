@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Pin : MonoBehaviour
@@ -17,24 +16,22 @@ public class Pin : MonoBehaviour
 			}
 		}
 	}
-	public Tower Tower { get { return tower; } }
-	public Tower.LayerData Layer { get { return layer; } }
+	public Tower Tower { get; private set; }
+	public Tower.LayerData Layer { get; private set; }
 
 	public MeshRenderer model;
 	public Rigidbody rigidbody;
 	public PinCollider[] pinColliders;
 
 	[HideInInspector] public int num;
-	Tower tower;
-	Tower.LayerData layer;
 	bool shooted;
 	bool locked = true;
 
 
 	public void Init(Tower tower, Tower.LayerData layer)
 	{
-		this.tower = tower;
-		this.layer = layer;
+		this.Tower = tower;
+		this.Layer = layer;
 		num = tower.GetRandomNum();
 		shooted = false;
 
@@ -52,15 +49,15 @@ public class Pin : MonoBehaviour
 	{
 		if(locked)
 		{
-			model.material = tower.pinMaterialLock;
+			model.material = Tower.pinMaterialLock;
 			rigidbody.isKinematic = true;
 		}
 		else
 		{
-			model.material = tower.pinMaterials[num];
+			model.material = Tower.pinMaterials[num];
 			rigidbody.isKinematic = false;
 			if(Game.StateCurrent == Game.State.Play)
-				tower.OnPinUnlock(this);
+				Tower.OnPinUnlock(this);
 		}
 		for(int i = 0; i < pinColliders.Length; i++)
 			pinColliders[i].SetLayer(locked);
@@ -77,7 +74,7 @@ public class Pin : MonoBehaviour
 			shooted = true;
 			model.enabled = false;
 			rigidbody.isKinematic = true;
-			tower.OnPinShoot(this);
+			Tower.OnPinShoot(this);
 			Game.Player.SpecialAdd(this.num);
 			return true;
 		}
@@ -87,7 +84,7 @@ public class Pin : MonoBehaviour
 
 	IEnumerator ShootChainCo()
 	{
-		yield return tower.wait;
+		yield return Tower.wait;
 		gameObject.SetActive(false);
 		for(int i = 0; i < pinColliders.Length; i++)
 			pinColliders[i].ShootNeighbours();

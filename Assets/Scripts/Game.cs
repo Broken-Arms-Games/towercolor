@@ -5,6 +5,9 @@ using UnityEngine;
 using Bag.Mobile.UiLite;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// Game manages the level initialization, flow and win condition.
+/// </summary>
 public class Game : MonoBehaviour
 {
 	public static Game Hub { get; private set; }
@@ -104,7 +107,7 @@ public class Game : MonoBehaviour
 	#endregion
 
 
-	#region INITIALIZATION
+	#region INITIALIZATION_&_FLOW
 
 	void InitHub()
 	{
@@ -119,9 +122,8 @@ public class Game : MonoBehaviour
 
 	public void Restart()
 	{
-		UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+		SceneManager.LoadScene(0);
 	}
-
 
 	void PlayerInstantiate()
 	{
@@ -147,6 +149,9 @@ public class Game : MonoBehaviour
 		CanvasCoreManager.Singleton.InitLevel(levelIndex);
 	}
 
+	/// <summary>
+	/// Game flow is initialized.
+	/// </summary>
 	void InitEvents()
 	{
 		SetStateAction(State.Awake, "[GAME] Awake event.");
@@ -236,7 +241,7 @@ public class Game : MonoBehaviour
 	#endregion
 
 
-	#region STATES
+	#region STATE_MANAGEMENT
 
 	static void SetStateAction(State state, Action action)
 	{
@@ -349,9 +354,4 @@ public class Game : MonoBehaviour
 	}
 
 	#endregion
-
-	static void ReloadScene()
-	{
-		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-	}
 }
