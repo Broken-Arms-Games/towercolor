@@ -162,7 +162,7 @@ public class Game : MonoBehaviour
 
 	void InitLevel()
 	{
-		tower.SpawnLevel(8 + levelIndex);
+		tower.LevelSpawn(8 + levelIndex);
 		player.StartLevel(8);
 		CanvasCoreManager.Singleton.InitLevel(levelIndex);
 	}
@@ -224,6 +224,7 @@ public class Game : MonoBehaviour
 		AddStateAction(State.LevelInit, "[GAME] Waiting tap to start.", delegate { return GameInput.TapToStart; });
 		AddStateAction(State.LevelInit, delegate { CanvasCoreManager.Singleton.SetTapToStart(false); });
 		AddStateAction(State.LevelInit, GameInput.InitLevelCamera, delegate { return GameInput.InitLevelCameraEnded; });
+		AddStateAction(State.LevelInit, delegate { Hub.tower.LevelStart(); });
 		AddStateAction(State.LevelInit, GameInput.ShotSpawn);
 		AddStateAction(State.LevelInit, StateAdvanceAutomatic);
 

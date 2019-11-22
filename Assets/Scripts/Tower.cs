@@ -93,7 +93,7 @@ public class Tower : MonoBehaviour
 		onPinShoot += p => { PinParticleEnable(p, particleMaterials[p.num]); };
 	}
 
-	public void SpawnLevel(int layers = 10)
+	public void LevelSpawn(int layers = 10)
 	{
 		this.layers = layers;
 		for(int i = 0; i < spawnBase.childCount; i++)
@@ -117,6 +117,13 @@ public class Tower : MonoBehaviour
 			});
 		}
 		layerTop = layers - 1;
+	}
+
+	public void LevelStart()
+	{
+		for(int i = 0; i < layerList.Length; i++)
+			for(int j = 0; j < layerList[i].pins.Count; j++)
+				layerList[i].pins[j].SetLockedState(layerList[i].pins[j].Locked);
 	}
 
 	public int GetRandomNum()

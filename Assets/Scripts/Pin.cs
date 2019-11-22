@@ -13,20 +13,7 @@ public class Pin : MonoBehaviour
 			if(locked != value)
 			{
 				locked = value;
-				if(locked)
-				{
-					model.material = tower.pinMaterialLock;
-					rigidbody.isKinematic = true;
-				}
-				else
-				{
-					model.material = tower.pinMaterials[num];
-					rigidbody.isKinematic = false;
-					if(Game.StateCurrent == Game.State.Play)
-						tower.OnPinUnlock(this);
-				}
-				for(int i = 0; i < pinColliders.Length; i++)
-					pinColliders[i].SetLayer(locked);
+				SetLockedState(locked);
 			}
 		}
 	}
@@ -54,11 +41,29 @@ public class Pin : MonoBehaviour
 		gameObject.layer = LayerMask.NameToLayer("Pins");
 
 		model.enabled = true;
-		model.material = tower.pinMaterialLock;
+		model.material = tower.pinMaterials[num];
 		rigidbody.isKinematic = true;
 		for(int i = 0; i < pinColliders.Length; i++)
 			pinColliders[i].Init(this);
-		Locked = Layer.index < tower.Layers - tower.layersUnlocked;
+		locked = Layer.index < tower.Layers - tower.layersUnlocked;
+	}
+
+	public void SetLockedState(bool locked)
+	{
+		if(locked)
+		{
+			model.material = tower.pinMaterialLock;
+			rigidbody.isKinematic = true;
+		}
+		else
+		{
+			model.material = tower.pinMaterials[num];
+			rigidbody.isKinematic = false;
+			if(Game.StateCurrent == Game.State.Play)
+				tower.OnPinUnlock(this);
+		}
+		for(int i = 0; i < pinColliders.Length; i++)
+			pinColliders[i].SetLayer(locked);
 	}
 
 	public bool Shooted(int num = -1, bool chain = true)
