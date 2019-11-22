@@ -58,6 +58,7 @@ public class Game : MonoBehaviour
 	[Tooltip("VISUALIZATION ONLY! DO NOT CHANGE!")]
 	[SerializeField] State state;
 	[SerializeField] Player player;
+	[SerializeField] GameObject winParticle;
 
 
 	[Header("SCORE")]
@@ -242,6 +243,7 @@ public class Game : MonoBehaviour
 		});
 		AddStateAction(State.End, delegate
 		{
+			winParticle.SetActive(true);
 			CanvasCoreManager.Singleton.GameOver(win);
 		});
 		AddStateAction(State.End, delegate

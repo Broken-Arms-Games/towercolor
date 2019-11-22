@@ -62,7 +62,6 @@ public class Tower : MonoBehaviour
 	public Material[] pinMaterials;
 	public Material[] particleMaterials;
 	public int layersUnlocked = 8;
-	public GameObject winParticle;
 
 	[HideInInspector] public WaitForSeconds wait = new WaitForSeconds(.08f);
 
