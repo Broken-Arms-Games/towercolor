@@ -55,18 +55,10 @@ namespace Bag.Mobile.UiLite
 			powerQueue = new Queue<Action>[imgPowers.Length];
 			for(int i = 0; i < powerQueue.Length; i++)
 				powerQueue[i] = new Queue<Action>();
-
-			//onPanelChanged += PauseChanged;
-			//onPanelOpen += InfoOpen;
-
-			//AudioManager.StopAllMusic();
-
 		}
 
 		public void InitGameGraphics()
 		{
-			Debug.Log("[CANVAS CORE MANAGER] Init game graphics.");
-
 			goalBar.fillAmount = goalBarTarget = 0;
 			Game.Player.onScoreChange += GoalBarUpdate;
 			Game.Player.onShotChange += ShotCountUpdate;
@@ -80,11 +72,6 @@ namespace Bag.Mobile.UiLite
 			{
 				whiteFadeInOut.color = Color.white.ToAlpha(1 - t);
 			}, null);
-
-			// init game canvas graphics here
-			//Game.Player.onTimeChange += t => { timeTxt.text = t > 60 ? TimerStrings.GetTimerMinutes(t, msLength: 1) : TimerStrings.GetTimerSeconds(t, msLength: 1); };
-			//Game.Player.onScore += (f, s, n) =>
-			//Game.Player.onScore += (f, s, n) => { ScoreUpdateUI(s, n); };
 		}
 
 		public void InitLevel(int levelIndex)
@@ -225,9 +212,6 @@ namespace Bag.Mobile.UiLite
 				{
 					iconPowers[i].transform.localScale = Vector3.LerpUnclamped(Vector3.zero, Vector3.one, iconPowerAnim.Evaluate(t));
 				}, null);
-				// TODO play here power fill sound
-
-				//AudioManager.PlaySfx("powerup");
 			}
 		}
 
@@ -238,7 +222,6 @@ namespace Bag.Mobile.UiLite
 
 		void ShotDispaleSpawn(Shot s)
 		{
-			//if(s is ShotSpecial)
 			if(s is ShotBomb || s is ShotSteel)
 				numberBallsText.color = Color.white.ToAlpha(0.6f);
 			else
