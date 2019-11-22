@@ -185,6 +185,11 @@ public class Game : MonoBehaviour
 			CanvasCoreManager.Singleton.InitGameGraphics();
 			CanvasCoreManager.Singleton.restartGame += Restart;
 		});
+		AddStateAction(State.Start, delegate
+		{
+			if(!AudioManager.MusicIsPlaying("mainmenu"))
+				AudioManager.PlayMusic("mainmenu");
+		});
 		// here
 		// player initialization
 		AddStateAction(State.Start, "[GAME] Start world initialization.");
@@ -217,21 +222,25 @@ public class Game : MonoBehaviour
 			LoadingdAnimationManager.CloseLoading(delegate { hold = false; });
 		}, delegate { return LoadingdAnimationManager.Singleton == null || !hold; });
 		AddStateAction(State.Start, StateAdvanceAutomatic);
-		//Debug.Log("[GAME] Game has " + Hub.onStateActions[(int)State.Start].Count + " " + State.Start + " events.");
+		Debug.Log("[GAME] Game has " + Hub.onStateActions[(int)State.Start].Count + " " + State.Start + " events.");
 
 		SetStateAction(State.LevelInit, "[GAME] Level init event.");
 		AddStateAction(State.LevelInit, delegate { CanvasCoreManager.Singleton.SetTapToStart(true); });
 		AddStateAction(State.LevelInit, InitLevel);
 		AddStateAction(State.LevelInit, "[GAME] Waiting tap to start.", delegate { return GameInput.TapToStart; });
 		AddStateAction(State.LevelInit, delegate { CanvasCoreManager.Singleton.SetTapToStart(false); });
-		AddStateAction(State.LevelInit, GameInput.InitLevelCamera, delegate { return GameInput.InitLevelCameraEnded; });
-		AddStateAction(State.LevelInit, delegate { Hub.tower.LevelStart(); });
+		AddStateAction(State.LevelInit, delegate
+		{
+			GameInput.InitLevelCamera();
+			Hub.tower.LevelStart();
+		}, delegate { return Hub.tower.LevelStarted && GameInput.InitLevelCameraEnded; });
 		AddStateAction(State.LevelInit, GameInput.ShotSpawn);
 		AddStateAction(State.LevelInit, StateAdvanceAutomatic);
-
+		Debug.Log("[GAME] Game has " + Hub.onStateActions[(int)State.LevelInit].Count + " " + State.LevelInit + " events.");
 
 		SetStateAction(State.Play, "[GAME] play event.");
 		AddStateAction(State.Play, delegate { player.GameStateChanged(); });
+		Debug.Log("[GAME] Game has " + Hub.onStateActions[(int)State.Play].Count + " " + State.Play + " events.");
 
 		SetStateAction(State.End, delegate { Debug.Log("[GAME] End event."); });
 		AddStateAction(State.End, delegate { player.GameStateChanged(); });
@@ -239,18 +248,23 @@ public class Game : MonoBehaviour
 		AddStateAction(State.End, delegate
 		{
 			if(win)
-				PlayerPrefs.SetInt("levelIndex", win ? ++levelIndex : levelIndex);
-		});
-		AddStateAction(State.End, delegate
-		{
-			if(win)
+			{
+				AudioManager.PlaySfx("win");
 				winParticle.SetActive(true);
+				PlayerPrefs.SetInt("levelIndex", win ? ++levelIndex : levelIndex);
+			}
+			else
+			{
+				AudioManager.StopMusic("mainmenu");
+				AudioManager.PlaySfx("GameOver");
+			}
+			CanvasCoreManager.Singleton.GameOver(win);
 		});
-		AddStateAction(State.End, delegate { CanvasCoreManager.Singleton.GameOver(win); });
+		AddStateAction(State.End, delegate { }, delegate { return AudioManager.GetSfx("GameOver").audioClip.length; });
+		AddStateAction(State.End, delegate { AudioManager.PlayMusic("mainmenu"); });
 		AddStateAction(State.End, delegate
 		{
 			// QUI METTI QUELLO CHE DEVI FARE QUANDO C'é IL GAMEOVER
-			AudioManager.PlaySfx("GameOver");
 			//TODO PLAYOND
 			/*Playond.PLManager.GameOver(() =>
 			{
@@ -258,9 +272,9 @@ public class Game : MonoBehaviour
 			});*/
 
 		});
-		//Debug.Log("[GAME] Game has " + Hub.onStateActions[(int)State.End].Count + " " + State.End + " events.");
+		Debug.Log("[GAME] Game has " + Hub.onStateActions[(int)State.End].Count + " " + State.End + " events.");
 
-		//Debug.Log("[GAME] Events inited.");
+		Debug.Log("[GAME] Events inited.");
 	}
 
 	#endregion

@@ -94,8 +94,6 @@ namespace Bag.Mobile.UiLite
 
 		public void GameOver(bool win)
 		{
-			string sound = win ? "win" : "gameover";
-			AudioManager.PlaySfx(sound);
 			gameOver.gameObject.SetActive(!win);
 			levelComplete.gameObject.SetActive(win);
 			btnReplay.gameObject.SetActive(!win);
@@ -257,12 +255,12 @@ namespace Bag.Mobile.UiLite
 		}
 
 		#region BUTTONS
+
 		public void ResetOkClick()
 		{
-
+			PlayerPrefs.DeleteKey("levelIndex");
 		}
+
 		#endregion
 	}
-
-
 }

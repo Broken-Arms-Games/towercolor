@@ -53,6 +53,7 @@ public class Tower : MonoBehaviour
 	public int Layers { get { return layers; } }
 	public LayerData LayerLowestUnlocked { get { return layerList[Mathf.Max(0, layerTop - layersUnlocked)]; } }
 	public int ScoreMax { get { return scoreMax - layerAmount * 1; } }
+	public bool LevelStarted { get; private set; }
 
 	[SerializeField] Transform spawnBase;
 	[SerializeField] Pin pinPrefab;
@@ -62,8 +63,10 @@ public class Tower : MonoBehaviour
 	public Material[] pinMaterials;
 	public Material[] particleMaterials;
 	public int layersUnlocked = 8;
+	public GameObject winParticle;
 
 	[HideInInspector] public WaitForSeconds wait = new WaitForSeconds(.08f);
+	WaitForSeconds waitParticle = new WaitForSeconds(2);
 
 	List<Pin> pinPool;
 	List<ParticleSystem> pinParticlePool;
@@ -82,7 +85,6 @@ public class Tower : MonoBehaviour
 	public event Action<Pin> onPinUnlock = p => { };
 	public event Action<Pin> onPinShoot = p => { };
 
-	WaitForSeconds waitParticle = new WaitForSeconds(2);
 
 	public void Init()
 	{
@@ -120,9 +122,22 @@ public class Tower : MonoBehaviour
 
 	public void LevelStart()
 	{
+		LevelStarted = false;
+		StartCoroutine(LevelStartCo());
+	}
+
+	IEnumerator LevelStartCo()
+	{
+		WaitForSeconds wait = new WaitForSeconds(1.5f / Layers);
 		for(int i = 0; i < layerList.Length; i++)
+		{
 			for(int j = 0; j < layerList[i].pins.Count; j++)
+			{
 				layerList[i].pins[j].SetLockedState(layerList[i].pins[j].Locked);
+			}
+			yield return wait;
+		}
+		LevelStarted = true;
 	}
 
 	public int GetRandomNum()
