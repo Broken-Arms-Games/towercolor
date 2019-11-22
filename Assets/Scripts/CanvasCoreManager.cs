@@ -234,5 +234,14 @@ namespace Bag.Mobile.UiLite
 		null);
 
 		}
+
+		#region BUTTONS
+		public void ResetOkClick()
+		{
+
+		}
+		#endregion
 	}
+
+
 }
