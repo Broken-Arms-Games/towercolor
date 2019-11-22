@@ -26,7 +26,7 @@ public class CameraDrag : MonoBehaviour
 			StartDrag(Input.mousePosition);
 		else if(Input.GetMouseButton(0))
 			DoDrag(Input.mousePosition);
-		else if(dragging)
+		else if(inputTarget.magnitude > 0 || dragging)
 			EndDrag();
 #else
 		if(Input.touchCount == 1)
