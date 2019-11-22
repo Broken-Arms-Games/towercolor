@@ -12,6 +12,7 @@ namespace Bag.Mobile.UiLite
 	public class CanvasCoreManager : CanvasManager
 	{
 		public TextMeshProUGUI numberBallsText;
+		public AnimationCurve numberBallsCurve;
 		public PopIn[] popIns;
 		public TextMeshProUGUI[] textPowers;
 		public GameObject[] nextBalls;
@@ -31,6 +32,7 @@ namespace Bag.Mobile.UiLite
 		float goalBarTarget;
 		InstantiatedCoroutine goalBarCO;
 		InstantiatedCoroutine[] powerBarCO;
+		InstantiatedCoroutine initCo;
 		Queue<Action> goalBarQueue = new Queue<Action>();
 		Queue<Action>[] powerQueue;
 
@@ -63,6 +65,8 @@ namespace Bag.Mobile.UiLite
 			Game.Player.onScoreChange += GoalBarUpdate;
 			Game.Player.onShotChange += ShotCountUpdate;
 			Game.Player.onSpecialChange += PowerUpdate;
+
+			Game.GameInput.onShotSpawn += ShotDispaleSpawn;
 
 			if(whiteInOutCo == null)
 				whiteInOutCo = new InstantiatedCoroutine(this);
@@ -209,6 +213,25 @@ namespace Bag.Mobile.UiLite
 		public void SetTapToStart(bool value)
 		{
 			tapToStart.gameObject.SetActive(value);
+		}
+
+		void ShotDispaleSpawn(Shot s)
+		{
+			if(s is ShotBomb || s is ShotSteel)
+				numberBallsText.color = Color.white.ToAlpha(0.6f);
+			else
+				numberBallsText.color = Color.black.ToAlpha(0.6f);
+
+
+			if(initCo == null)
+				initCo = new InstantiatedCoroutine(this);
+
+			initCo.Start(.3f, f =>
+			{
+				numberBallsText.transform.localScale = Vector3.LerpUnclamped(Vector3.zero, Vector3.one * 1f, numberBallsCurve.Evaluate(f));
+			},
+		null);
+
 		}
 	}
 }
