@@ -487,6 +487,12 @@ MonoBehaviour:
     source: {fileID: 0}
     isLooping: 0
     playOnAwake: 0
+  - audioName: explosion
+    audioClip: {fileID: 8300000, guid: 64fb9477894fa2e4a997518fbb1c2f15, type: 3}
+    volume: 1
+    source: {fileID: 0}
+    isLooping: 0
+    playOnAwake: 0
   - audioName: powerup
     audioClip: {fileID: 8300000, guid: 750f0cc55db6d4c4a946d96a498aa625, type: 3}
     volume: 1

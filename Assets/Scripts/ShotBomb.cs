@@ -37,6 +37,7 @@ public class ShotBomb : ShotSpecial
 		collider.enabled = false;
 		rigidbody.isKinematic = true;
 		explosion.SetActive(true);
+		AudioManager.PlaySfx("explosion");
 		yield return new WaitForSeconds(2f);
 		ShotEnd();
 	}
