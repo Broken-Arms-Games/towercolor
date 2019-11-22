@@ -243,9 +243,10 @@ public class Game : MonoBehaviour
 		});
 		AddStateAction(State.End, delegate
 		{
-			winParticle.SetActive(true);
-			CanvasCoreManager.Singleton.GameOver(win);
+			if(win)
+				winParticle.SetActive(true);
 		});
+		AddStateAction(State.End, delegate { CanvasCoreManager.Singleton.GameOver(win); });
 		AddStateAction(State.End, delegate
 		{
 			// QUI METTI QUELLO CHE DEVI FARE QUANDO C'é IL GAMEOVER

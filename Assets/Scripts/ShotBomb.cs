@@ -19,7 +19,7 @@ public class ShotBomb : ShotSpecial
 
 	protected override void DoTriggerCollision()
 	{
-		triggerHit = Physics.SphereCastAll(transform.position, collider.radius * 5f, rigidbody.velocity, collider.radius * 5f + 3f, LayerMask.GetMask("Pins"));
+		triggerHit = Physics.SphereCastAll(transform.position, collider.radius * 8f, rigidbody.velocity, collider.radius * 8f, LayerMask.GetMask("Pins"));
 		if(triggerHit.Length > 0)
 		{
 			triggerHit = Physics.SphereCastAll(transform.position, 2f, rigidbody.velocity, 2f, LayerMask.GetMask("Pins"));
