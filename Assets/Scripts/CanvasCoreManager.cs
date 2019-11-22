@@ -226,7 +226,8 @@ namespace Bag.Mobile.UiLite
 					iconPowers[i].transform.localScale = Vector3.LerpUnclamped(Vector3.zero, Vector3.one, iconPowerAnim.Evaluate(t));
 				}, null);
 				// TODO play here power fill sound
-				AudioManager.PlaySfx("powerup");
+
+				//AudioManager.PlaySfx("powerup");
 			}
 		}
 
