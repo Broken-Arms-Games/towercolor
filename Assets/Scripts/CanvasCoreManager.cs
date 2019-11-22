@@ -32,6 +32,7 @@ namespace Bag.Mobile.UiLite
 		[SerializeField] Image goalBar;
 
 		float goalBarTarget;
+		InstantiatedCoroutine whiteInOutCo;
 		InstantiatedCoroutine goalBarCo;
 		InstantiatedCoroutine[] powerBarCo;
 		InstantiatedCoroutine[] powerIconCo;
@@ -64,7 +65,7 @@ namespace Bag.Mobile.UiLite
 			Game.Player.onShotChange += ShotCountUpdate;
 			Game.Player.onSpecialChange += PowerUpdate;
 
-			Game.GameInput.onShotSpawn += ShotDispaleSpawn;
+			Game.GameInput.onShotSpawn += ShotSpawnDisplay;
 
 			if(whiteInOutCo == null)
 				whiteInOutCo = new InstantiatedCoroutine(this);
@@ -92,7 +93,10 @@ namespace Bag.Mobile.UiLite
 			OpenPanel("gameover");
 		}
 
-		InstantiatedCoroutine whiteInOutCo;
+		public void SetTapToStart(bool value)
+		{
+			tapToStart.gameObject.SetActive(value);
+		}
 
 		void ReloadScene()
 		{
@@ -106,7 +110,7 @@ namespace Bag.Mobile.UiLite
 				whiteFadeInOut.color = Color.white.ToAlpha(t);
 			}, delegate
 			{
-				UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+				Game.Hub.Restart();
 			});
 		}
 
@@ -128,8 +132,7 @@ namespace Bag.Mobile.UiLite
 
 		IEnumerator OpenPanelCo(string name)
 		{
-			//panel -> Close
-			if(name == "")
+			if(name == "") //panel -> Close
 			{
 				for(int i = popIns.Length - 1; i > 0; i--)
 				{
@@ -215,12 +218,7 @@ namespace Bag.Mobile.UiLite
 			}
 		}
 
-		public void SetTapToStart(bool value)
-		{
-			tapToStart.gameObject.SetActive(value);
-		}
-
-		void ShotDispaleSpawn(Shot s)
+		void ShotSpawnDisplay(Shot s)
 		{
 			if(s is ShotBomb || s is ShotSteel)
 				numberBallsText.color = Color.white.ToAlpha(0.6f);
@@ -234,9 +232,7 @@ namespace Bag.Mobile.UiLite
 			initCo.Start(.3f, f =>
 			{
 				numberBallsText.transform.localScale = Vector3.LerpUnclamped(Vector3.zero, Vector3.one * 1f, numberBallsCurve.Evaluate(f));
-			},
-		null);
-
+			}, null);
 		}
 
 		#region BUTTONS

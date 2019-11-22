@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using Bag.Scripts.Extensions;
 using Bag.Scripts.Generic;
-using Bag.Mobile.UiLite;
-using UnityEngine.EventSystems;
 using System;
 
 public class GameInput : MonoBehaviour
@@ -111,10 +109,6 @@ public class GameInput : MonoBehaviour
 		// input shooting
 		if(!cameraDrag.Dragging && shootInput != -Vector2.one)
 			Shoot(Input.mousePosition);
-		//else if(shootInput != -Vector2.one)
-		//{
-		//	Debug.LogError("DRAGGING " + cameraDrag.Dragging);
-		//}
 
 		CameraUpdatePos();
 
@@ -145,7 +139,6 @@ public class GameInput : MonoBehaviour
 
 		if(ss < 0)
 			shot.transform.parent.AddPoolList(shot, 1, ref shotsPool, InitPooledShot);
-		//shotSpecials[3].transform.parent.AddPoolList(shotSpecials[3], 1, ref shotSpecialsPool[3], InitPooledShot);
 		else
 			shotSpecials[ss].transform.parent.AddPoolList(shotSpecials[ss], 1, ref shotSpecialsPool[ss], InitPooledShot);
 	}
