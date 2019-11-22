@@ -1275,7 +1275,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   num: 0
-  expolosion: {fileID: 1627080049605138013}
+  explosion: {fileID: 1627080049605138013}
 --- !u!1 &7763017291643549255
 GameObject:
   m_ObjectHideFlags: 0

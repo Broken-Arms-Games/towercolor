@@ -4,15 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Bag.Mobile.UiLite;
 
-public class ShotLine : Shot
+public class ShotLine : ShotSpecial
 {
-	public override void Init(Action a)
-	{
-		Material m = renderer.material;
-		base.Init(a);
-		renderer.material = m;
-	}
-
 	protected override void DoTriggerCollision()
 	{
 		triggerHit = Physics.SphereCastAll(transform.position, collider.radius * 5f, rigidbody.velocity, collider.radius * 5f + 3f, LayerMask.GetMask("Pins"));
