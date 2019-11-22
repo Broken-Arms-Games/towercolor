@@ -60,7 +60,7 @@ public class Player
 
 	public void SpecialAdd(int num)
 	{
-		specials[num] = Mathf.Clamp01(specials[num] + 1f / 20);
+		specials[num] = Mathf.Clamp01(specials[num] + 1f / 15);
 		onSpecialChange(num, specials[num]);
 	}
 
