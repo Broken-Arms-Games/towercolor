@@ -6,7 +6,7 @@ using Bag.Mobile.UiLite;
 
 public class ShotBomb : Shot
 {
-	[SerializeField] ParticleSystem expolosion;
+	[SerializeField] GameObject expolosion;
 
 	public override void Init(Action a)
 	{
@@ -30,6 +30,7 @@ public class ShotBomb : Shot
 			ShotEnd();
 
 			// TODO play explosion effect
+			expolosion.SetActive(true);
 		}
 	}
 }

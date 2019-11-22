@@ -406,6 +406,11 @@ PrefabInstance:
       propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 223578183248415864, guid: 1a1d63ea34748444fa5af60d88e58aba,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1a1d63ea34748444fa5af60d88e58aba, type: 3}
 --- !u!108 &705507994 stripped
@@ -463,7 +468,7 @@ MonoBehaviour:
     source: {fileID: 0}
     isLooping: 0
     playOnAwake: 0
-  - audioName: gameover
+  - audioName: GameOver
     audioClip: {fileID: 8300000, guid: 23817cde90de84b4c95bc44026c50375, type: 3}
     volume: 1
     source: {fileID: 0}
